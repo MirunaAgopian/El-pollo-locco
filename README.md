@@ -1,2 +1,2 @@
 # El-pollo-locco
-A 2D platformer game
+A 2D jump&run game
