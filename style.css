@@ -1,12 +1,47 @@
 body {
     margin: 0 auto;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 80px;
     align-items: center;
     padding: 0 40px;
+    /* background-image: url('./img/5_background/background_img_main.png'); */
+    background-size: cover;
+    font-family: 'Lilita One', cursive;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+a:hover {
+    transform: scale(1.1);
+    transition: 125ms ease-in-out;
+    color: black;
 }
 
 canvas {
     background-color: black;
+    border: 2px solid black;
+    border-style: double;
+    border-radius: 8px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    gap: 30px;
+}
+
+.vertical-divider {
+    height: 32px;
+    width: 2px;
+    background-color: white;
 }
