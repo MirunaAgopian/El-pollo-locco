@@ -1,6 +1,7 @@
 class World {
     context;
     canvas;
+    keyboard;
     character = new Character();
     enemies = [
         new Chicken(), 
@@ -20,10 +21,12 @@ class World {
         new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0)
     ];
 
-    constructor(canvas){
+    constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
     }
 
     draw(){
@@ -43,5 +46,9 @@ class World {
 
     addToMap(mo) {
             this.context.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
+    setWorld(){
+        this.character.world = this;
     }
 }
