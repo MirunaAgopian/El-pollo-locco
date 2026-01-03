@@ -45,7 +45,23 @@ class World {
     }
 
     addToMap(mo) {
-            this.context.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        this.context.save();
+        if(mo.otherDirection){
+            this.flipImageBackwards(mo);
+        } else {
+            this.flipImageForwards(mo);
+        }
+        this.context.restore();
+    }
+
+    flipImageForwards(mo){
+        this.context.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
+    flipImageBackwards(mo){
+        this.context.translate(mo.x + mo.width, 0);
+        this.context.scale(-1, 1);
+        this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
     }
 
     setWorld(){
