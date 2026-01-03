@@ -2,6 +2,7 @@ class World {
     context;
     canvas;
     keyboard;
+    camera_x = 0;
     character = new Character();
     enemies = [
         new Chicken(), 
@@ -14,11 +15,28 @@ class World {
         new Cloud(),
         new Cloud()
     ];
-    backgroundObjects = [
+
+   backgroundObjects = [
+        new BackgroundObject('img/5_background/layers/air.png', -720),
+        new BackgroundObject('img/5_background/layers/3_third_layer/2.png', -720),
+        new BackgroundObject('img/5_background/layers/2_second_layer/2.png', -720),
+        new BackgroundObject('img/5_background/layers/1_first_layer/2.png', -720),
+
         new BackgroundObject('img/5_background/layers/air.png', 0),
         new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0),
-        new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 0),
-        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0)
+        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 0),
+        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0),
+
+        new BackgroundObject('img/5_background/layers/air.png', 720),
+        new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 720),
+        new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 720),
+        new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 720),
+
+        new BackgroundObject('img/5_background/layers/air.png', 1440),
+        new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 1440),
+        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 1440),
+        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 1440)
+
     ];
 
     constructor(canvas, keyboard){
@@ -29,12 +47,18 @@ class World {
         this.setWorld();
     }
 
+    setWorld(){
+        this.character.world = this;
+    }
+
     draw(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.translate(this.camera_x, 0);
         this.addObjectsToMap(this.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
         this.addObjectsToMap(this.clouds);
+        this.context.translate(-this.camera_x, 0)
         requestAnimationFrame(() => this.draw());
     }
 
@@ -64,7 +88,4 @@ class World {
         this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
     }
 
-    setWorld(){
-        this.character.world = this;
-    }
 }
