@@ -1,43 +1,12 @@
 class World {
+    character = new Character();
+    enemies = LEVEL_1.enemies;
+    clouds = LEVEL_1.clouds;
+    backgroundObjects = LEVEL_1.backgroundObjects;
     context;
     canvas;
     keyboard;
     camera_x = 0;
-    character = new Character();
-    enemies = [
-        new Chicken(), 
-        new Chicken(), 
-        new Chicken(),
-        new Chicken()
-    ];
-    clouds = [
-        new Cloud(),
-        new Cloud(),
-        new Cloud()
-    ];
-
-   backgroundObjects = [
-        new BackgroundObject('img/5_background/layers/air.png', -720),
-        new BackgroundObject('img/5_background/layers/3_third_layer/2.png', -720),
-        new BackgroundObject('img/5_background/layers/2_second_layer/2.png', -720),
-        new BackgroundObject('img/5_background/layers/1_first_layer/2.png', -720),
-
-        new BackgroundObject('img/5_background/layers/air.png', 0),
-        new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0),
-        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 0),
-        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0),
-
-        new BackgroundObject('img/5_background/layers/air.png', 720),
-        new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 720),
-        new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 720),
-        new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 720),
-
-        new BackgroundObject('img/5_background/layers/air.png', 1440),
-        new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 1440),
-        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 1440),
-        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 1440)
-
-    ];
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
