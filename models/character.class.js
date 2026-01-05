@@ -21,7 +21,6 @@ class Character extends MovableObject {
   }
 
   animate() {
-    //walk to right by increasing/decreasing movement on x-axis
     setInterval(() => {
       if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.x += this.speed;
@@ -36,14 +35,8 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      //walk animation - ulpoad images
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        let path = this.IMAGES_WALKING[this.currentImg];
-        this.img = this.imageCache[path];
-        this.currentImg++;
-        if (this.currentImg >= this.IMAGES_WALKING.length) {
-          this.currentImg = 0;
-        }
+        this.playAnimation(this.IMAGES_WALKING);
       }
     }, 50);
   }

@@ -19,9 +19,13 @@ class MovableObject {
             this.imageCache[path] = img;
         });
     }
-    moveRight(){
-        console.log('object moving right'); 
-        //to be continued...
+    playAnimation(){
+        let path = this.IMAGES_WALKING[this.currentImg];
+        this.img = this.imageCache[path];
+        this.currentImg++;
+        if (this.currentImg >= this.IMAGES_WALKING.length) {
+          this.currentImg = 0;
+        }
     }
     moveLeft(){
         //moves the chickens to left
