@@ -12,10 +12,22 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld(){
         this.character.world = this;
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if(this.character.isColliding(enemy)) {
+                    // console.log('Collision with Character', enemy);
+                    
+                }
+            });
+        }, 200);
     }
 
     draw(){
@@ -45,11 +57,18 @@ class World {
         this.context.restore();
 
         //test for collision
-        this.context.beginPath();
-        this.context.lineWidth = 4;
-        this.context.strokeStyle = 'blue';
-        this.context.rect(mo.x, mo.y, mo.width, mo.height);
-        this.context.stroke();
+        this.drawFrame(mo);  
+    }
+
+    drawFrame(mo){
+         //test for collision
+         if(mo instanceof Character || mo instanceof Chicken) {
+            this.context.beginPath();
+            this.context.lineWidth = 4;
+            this.context.strokeStyle = 'blue';
+            this.context.rect(mo.x, mo.y, mo.width, mo.height);
+            this.context.stroke();
+         }
     }
 
     flipImageForwards(mo){
