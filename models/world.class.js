@@ -43,6 +43,13 @@ class World {
             this.flipImageForwards(mo);
         }
         this.context.restore();
+
+        //test for collision
+        this.context.beginPath();
+        this.context.lineWidth = 4;
+        this.context.strokeStyle = 'blue';
+        this.context.rect(mo.x, mo.y, mo.width, mo.height);
+        this.context.stroke();
     }
 
     flipImageForwards(mo){

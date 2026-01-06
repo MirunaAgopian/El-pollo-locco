@@ -9,7 +9,6 @@ function init(){
 }
 
 document.addEventListener('keydown', (event) => {
-    console.log(event);
     if(event.code === "ArrowUp") {
         keyboard.UP = true;    
     } 
@@ -28,7 +27,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('keyup', (event) => {
-    console.log(event);
     if(event.code === "ArrowUp") {
         keyboard.UP = false;   
     } 
