@@ -33,3 +33,7 @@ const LEVEL_1 = new Level (
 
     ]
 );
+
+function generateChickens(amount){
+        //to be continued
+}
