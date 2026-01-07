@@ -19,17 +19,6 @@ class World {
         this.character.world = this;
     }
 
-    checkCollisions(){
-        setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
-                    this.character.energy -= 5;
-                    // console.log('collision with', this.character.energy);                       
-                }
-            });
-        }, 200);
-    }
-
     draw(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.translate(this.camera_x, 0);
@@ -79,6 +68,17 @@ class World {
         this.context.translate(mo.x + mo.width, 0);
         this.context.scale(-1, 1);
         this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if(this.character.isColliding(enemy)) {
+                    this.character.hit();
+                    console.log('collision with', this.character.energy);                       
+                }
+            });
+        }, 200);
     }
 
 }
