@@ -5,6 +5,9 @@ class World {
     canvas;
     keyboard;
     camera_x = 0;
+    statusBar = new StatusBar();
+    coinBar = new CoinBar();
+    bottleBar = new BottleBar();
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -21,12 +24,20 @@ class World {
 
     draw(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //camera moves for world objects
         this.context.translate(this.camera_x, 0);
+        //world is being drawn
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
+        //camera reset
         this.context.translate(-this.camera_x, 0)
+        //draw Heads‑Up Display
+        this.addToMap(this.bottleBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.statusBar);
+        //drawing loop
         requestAnimationFrame(() => this.draw());
     }
 

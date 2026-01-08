@@ -1,10 +1,4 @@
-class MovableObject {
-    x = 80;
-    y = 240;
-    img;
-    height = 150;
-    width = 80;
-    imageCache = {};
+class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -12,18 +6,6 @@ class MovableObject {
     energy = 100;
     lastHit = 0;
 
-    loadImage(path){
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(arr) {
-        arr.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
-    }
 
     playAnimation(images) {
         //loops through the image arrays for each character
