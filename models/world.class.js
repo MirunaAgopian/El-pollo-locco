@@ -8,6 +8,7 @@ class World {
     statusBar = new StatusBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    throwableObjects= [];
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -15,7 +16,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
     }
 
     setWorld(){
@@ -31,6 +32,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.throwableObjects);
         //camera reset
         this.context.translate(-this.camera_x, 0)
         //draw Heads‑Up Display
@@ -81,15 +83,27 @@ class World {
         this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
     }
 
-    checkCollisions(){
+    run(){
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    console.log('collision with', this.character.energy);                       
-                }
-            });
+            this.checkCollisions();
+            this.checkThrowObjects();
         }, 200);
+    }
+
+    checkCollisions(){
+        this.level.enemies.forEach((enemy) => {
+        if(this.character.isColliding(enemy)) {
+            this.character.hit();
+            console.log('collision with', this.character.energy);                       
+        }
+        });
+    }
+
+    checkThrowObjects(){
+        if(this.keyboard.THROW) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle);
+        }
     }
 
 }

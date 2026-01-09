@@ -33,7 +33,11 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround(){
-        return this.y < 180;
+        if(this instanceof ThrowableObject) {
+            return true;
+        } else {
+            return this.y < 180;
+        }
     }
 
     jump() { 
@@ -65,5 +69,14 @@ class MovableObject extends DrawableObject {
         timePassed = timePassed / 1000; //difference in seconds
         return timePassed < 1;
     } 
+
+    throw(){
+        this.speedY = 30;
+        this.applyGravity();
+        setInterval(()=>{
+            this.x += 10;
+        }, 25);
+    }
+    
 }
 
