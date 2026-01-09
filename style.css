@@ -7,9 +7,32 @@ body {
     gap: 80px;
     align-items: center;
     padding: 0 40px;
-    /* background-image: url('./img/5_background/background_img_main.png'); */
+    background-image: url('./img/5_background/background_img_main.png');
     background-size: cover;
-    font-family: 'Lilita One', cursive;
+    font-family: 'Bungee';
+}
+
+@font-face {
+  font-display: swap; 
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/bungee-v17-latin-regular.woff2') format('woff2'); 
+}
+
+h1 {
+    color: azure;
+    text-decoration: wavy;
+    font-size: 48px;
+}
+
+.outlined { 
+    color: white; 
+    text-shadow: 
+    -1px -1px 0 black, 
+    1px -1px 0 black, 
+    -1px 1px 0 black, 
+    1px 1px 0 black; 
 }
 
 a {
@@ -22,7 +45,6 @@ a {
 a:hover {
     transform: scale(1.1);
     transition: 125ms ease-in-out;
-    color: black;
 }
 
 canvas {
