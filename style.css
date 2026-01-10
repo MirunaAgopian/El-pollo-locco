@@ -9,6 +9,7 @@ body {
     padding: 0 40px;
     background-image: url('./img/5_background/background_img_main.png');
     background-size: cover;
+    background-repeat: no-repeat;
     font-family: 'Bungee';
 }
 
@@ -48,10 +49,10 @@ a:hover {
 }
 
 canvas {
-    background-color: black;
-    border: 2px solid black;
+    border: 2px solid white;
     border-style: double;
     border-radius: 8px;
+    display: block;
 }
 
 footer {
@@ -66,4 +67,17 @@ footer {
     height: 32px;
     width: 2px;
     background-color: white;
+}
+
+/* Media queries */
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
 }
