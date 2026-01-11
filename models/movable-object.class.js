@@ -7,6 +7,13 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     //for vertical collision
     previousY = 0;
+    //Adjusting sprites rectangle 'padding'
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
 
 
     playAnimation(images) {
@@ -46,13 +53,20 @@ class MovableObject extends DrawableObject {
         this.speedY = 25; 
     }
 
-    isColliding(mo) {
-        return this.x + this.width > mo.x && 
-        this.y + this.height > mo.y && 
-        this.x < mo.x + mo.width &&
-        this.y < mo.y + mo.height;
+    // isColliding(mo) {
+    //     return this.x + this.width > mo.x && 
+    //     this.y + this.height > mo.y && 
+    //     this.x < mo.x + mo.width &&
+    //     this.y < mo.y + mo.height;
+    // }
+
+    isColliding(mo) { 
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left && 
+        this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
+        this.x + this.offset.left < mo.x + mo.width - mo.offset.right && 
+        this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; 
     }
-    //In progress
+   
     isCollidingFromAbove(mo) { 
         const horizontallyOverlapping = 
         this.x + this.width > mo.x && 
@@ -67,7 +81,7 @@ class MovableObject extends DrawableObject {
         this.y + this.height > mo.y; 
 
         return horizontallyOverlapping && isFalling && wasAboveBefore && isNowOverlappingVertically; 
-    } //to be checked, also in world.class.js
+    } 
 
    
     hit(){

@@ -49,6 +49,8 @@ class Character extends MovableObject {
       
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
+    //Adjusting character's rectangle 'padding'
+    this.offset = { top: 100, bottom: 10, left: 10, right: 30};
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
@@ -73,11 +75,11 @@ class Character extends MovableObject {
       }     
       if(this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-      } 
+      }  
       this.world.camera_x = -this.x + 80;
     }, 1000 / 60);
      
-    setInterval(() => { 
+     setInterval(() => { 
       if(this.isHurt()){
         this.playAnimation(this.IMAGES_HURT);
       } else if(this.isDead()){ 

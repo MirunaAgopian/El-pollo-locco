@@ -56,21 +56,27 @@ class World {
         } else {
             this.flipImageForwards(mo);
         }
-        this.context.restore();
+         //test for collision
+        this.drawFrame(mo); 
 
-        //test for collision
-        this.drawFrame(mo);  
+        this.context.restore(); 
     }
 
-    drawFrame(mo){
-         //test for collision
-         if(mo instanceof Character || mo instanceof Chicken) {
-            this.context.beginPath();
-            this.context.lineWidth = 4;
-            this.context.strokeStyle = 'blue';
-            this.context.rect(mo.x, mo.y, mo.width, mo.height);
-            this.context.stroke();
-         }
+    //test for collision - rectangle
+    drawFrame(mo){ 
+        if (mo instanceof Character || mo instanceof Chicken) { 
+        this.context.beginPath(); 
+        this.context.lineWidth = 2; 
+        this.context.strokeStyle = 'red'; 
+        this.context.rect( 
+            mo.x + mo.offset.left, 
+            mo.y + mo.offset.top, 
+            mo.width - mo.offset.left - mo.offset.right, 
+            mo.height - mo.offset.top - mo.offset.bottom ); 
+            this.context.stroke(); 
+
+            
+        } 
     }
 
     flipImageForwards(mo){
