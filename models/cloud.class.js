@@ -1,7 +1,7 @@
 class Cloud extends MovableObject{
     y = 10;
     width = 350;
-    height = 250;
+    height = 300;
     constructor(levelEnd){
         super().loadImage('img/5_background/layers/4_clouds/1.png');
         this.levelEnd = levelEnd;
@@ -15,7 +15,7 @@ class Cloud extends MovableObject{
             if(this.x + this.width < 10) {
                 this.x = this.levelEnd;
             }
-        }, 1000 / 60);
+        }, 1000 / 40);
         
     }
 }

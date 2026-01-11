@@ -5,6 +5,8 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    //for vertical collision
+    previousY = 0;
 
 
     playAnimation(images) {
@@ -50,7 +52,24 @@ class MovableObject extends DrawableObject {
         this.x < mo.x + mo.width &&
         this.y < mo.y + mo.height;
     }
+    //In progress
+    isCollidingFromAbove(mo) { 
+        const horizontallyOverlapping = 
+        this.x + this.width > mo.x && 
+        this.x < mo.x + mo.width; 
+        
+        const isFalling = this.speedY < 0;
 
+        const wasAboveBefore = 
+        this.previousY + this.height <= mo.y; 
+
+        const isNowOverlappingVertically = 
+        this.y + this.height > mo.y; 
+
+        return horizontallyOverlapping && isFalling && wasAboveBefore && isNowOverlappingVertically; 
+    } //to be checked, also in world.class.js
+
+   
     hit(){
         this.energy -= 5;
         if(this.energy <= 0) {
@@ -65,8 +84,8 @@ class MovableObject extends DrawableObject {
     }  
 
     isHurt(){
-        let timePassed = new Date().getTime() - this.lastHit;//difference in miliseconds
-        timePassed = timePassed / 1000; //difference in seconds
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000; 
         return timePassed < 1;
     } 
 

@@ -70,14 +70,13 @@ class Character extends MovableObject {
         this.moveLeft();
          this.otherDirection = true;
         //this.walking_sound.play(); - following
-      }      
+      }     
       if(this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-      }
-
+      } 
       this.world.camera_x = -this.x + 80;
     }, 1000 / 60);
-
+     
     setInterval(() => { 
       if(this.isHurt()){
         this.playAnimation(this.IMAGES_HURT);
@@ -95,3 +94,5 @@ class Character extends MovableObject {
     }, 50);
   }
 }
+
+

@@ -12,10 +12,6 @@ const LEVEL_1 = new Level (
         new Cloud(2000),
         new Cloud(2000),
         new Cloud(2000),
-        new Cloud(2000),
-        new Cloud(2000),
-        new Cloud(2000),
-        new Cloud(2000),
     ],
     [
         new BackgroundObject('img/5_background/layers/air.png', -720),
@@ -40,7 +36,3 @@ const LEVEL_1 = new Level (
 
     ]
 );
-
-function generateChickens(amount){
-        //to be continued
-}

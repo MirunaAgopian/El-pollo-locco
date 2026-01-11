@@ -90,13 +90,38 @@ class World {
         }, 200);
     }
 
+
     checkCollisions(){
         this.level.enemies.forEach((enemy) => {
+            //vertical collision ckeck
         if(this.character.isColliding(enemy)) {
-            this.character.hit();
-            console.log('collision with', this.character.energy);                       
+            if(this.character.isCollidingFromAbove(enemy)) {
+                this.handleEnemyStomp(enemy);
+
+                setTimeout(()=> {
+                    this.removeDeadEnemy(enemy);
+                }, 1000);
+            } else {
+                //horizontal collision check
+                this.character.hit();
+                console.log('collision with', this.character.energy);
+            }
+                                   
         }
         });
+    }
+
+    handleEnemyStomp(enemy) { 
+        enemy.energy = 0; 
+        this.character.speedY = 20; 
+        console.log('collision with chicken from above'); 
+    }
+
+    removeDeadEnemy(enemy) { 
+        const index = this.level.enemies.indexOf(enemy); 
+        if (index > -1) { this.level.enemies.splice(index, 1); 
+
+        } 
     }
 
     checkThrowObjects(){
