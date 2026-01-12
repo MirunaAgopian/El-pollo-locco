@@ -53,13 +53,7 @@ class MovableObject extends DrawableObject {
         this.speedY = 25; 
     }
 
-    // isColliding(mo) {
-    //     return this.x + this.width > mo.x && 
-    //     this.y + this.height > mo.y && 
-    //     this.x < mo.x + mo.width &&
-    //     this.y < mo.y + mo.height;
-    // }
-
+   
     isColliding(mo) { 
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left && 
         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
@@ -71,12 +65,12 @@ class MovableObject extends DrawableObject {
         const horizontallyOverlapping = 
         this.x + this.width > mo.x && 
         this.x < mo.x + mo.width; 
-        
+
         const isFalling = this.speedY < 0;
 
         const wasAboveBefore = 
         this.previousY + this.height <= mo.y; 
-
+        
         const isNowOverlappingVertically = 
         this.y + this.height > mo.y; 
 

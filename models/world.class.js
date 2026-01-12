@@ -43,6 +43,8 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
+  
+
     addObjectsToMap(objects){
         objects.forEach(object => {
             this.addToMap(object);
@@ -111,8 +113,7 @@ class World {
                 //horizontal collision check
                 this.character.hit();
                 console.log('collision with', this.character.energy);
-            }
-                                   
+            }                        
         }
         });
     }
