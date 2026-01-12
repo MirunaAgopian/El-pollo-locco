@@ -112,7 +112,7 @@ class World {
             } else {
                 //horizontal collision check
                 this.character.hit();
-                console.log('collision with', this.character.energy);
+                console.log('HORIZONTAL collision with chicken, energy:', this.character.energy);
             }                        
         }
         });
@@ -121,9 +121,10 @@ class World {
     handleEnemyStomp(enemy) { 
         enemy.energy = 0; 
         this.character.speedY = 20; 
-        console.log('collision with chicken from above'); 
+        console.log('collision with chicken from ABOVE'); 
     }
 
+    
     removeDeadEnemy(enemy) { 
         const index = this.level.enemies.indexOf(enemy); 
         if (index > -1) { this.level.enemies.splice(index, 1); 

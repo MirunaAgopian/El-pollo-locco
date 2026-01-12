@@ -70,13 +70,12 @@ class MovableObject extends DrawableObject {
 
         const wasAboveBefore = 
         this.previousY + this.height <= mo.y; 
-        
+
         const isNowOverlappingVertically = 
         this.y + this.height > mo.y; 
 
         return horizontallyOverlapping && isFalling && wasAboveBefore && isNowOverlappingVertically; 
     } 
-
    
     hit(){
         this.energy -= 5;
