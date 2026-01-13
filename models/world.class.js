@@ -9,6 +9,7 @@ class World {
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
     throwableObjects= [];
+    separators = [];
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -33,6 +34,8 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.level.separators);
+
         //camera reset
         this.context.translate(-this.camera_x, 0)
         //draw Heads‑Up Display
@@ -66,7 +69,7 @@ class World {
 
     //test for collision - rectangle
     drawFrame(mo){ 
-        if (mo instanceof Character || mo instanceof Chicken) { 
+        if (mo instanceof Character || mo instanceof Chicken || mo instanceof SeparatorObject) { 
         this.context.beginPath(); 
         this.context.lineWidth = 2; 
         this.context.strokeStyle = 'red'; 
@@ -103,7 +106,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             //vertical collision ckeck
         if(this.character.isColliding(enemy)) {
-            if(this.character.isCollidingFromAbove(enemy)) {
+            if(this.character.isCollidingFromAbove(enemy, separator)) {
                 this.handleEnemyStomp(enemy);
 
                 setTimeout(()=> {
@@ -113,8 +116,14 @@ class World {
                 //horizontal collision check
                 this.character.hit();
                 console.log('HORIZONTAL collision with chicken, energy:', this.character.energy);
-            }                        
+            }                
         }
+        });
+
+        this.level.separators.forEach((separator) => {
+            if(this.character.isCollidingFromAbove(separator) || this.character.isColliding(separator)) {
+                this.character.hit();
+            }
         });
     }
 
