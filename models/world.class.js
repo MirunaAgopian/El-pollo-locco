@@ -17,6 +17,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.assignChickenBoundaries();
         this.run();
     }
 
@@ -69,7 +70,7 @@ class World {
 
     //test for collision - rectangle
     drawFrame(mo){ 
-        if (mo instanceof Character || mo instanceof Chicken || mo instanceof SeparatorObject) { 
+        if (mo instanceof Character || mo instanceof Chicken || mo instanceof SeparatorObject || mo instanceof SmallChicken) { 
         this.context.beginPath(); 
         this.context.lineWidth = 2; 
         this.context.strokeStyle = 'red'; 
@@ -106,12 +107,12 @@ class World {
         this.level.enemies.forEach((enemy) => {
             //vertical collision ckeck
         if(this.character.isColliding(enemy)) {
-            if(this.character.isCollidingFromAbove(enemy, separator)) {
+            if(this.character.isCollidingFromAbove(enemy)) {
                 this.handleEnemyStomp(enemy);
 
                 setTimeout(()=> {
                     this.removeDeadEnemy(enemy);
-                }, 1000);
+                }, 500);
             } else {
                 //horizontal collision check
                 this.character.hit();
@@ -146,6 +147,30 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
         }
+    }
+
+    assignChickenBoundaries() { 
+        const s = this.level.separators.sort((a, b) => a.x - b.x); 
+        const section1Start = s[0].x + s[0].width; 
+        const section1End = s[1].x; 
+
+        const section2Start = s[1].x; 
+        const section2End = s[2].x; 
+
+        const section3Start = s[2].x; 
+        const section3End = this.level.level_end_x; 
+
+        this.level.enemies.forEach(enemy => { 
+            if (enemy instanceof Chicken) { 
+                if (enemy.x < section1End) { 
+                    enemy.setMovementBoundaries(section1Start, section1End); 
+                } else if (enemy.x < section2End) { 
+                    enemy.setMovementBoundaries(section2Start, section2End); 
+                } else { 
+                    enemy.setMovementBoundaries(section3Start, section3End); 
+                } 
+            } 
+        }); 
     }
 
 }

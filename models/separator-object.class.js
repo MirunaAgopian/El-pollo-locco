@@ -1,5 +1,5 @@
 class SeparatorObject extends DrawableObject {
-    offset = { top: 10, left: 30, right: 30, bottom: 0 };
+    offset = { top: 10, left: 40, right: 40, bottom: 0 };
     
     constructor(path, x, y, width, height){
         super();

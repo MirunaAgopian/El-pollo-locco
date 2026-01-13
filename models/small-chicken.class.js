@@ -1,21 +1,21 @@
-class Chicken extends MovableObject {
-    height = 60;
-    width= 40;
-    y = 360;
+class SmallChicken extends MovableObject {
+    height = 55;
+    width = 40;
+    y = 365;
     direction = 'left';
 
     IMAGES_WALKING = [
-        'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
+        'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
+        'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
+        'img/3_enemies_chicken/chicken_small/1_walk/3_w.png'
     ];
     IMAGES_DEAD = [
-        'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+        'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ];
     currentImg = 0;
 
     constructor(levelEnd){
-        super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.levelEnd = levelEnd;
         this.sectionStart = 0;
         this.sectionEnd = levelEnd;
@@ -46,8 +46,6 @@ class Chicken extends MovableObject {
             this.x += this.speed;
         }, 1000 / 60);
 
-    
-
         setInterval(() => {
             if(this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -57,10 +55,9 @@ class Chicken extends MovableObject {
         }, 100);
     }
 
-    setMovementBoundaries(start, end){
+     setMovementBoundaries(start, end){
         this.sectionStart = start;
         this.sectionEnd = end;
     }
-} 
-
-
+    
+}   

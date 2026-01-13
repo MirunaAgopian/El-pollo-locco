@@ -3,12 +3,12 @@ let enemies = [];
 
 const LEVEL_1 = new Level (
     [
-        new Chicken(1500), 
-        new Chicken(1500), 
-        new Chicken(1500),
-        new Chicken(1500), 
-        new Chicken(400), 
-        new Chicken(200),
+        new Chicken(800), 
+        new Chicken(800), 
+        new Chicken(800),
+        new SmallChicken(1000),
+        new SmallChicken(1000),
+        new SmallChicken(1000),
         new Endboss()
     ],
     [
@@ -54,9 +54,10 @@ const LEVEL_1 = new Level (
         new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 720* 4),
 
     ],
-    [
+    [   
+        new SeparatorObject('img/5_background/start.png', -8, 280, 80, 140),
         new SeparatorObject('img/5_background/small_cactus.png', 1000, 300, 160, 140),
         new SeparatorObject('img/5_background/big_cactus.png', 2200, 330, 140, 120),
-        new SeparatorObject('img/5_background/start.png', -8, 280, 80, 140)
+        
     ]
 );
