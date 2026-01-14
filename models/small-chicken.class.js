@@ -20,7 +20,7 @@ class SmallChicken extends MovableObject {
         this.sectionStart = 0;
         this.sectionEnd = levelEnd;
         this.x = 300 + Math.random() * (levelEnd);
-        this.speed = -(0.15 + Math.random() * 0.25);
+        this.speed = -(0.25 + Math.random() * 0.25);
         this.otherDirection = false;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD); 

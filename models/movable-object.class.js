@@ -103,6 +103,26 @@ class MovableObject extends DrawableObject {
             this.x += 10;
         }, 25);
     }
+
+    calculateIdleTimer(seconds){
+        const threshold = seconds * 1000;
+        let startTime = null;
+        return {
+            start(){
+                if(startTime === null) {
+                    startTime = Date.now();
+                }
+            },
+            hasReached(){
+                if(startTime === null) return false;
+                return Date.now() - startTime >= threshold;
+            },
+            reset(){
+                startTime = null;
+            }
+        };
+        
+    }
     
 }
 

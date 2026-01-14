@@ -6,6 +6,20 @@ class Character extends MovableObject {
   world;
   currentImg = 0;
   jumpingIndex = 0;
+  longIdleIndex = 0;
+  longIdleDelay = 0;
+  IMAGES_LONG_IDLE = [
+    'img/2_character_pepe/1_idle/long_idle/I-11.png',
+    'img/2_character_pepe/1_idle/long_idle/I-12.png',
+    'img/2_character_pepe/1_idle/long_idle/I-13.png',
+    'img/2_character_pepe/1_idle/long_idle/I-14.png',
+    'img/2_character_pepe/1_idle/long_idle/I-15.png',
+    'img/2_character_pepe/1_idle/long_idle/I-16.png',
+    'img/2_character_pepe/1_idle/long_idle/I-17.png',
+    'img/2_character_pepe/1_idle/long_idle/I-18.png',
+    'img/2_character_pepe/1_idle/long_idle/I-19.png',
+    'img/2_character_pepe/1_idle/long_idle/I-12.png',
+  ];
   IMAGES_IDLE = [
     'img/2_character_pepe/1_idle/idle/I-1.png',
     'img/2_character_pepe/1_idle/idle/I-4.png',
@@ -52,6 +66,8 @@ class Character extends MovableObject {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
     //Adjusting character's rectangle 'padding'
     this.offset = { top: 100, bottom: 10, left: 10, right: 30};
+    this.longIdleTimer = this.calculateIdleTimer(8) ;
+    this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
@@ -84,21 +100,32 @@ class Character extends MovableObject {
     setInterval(() => { 
       if(this.isHurt()){
         this.playAnimation(this.IMAGES_HURT);
+        this.longIdleTimer.reset();
       } 
       else if(this.isDead()){ 
         this.playAnimation(this.IMAGES_DEAD); 
+        this.speed = 0;
+        this.speedY = 0;
+        this.longIdleTimer.reset();
       } 
       else if(this.isAboveGround()) {
         this.smoothJumpAnimation();
+        this.longIdleTimer.reset();
       } 
       else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT){ 
         this.playAnimation(this.IMAGES_WALKING); 
+        this.longIdleTimer.reset();
       } else { 
-        this.currentImg = 0; 
-        this.img = this.imageCache[this.IMAGES_IDLE[0]]; 
+        this.longIdleTimer.start();       
+        if(this.longIdleTimer.hasReached()){
+        this.smoothLongIdleAnimation();
+        return;
+      }
+      this.currentImg = 0; 
+      this.img = this.imageCache[this.IMAGES_IDLE[0]]; 
+      this.playAnimation(this.IMAGES_IDLE);
       } 
     }, 50); 
-
   }
 
   smoothJumpAnimation() {
@@ -123,6 +150,20 @@ class Character extends MovableObject {
             this.jumpingIndex = end;
             this.img = this.imageCache[this.IMAGES_JUMPING[end]];
           }
+      }
+
+      smoothLongIdleAnimation(){
+        this.longIdleDelay++;
+        if(this.longIdleDelay < 20) {
+          return;
+        }
+        this.longIdleDelay = 0;
+        if(this.longIdleIndex < this.IMAGES_LONG_IDLE.length){
+          this.img = this.imageCache[this.IMAGES_LONG_IDLE[this.longIdleIndex]];
+          this.longIdleIndex++;
+        } else {
+          this.longIdleIndex = 0;
+        }
       }
 
 }
