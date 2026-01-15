@@ -17,7 +17,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.assignChickenBoundaries();
+        this.assignEnemiesBoundaries();
         this.run();
     }
 
@@ -99,7 +99,7 @@ class World {
             } else {
                 //horizontal collision check
                 this.character.hit();
-                console.log('HORIZONTAL collision with chicken, energy:', this.character.energy);
+                console.log('HORIZONTAL collision with object, energy:', this.character.energy);
             }                
         }
         });
@@ -114,7 +114,7 @@ class World {
     handleEnemyStomp(enemy) { 
         enemy.energy = 0; 
         this.character.speedY = 20; 
-        console.log('collision with chicken from ABOVE'); 
+        console.log('collision with object from ABOVE'); 
     }
 
     
@@ -142,27 +142,31 @@ class World {
         }
     }
 
-    assignChickenBoundaries() { 
+    getLevelSections() { 
         const s = this.level.separators.sort((a, b) => a.x - b.x); 
-        const section1Start = s[0].x + s[0].width; 
-        const section1End = s[1].x; 
-
-        const section2Start = s[1].x; 
-        const section2End = s[2].x; 
-
-        const section3Start = s[2].x; 
-        const section3End = this.level.level_end_x; 
-
-        this.level.enemies.forEach(enemy => { 
-            if (enemy instanceof Chicken) { 
-                if (enemy.x < section1End) { 
-                    enemy.setMovementBoundaries(section1Start, section1End); 
-                } else if (enemy.x < section2End) { 
-                    enemy.setMovementBoundaries(section2Start, section2End); 
-                } else { 
-                    enemy.setMovementBoundaries(section3Start, section3End); 
-                } 
+        return [ 
+            { 
+                start: s[0].x + s[0].width, 
+                end: s[1].x 
+            }, 
+            { 
+                start: s[1].x, 
+                end: s[2].x 
+            }, 
+            { 
+                start: s[2].x, 
+                end: this.level.level_end_x 
             } 
+        ]; 
+    }
+
+    assignEnemiesBoundaries() { 
+        const sections = this.getLevelSections(); 
+        this.level.enemies.forEach(enemy => { 
+            if (!(enemy instanceof Chicken || enemy instanceof SmallChicken)) 
+                return; 
+            const section = sections.find(sec => enemy.x < sec.end) || sections[2]; 
+            enemy.setMovementBoundaries(section.start, section.end); 
         }); 
     }
 
