@@ -47,8 +47,6 @@ class World {
         requestAnimationFrame(() => this.draw());
     }
 
-  
-
     addObjectsToMap(objects){
         objects.forEach(object => {
             this.addToMap(object);
@@ -69,30 +67,15 @@ class World {
     }
 
     //test for collision - rectangle
-    drawFrame(mo){ 
+    drawFrame(mo) { 
         if (mo instanceof Character || mo instanceof Chicken || mo instanceof SeparatorObject || mo instanceof SmallChicken) { 
-        this.context.beginPath(); 
-        this.context.lineWidth = 2; 
-        this.context.strokeStyle = 'red'; 
-        this.context.rect( 
-            mo.x + mo.offset.left, 
-            mo.y + mo.offset.top, 
-            mo.width - mo.offset.left - mo.offset.right, 
-            mo.height - mo.offset.top - mo.offset.bottom ); 
+            const hb = mo.getHitbox(); 
+            this.context.beginPath(); 
+            this.context.lineWidth = 2; 
+            this.context.strokeStyle = 'red'; 
+            this.context.rect( hb.left, hb.top, hb.right - hb.left, hb.bottom - hb.top ); 
             this.context.stroke(); 
-
-            
         } 
-    }
-
-    flipImageForwards(mo){
-        this.context.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-    }
-
-    flipImageBackwards(mo){
-        this.context.translate(mo.x + mo.width, 0);
-        this.context.scale(-1, 1);
-        this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
     }
 
     run(){
@@ -140,6 +123,16 @@ class World {
         if (index > -1) { this.level.enemies.splice(index, 1); 
 
         } 
+    }
+
+    flipImageForwards(mo){
+        this.context.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
+    flipImageBackwards(mo){
+        this.context.translate(mo.x + mo.width, 0);
+        this.context.scale(-1, 1);
+        this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
     }
 
     checkThrowObjects(){

@@ -53,29 +53,36 @@ class MovableObject extends DrawableObject {
         this.speedY = 25; 
     }
 
-   
     isColliding(mo) { 
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left && 
-        this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
-        this.x + this.offset.left < mo.x + mo.width - mo.offset.right && 
-        this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; 
+        const a = this.getHitbox(); 
+        const b = mo.getHitbox(); 
+        return ( 
+            a.right > b.left && 
+            a.left < b.right && 
+            a.bottom > b.top && 
+            a.top < b.bottom 
+        ); 
     }
-   
+
     isCollidingFromAbove(mo) { 
-        const horizontallyOverlapping = 
-        this.x + this.width > mo.x && 
-        this.x < mo.x + mo.width; 
-
-        const isFalling = this.speedY < 0;
-
-        const wasAboveBefore = 
-        this.previousY + this.height <= mo.y; 
-
-        const isNowOverlappingVertically = 
-        this.y + this.height > mo.y; 
-
+        const a = this.getHitbox(); 
+        const b = mo.getHitbox(); 
+        const horizontallyOverlapping = a.right > b.left && a.left < b.right; 
+        const isFalling = this.speedY < 0; 
+        const prevBottom = this.previousY + this.height - this.offset.bottom; 
+        const wasAboveBefore = prevBottom <= b.top; 
+        const isNowOverlappingVertically = a.bottom > b.top; 
         return horizontallyOverlapping && isFalling && wasAboveBefore && isNowOverlappingVertically; 
-    } 
+    }
+
+    getHitbox(){ 
+        return { 
+            left: this.x + this.offset.left, 
+            right: this.x + this.width - this.offset.right, 
+            top: this.y + this.offset.top, 
+            bottom: this.y + this.height - this.offset.bottom 
+        }; 
+    }
    
     hit(){
         this.energy -= 5;

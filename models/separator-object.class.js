@@ -1,4 +1,4 @@
-class SeparatorObject extends DrawableObject {
+class SeparatorObject extends MovableObject {
     offset = { top: 10, left: 40, right: 40, bottom: 0 };
     
     constructor(path, x, y, width, height){

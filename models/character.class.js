@@ -154,7 +154,7 @@ class Character extends MovableObject {
 
       smoothLongIdleAnimation(){
         this.longIdleDelay++;
-        if(this.longIdleDelay < 20) {
+        if(this.longIdleDelay < 15) {
           return;
         }
         this.longIdleDelay = 0;
