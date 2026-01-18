@@ -162,10 +162,12 @@ class World {
     collectItem(item){
         const type = item.type;
         if(type === 'coin'){
-            this.coinBar.setPercentage();
+            this.coinBar.setPercentage(this.coinBar.percentage + 20);
+            console.log("CoinBar percentage:", this.coinBar.percentage);
         }
         if(type == 'bottle'){
-            this.bottleBar.setPercentage();
+            this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
+            console.log("BotteBar percentage:", this.bottleBar.percentage);
         }
 
         this.removeCollectibleItem(item);
