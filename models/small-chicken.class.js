@@ -14,12 +14,11 @@ class SmallChicken extends MovableObject {
     ];
     currentImg = 0;
 
-    constructor(levelEnd){
+    constructor(x, sectionStart, sectionEnd){
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
-        this.levelEnd = levelEnd;
-        this.sectionStart = 0;
-        this.sectionEnd = levelEnd;
-        this.x = 300 + Math.random() * (levelEnd);
+        this.x = x;
+        this.sectionStart = sectionStart;
+        this.sectionEnd = sectionEnd;
         this.speed = -(0.25 + Math.random() * 0.25);
         this.otherDirection = false;
         this.loadImages(this.IMAGES_WALKING);
@@ -53,11 +52,6 @@ class SmallChicken extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100);
-    }
-
-     setMovementBoundaries(start, end){
-        this.sectionStart = start;
-        this.sectionEnd = end;
     }
     
 }   

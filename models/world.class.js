@@ -15,9 +15,8 @@ class World {
         this.context = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
-        this.assignEnemiesBoundaries();
+        this.draw();
         this.run();
     }
 
@@ -141,33 +140,4 @@ class World {
             this.throwableObjects.push(bottle);
         }
     }
-
-    getLevelSections() { 
-        const s = this.level.separators.sort((a, b) => a.x - b.x); 
-        return [ 
-            { 
-                start: s[0].x + s[0].width, 
-                end: s[1].x 
-            }, 
-            { 
-                start: s[1].x, 
-                end: s[2].x 
-            }, 
-            { 
-                start: s[2].x, 
-                end: this.level.level_end_x 
-            } 
-        ]; 
-    }
-
-    assignEnemiesBoundaries() { 
-        const sections = this.getLevelSections(); 
-        this.level.enemies.forEach(enemy => { 
-            if (!(enemy instanceof Chicken || enemy instanceof SmallChicken)) 
-                return; 
-            const section = sections.find(sec => enemy.x < sec.end) || sections[2]; 
-            enemy.setMovementBoundaries(section.start, section.end); 
-        }); 
-    }
-
 }

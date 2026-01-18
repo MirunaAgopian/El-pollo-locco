@@ -36,8 +36,17 @@ class MovableObject extends DrawableObject {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0 ) {
                 this.y -= this.speedY;
-                this.speedY -= this.acceleration;
+                this.speedY -= this.acceleration;  
             }
+            //Florian's Vorschlag
+            //Reset this.y and this.speedY, so that the Character is not falling anymore
+            //but this creates anoter bug, at this.throw()
+            // if (this.y > 180){
+            //     this.y = 180;
+            // }
+            // if (!this.isAboveGround()){
+            //     this.speedY = 0;
+            // }
         }, 1000 / 25);
     }
 

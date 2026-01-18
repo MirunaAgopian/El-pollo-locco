@@ -66,7 +66,7 @@ class Character extends MovableObject {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
     //Adjusting character's rectangle 'padding'
     this.offset = { top: 100, bottom: 10, left: 10, right: 30};
-    this.longIdleTimer = this.calculateIdleTimer(8) ;
+    this.longIdleTimer = this.calculateIdleTimer(10) ;
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_WALKING);
