@@ -52,6 +52,7 @@ class World {
         })
     }
 
+    
     addToMap(mo) {
         this.context.save();
         if(mo.otherDirection){
@@ -98,6 +99,7 @@ class World {
             } else {
                 //horizontal collision check
                 this.character.hit();
+                this.updateHealthBar();
                 console.log('HORIZONTAL collision with object, energy:', this.character.energy);
             }                
         }
@@ -106,8 +108,13 @@ class World {
         this.level.separators.forEach((separator) => {
             if(this.character.isCollidingFromAbove(separator) || this.character.isColliding(separator)) {
                 this.character.hit();
+                this.updateHealthBar();
             }
         });
+    }
+
+    updateHealthBar(){
+        this.statusBar.setPercentage(this.character.energy);
     }
 
     handleEnemyStomp(enemy) { 
