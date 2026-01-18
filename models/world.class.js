@@ -35,6 +35,8 @@ class World {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.separators);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.bottles);
 
         //camera reset
         this.context.translate(-this.camera_x, 0)
@@ -68,7 +70,10 @@ class World {
 
     //test for collision - rectangle
     drawFrame(mo) { 
-        if (mo instanceof Character || mo instanceof Chicken || mo instanceof SeparatorObject || mo instanceof SmallChicken) { 
+        if (mo instanceof Character || mo instanceof Chicken 
+            || mo instanceof SeparatorObject || 
+            mo instanceof SmallChicken || mo instanceof Coin ||
+            mo instanceof Bottle) { 
             const hb = mo.getHitbox(); 
             this.context.beginPath(); 
             this.context.lineWidth = 2; 
@@ -111,6 +116,18 @@ class World {
                 this.updateHealthBar();
             }
         });
+
+        this.level.coins.forEach(coin => {
+            if(this.character.isColliding(coin)) {
+                this.collectItem(coin);
+            }
+        });
+
+        this.level.bottles.forEach(bottle => { 
+            if(this.character.isColliding(bottle)) { 
+                this.collectItem(bottle); 
+            } 
+        });
     }
 
     updateHealthBar(){
@@ -126,9 +143,32 @@ class World {
     
     removeDeadEnemy(enemy) { 
         const index = this.level.enemies.indexOf(enemy); 
-        if (index > -1) { this.level.enemies.splice(index, 1); 
+        if (index > -1) { 
+            this.level.enemies.splice(index, 1); 
 
         } 
+    }
+
+    removeCollectibleItem(item) {
+        const type = item.type;
+        if(type === 'coin') {
+            this.level.coins = this.level.coins.filter(c=> c !== item);
+        }
+        if(type === 'bottle'){
+            this.level.bottles = this.level.bottles.filter(b => b !== item);
+        }
+    }
+
+    collectItem(item){
+        const type = item.type;
+        if(type === 'coin'){
+            this.coinBar.setPercentage();
+        }
+        if(type == 'bottle'){
+            this.bottleBar.setPercentage();
+        }
+
+        this.removeCollectibleItem(item);
     }
 
     flipImageForwards(mo){

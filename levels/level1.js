@@ -1,15 +1,15 @@
 const LEVEL_1 = new Level (
     [
-        new SmallChicken(300, 50, 1000),
-        new Chicken(500, 50, 1000),
-        new SmallChicken(800, 50, 1000),
-        new Chicken(900, 50, 1000),
+        // new SmallChicken(300, 50, 1000),
+        // new Chicken(500, 50, 1000),
+        // new SmallChicken(800, 50, 1000),
+        // new Chicken(900, 50, 1000),
 
-        new SmallChicken(1200, 1150,  2200),
-        new SmallChicken(1300, 1150,  2200),
-        new Chicken(1500, 1150, 2200),
-        new SmallChicken(1800, 1150,  2200),
-        new Chicken(1950, 1150, 2200),
+        // new SmallChicken(1200, 1150,  2200),
+        // new SmallChicken(1300, 1150,  2200),
+        // new Chicken(1500, 1150, 2200),
+        // new SmallChicken(1800, 1150,  2200),
+        // new Chicken(1950, 1150, 2200),
 
         new Endboss()
          
@@ -62,5 +62,34 @@ const LEVEL_1 = new Level (
         new SeparatorObject('img/5_background/small_cactus.png', 1000, 300, 160, 140),
         new SeparatorObject('img/5_background/big_cactus.png', 2200, 330, 140, 120),
         
+    ], 
+    [   
+        new Coin (260, 220),
+        new Coin(300, 200),
+        new Coin(340, 180),
+        new Coin(380, 190),
+        new Coin(420, 210),
+
+        new Coin(950, 210),
+        new Coin(1100, 210),
+
+        new Coin(1400, 140),
+        new Coin(1400, 180),
+        new Coin(1460, 140),
+        new Coin(1460, 180),
+        new Coin(1520, 140),
+        new Coin(1520, 180),
+
+        new Coin(2000, 160),
+        new Coin(2060, 200)
+    ],
+    [
+        new Bottle(600, 370),
+        new Bottle(640, 370),
+
+        new Bottle(1780, 370),
+        new Bottle(1820, 370),
+        new Bottle(1860, 370),
+        new Bottle(1900, 370),
     ]
 );
