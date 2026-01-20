@@ -73,7 +73,7 @@ class World {
         if (mo instanceof Character || mo instanceof Chicken 
             || mo instanceof SeparatorObject || 
             mo instanceof SmallChicken || mo instanceof Coin ||
-            mo instanceof Bottle) { 
+            mo instanceof Bottle || mo instanceof Endboss) { 
             const hb = mo.getHitbox(); 
             this.context.beginPath(); 
             this.context.lineWidth = 2; 
@@ -128,6 +128,29 @@ class World {
                 this.collectItem(bottle); 
             } 
         });
+
+        this.throwableObjects.forEach(bottle => {
+            this.level.enemies.forEach(enemy => {
+                if(enemy instanceof Endboss && bottle.isColliding(enemy)){
+                    this.handleBottleHitEndboss(bottle, enemy);
+                }
+            });
+        });
+    }
+
+    handleBottleHitEndboss(bottle, endboss) {
+        endboss.hit();
+        bottle.speedY = 0;
+        bottle.acceleration = 0;
+        bottle.isThrown = false;
+        clearInterval(bottle.throwInterval);
+        bottle.playAnimation(bottle.THROWABLE_BOTTLE_SPLASH_IMG);
+        setTimeout(()=> {
+            this.removeBottleSplashAnimation(bottle);
+        }, 200);
+        if(endboss.isDead()){
+            this.handleEndbossDeath();
+        }
     }
 
     updateHealthBar(){
@@ -147,6 +170,17 @@ class World {
             this.level.enemies.splice(index, 1); 
 
         } 
+    }
+
+    handleEndbossDeath(endboss){
+        this.removeDeadEnemy(endboss);
+    }
+
+    removeBottleSplashAnimation(bottle){
+        const index = this.throwableObjects.indexOf(bottle);
+        if(index > -1) {
+            this.throwableObjects.splice(index, 1);
+        }
     }
 
     removeCollectibleItem(item) {

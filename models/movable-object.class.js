@@ -5,9 +5,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
-    //for vertical collision
     previousY = 0;
-    //Adjusting sprites rectangle 'padding'
     offset = {
         top: 0,
         bottom: 0,
@@ -112,13 +110,14 @@ class MovableObject extends DrawableObject {
         return timePassed < 1;
     } 
 
-    throw(){
-        this.speedY = 30;
-        this.applyGravity();
-        setInterval(()=>{
-            this.x += 10;
-        }, 25);
-    }
+    // throw(){
+    //     this.isThtrown = true;
+    //     this.speedY = 30;
+    //     this.applyGravity();
+    //     setInterval(()=>{
+    //         this.x += 10;
+    //     }, 25);
+    // }
 
     calculateIdleTimer(seconds){
         const threshold = seconds * 1000;

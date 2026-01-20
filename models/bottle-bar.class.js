@@ -49,4 +49,6 @@ class BottleBar extends DrawableObject {
         return 0;
     }
    }
+
+   //Next - bottle bar decrease at thow object!!!!
 }
