@@ -8,6 +8,8 @@ class Character extends MovableObject {
   jumpingIndex = 0;
   longIdleIndex = 0;
   longIdleDelay = 0;
+  bottleCount = 0;
+  maxBottle = 6;
   IMAGES_LONG_IDLE = [
     'img/2_character_pepe/1_idle/long_idle/I-11.png',
     'img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -64,7 +66,6 @@ class Character extends MovableObject {
       
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
-    //Adjusting character's rectangle 'padding'
     this.offset = { top: 100, bottom: 10, left: 10, right: 30};
     this.longIdleTimer = this.calculateIdleTimer(10) ;
     this.loadImages(this.IMAGES_LONG_IDLE);
@@ -164,6 +165,18 @@ class Character extends MovableObject {
         } else {
           this.longIdleIndex = 0;
         }
+      }
+
+      manageBottleCount(delta){
+        let newCount = this.bottleCount + delta;
+        if(newCount > this.maxBottle){
+          newCount = this.maxBottle;
+        } 
+        if(newCount < 0) {
+          newCount = 0;
+        }
+        this.bottleCount = newCount;
+        this.world.bottleBar.setPercentage((this.bottleCount / this.maxBottle) * 100);
       }
 
 }

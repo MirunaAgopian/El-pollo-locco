@@ -125,7 +125,10 @@ class World {
 
         this.level.bottles.forEach(bottle => { 
             if(this.character.isColliding(bottle)) { 
-                this.collectItem(bottle); 
+                if(this.character.bottleCount < this.character.maxBottle){
+                    this.collectItem(bottle); 
+                    this.character.manageBottleCount(+1);
+                }
             } 
         });
 
@@ -218,8 +221,13 @@ class World {
     }
 
     checkThrowObjects(){
-        if(this.keyboard.THROW) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+        if(this.keyboard.THROW && this.character.bottleCount > 0) {
+            this.character.manageBottleCount(-1);
+            let bottle = new ThrowableObject(
+                this.character.x + 40, 
+                this.character.y + 100, 
+                this.character.otherDirection
+            );
             this.throwableObjects.push(bottle);
         }
     }
