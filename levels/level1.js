@@ -9,7 +9,7 @@ const LEVEL_1 = new Level (
         new SmallChicken(1300, 1150,  2200),
         new Chicken(1500, 1150, 2200),
         new SmallChicken(1800, 1150,  2200),
-        new Chicken(1950, 1150, 2200),
+        new Chicken(1950, 1150, 2200), 
 
         new Endboss()
          
