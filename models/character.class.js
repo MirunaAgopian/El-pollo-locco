@@ -77,7 +77,9 @@ class Character extends MovableObject {
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
     this.offset = { top: 100, bottom: 10, left: 10, right: 30};
-    this.longIdleTimer = this.calculateIdleTimer(10) ;
+    this.longIdleTimer = this.calculateIdleTimer(10);
+    this.isInIdleState = false;
+    this.wasIdleLastFrame = false;
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_WALKING);
@@ -97,7 +99,6 @@ class Character extends MovableObject {
         this.otherDirection = false;
         //this.walking_sound.play(); - following
       }
-
       if(this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
          this.otherDirection = true;
@@ -127,43 +128,70 @@ class Character extends MovableObject {
 
     handleHurtAnimation(){
       if(this.isHurt()){
+        if(this.isInIdleState) {
+          this.resetIdleState();
+          this.isInIdleState = false;
+          this.wasIdleLastFrame = false;
+        }
         this.playAnimation(this.IMAGES_HURT);
         this.longIdleTimer.reset();
         return true;
-      } 
-      return false;
+      }
+        return false;
     }
 
     handleDeadAnimation(){
       if(this.isDead()){
+        if(this.isInIdleState) {
+          this.resetIdleState();
+          this.isInIdleState = false;
+          this.wasIdleLastFrame = false;
+        }
         this.playAnimation(this.IMAGES_DEAD);
         this.speed = 0;
         this.speedY = 0;
         this.longIdleTimer.reset();
         return true;
       }
-      return false;
+        return false;
     }
 
     handleJumpAnimation(){
       if(this.isAboveGround()){
+       if(this.isInIdleState) {
+          this.resetIdleState();
+          this.isInIdleState = false;
+          this.wasIdleLastFrame = false;
+        }
         this.smoothJumpAnimation();
         this.longIdleTimer.reset();
         return true;
+      } else {
+        this.jumpingIndex = 0;
+        return false;
       }
-      return false;
     }
 
     handleWalkAnimation(){
       if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+        if(this.isInIdleState) {
+          this.resetIdleState();
+          this.isInIdleState = false;
+          this.wasIdleLastFrame = false;
+        }
         this.playAnimation(this.IMAGES_WALKING);
         this.longIdleTimer.reset();
         return true;
       }
-      return false;
+        return false;
     }
 
     handleIdleAnimations(){
+      if(!this.wasIdleLastFrame){
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
+      }
+      this.wasIdleLastFrame = true;
+      this.isInIdleState = true;
       this.longIdleTimer.start();
       if(this.world.keyboard.THROW) {
         this.smoothIdleAnimation();
@@ -175,6 +203,13 @@ class Character extends MovableObject {
       }
       return true;
     } 
+
+    resetIdleState(){
+      this.idleDelay = 0;
+      this.idleIndex = 0;
+      this.longIdleDelay = 0;
+      this.longIdleIndex = 0;
+    }
 
     smoothJumpAnimation() {
       if(this.speedY > 0) {
@@ -202,7 +237,7 @@ class Character extends MovableObject {
 
       smoothIdleAnimation(){
         this.idleDelay++;
-        if(this.idleDelay < 12) {
+        if(this.idleDelay < 8) {
           return;
         }
         this.idleDelay = 0;
@@ -216,7 +251,7 @@ class Character extends MovableObject {
 
       smoothLongIdleAnimation(){
         this.longIdleDelay++;
-        if(this.longIdleDelay < 15) {
+        if(this.longIdleDelay < 10) {
           return;
         }
         this.longIdleDelay = 0;
