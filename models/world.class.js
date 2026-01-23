@@ -90,14 +90,22 @@ class World {
         }, 200);
     }
 
-
     checkCollisions(){
+        this.checkEnemyCollisions();
+        this.checkSeparatorCollision();
+        this.checkCoinCollisions();
+        this.checkBottleCollect();
+        this.checkBottleHitsEnemies();
+
+    }
+
+    //this one needs refractoring!
+    checkEnemyCollisions(){
         this.level.enemies.forEach((enemy) => {
             //vertical collision ckeck
         if(this.character.isColliding(enemy)) {
             if(this.character.isCollidingFromAbove(enemy)) {
                 this.handleEnemyStomp(enemy);
-
                 setTimeout(()=> {
                     this.removeDeadEnemy(enemy);
                 }, 500);
@@ -109,20 +117,26 @@ class World {
             }                
         }
         });
+    }
 
+    checkSeparatorCollision(){
         this.level.separators.forEach((separator) => {
             if(this.character.isCollidingFromAbove(separator) || this.character.isColliding(separator)) {
                 this.character.hit();
                 this.updateHealthBar();
             }
         });
+    }
 
+    checkCoinCollisions(){
         this.level.coins.forEach(coin => {
             if(this.character.isColliding(coin)) {
                 this.collectItem(coin);
             }
         });
+    }
 
+    checkBottleCollect(){
         this.level.bottles.forEach(bottle => { 
             if(this.character.isColliding(bottle)) { 
                 if(this.character.bottleCount < this.character.maxBottle){
@@ -131,7 +145,9 @@ class World {
                 }
             } 
         });
+    }
 
+    checkBottleHitsEnemies(){
         this.throwableObjects.forEach(bottle => {
             this.level.enemies.forEach(enemy => {
                 if(enemy instanceof Endboss && bottle.isColliding(enemy)){

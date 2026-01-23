@@ -52,7 +52,7 @@ class ThrowableObject extends MovableObject {
             }
         }, 25);
     }
- //next - bottle should also kill normal enemies!!
+
  //generate enemies and bottles for final fight 
  //animate Endboss + statusbar Endboss
  //add sound effects
