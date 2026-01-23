@@ -57,7 +57,7 @@ class World {
     
     addToMap(mo) {
         this.context.save();
-        if(mo.otherDirection){
+        if(mo.otherDirection && !mo.isSplashing){
             this.flipImageBackwards(mo);
         } else {
             this.flipImageForwards(mo);
@@ -73,7 +73,7 @@ class World {
         if (mo instanceof Character || mo instanceof Chicken 
             || mo instanceof SeparatorObject || 
             mo instanceof SmallChicken || mo instanceof Coin ||
-            mo instanceof Bottle || mo instanceof Endboss) { 
+            mo instanceof Bottle || mo instanceof Endboss || mo instanceof ThrowableObject) { 
             const hb = mo.getHitbox(); 
             this.context.beginPath(); 
             this.context.lineWidth = 2; 
@@ -137,12 +137,18 @@ class World {
                 if(enemy instanceof Endboss && bottle.isColliding(enemy)){
                     this.handleBottleHitEndboss(bottle, enemy);
                 }
+
+                if((enemy instanceof Chicken || enemy instanceof SmallChicken) 
+                    && bottle.isColliding(enemy)) {
+                    this.handleBottleHitRegularEnemy(bottle, enemy);
+                }
             });
         });
     }
 
     handleBottleHitEndboss(bottle, endboss) {
         endboss.hit();
+        this.isSplashing = true;
         bottle.speedY = 0;
         bottle.acceleration = 0;
         bottle.isThrown = false;
@@ -154,6 +160,20 @@ class World {
         if(endboss.isDead()){
             this.handleEndbossDeath();
         }
+    }
+
+    handleBottleHitRegularEnemy(bottle, enemy){
+        enemy.energy = 0;
+        this.isSplashing = true;
+        bottle.speedY = 0;
+        bottle.acceleration = 0;
+        bottle.isThrown = false;
+        clearInterval(bottle.throwInterval);
+        bottle.playAnimation(bottle.THROWABLE_BOTTLE_SPLASH_IMG);
+        setTimeout(()=> {
+            this.removeBottleSplashAnimation(bottle);
+        }, 200);
+        this.removeDeadEnemy(enemy);
     }
 
     updateHealthBar(){
@@ -225,7 +245,7 @@ class World {
             this.character.manageBottleCount(-1);
             let bottle = new ThrowableObject(
                 this.character.x + 40, 
-                this.character.y + 100, 
+                this.character.y + 10, 
                 this.character.otherDirection
             );
             this.throwableObjects.push(bottle);

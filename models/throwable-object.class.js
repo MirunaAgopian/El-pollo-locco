@@ -21,7 +21,9 @@ class ThrowableObject extends MovableObject {
         this.x = x;
         this.y = y;
         this.height = 80;
+        this.width = 60;
         this.isThrown = false;
+        this.isSplashing = false;
         this.otherDirection = direction;
         this.loadImages(this.THROWABLE_BOTTLE_IMG);
         this.loadImages(this.THROWABLE_BOTTLE_SPLASH_IMG);
