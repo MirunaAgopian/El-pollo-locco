@@ -56,10 +56,13 @@ class Endboss extends MovableObject {
         this.x = x;
         this.sectionStart = sectionStart;
         this.sectionEnd = sectionEnd;
-        this.speed = 6;
+        this.speed = 10;
         this.isIdle = true;
         this.isAlert = false;
         this.isActive = false;
+        this.isAttacking = false;
+        this.isHurt = false;
+        this.dead = false;
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
@@ -71,14 +74,23 @@ class Endboss extends MovableObject {
 
     animate(){
         setInterval(() => {
-            // if(this.isDead){
-            //     this.playAnimation(this.IMAGES_DEAD);
-            //     return;
-            // }
-            // if(this.isHurt){
-            //     this.playAnimation(this.IMAGES_HURT);
-            //     return;
-            // }
+            if(this.dead){
+                this.playAnimationOnce(this.IMAGES_DEAD);
+                return;
+            }
+            if(this.isHurt){
+                let finished = this.playAnimationOnce(this.IMAGES_HURT);
+                if(finished) {
+                    this.isHurt = false;
+                    this.startAttack();
+                }
+                return;
+            }
+            if(this.isAttacking) {
+                let finished = this.playAnimationOnce(this.IMAGES_ATTACK);
+                if (finished) this.isAttacking = false;
+                return;
+            }
             if(this.isAlert) {
                 let finished = this.playAnimationOnce(this.IMAGES_ALERT);
                 if(finished){
@@ -106,7 +118,6 @@ class Endboss extends MovableObject {
         }
     }
 
-
     triggerAlert(){
         if(this.isIdle){
             this.isIdle = false;
@@ -115,4 +126,30 @@ class Endboss extends MovableObject {
         }
     }
 
+    hurt(){
+        super.hit();
+        if(this.dead){
+            this.die();
+            return;
+        }
+        this.isHurt = true;
+        this.isAttacking = false;
+        this.isActive = false;
+        this.currentImg = 0;
+    }
+
+    die() { 
+        this.dead = true; 
+        this.isHurt = false; 
+        this.isAttacking = false; 
+        this.isActive = false; 
+        this.isAlert = false; 
+        this.currentImg = 0; 
+    }
+
+    startAttack(){
+        this.isAttacking = true;
+        this.isActive = true;
+        this.currentImg = 0;
+    }
 }

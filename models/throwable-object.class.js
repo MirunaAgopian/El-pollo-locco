@@ -42,7 +42,7 @@ class ThrowableObject extends MovableObject {
 
     throw(){
         this.isThrown = true;
-        this.speedY = 30;
+        this.speedY = 10;
         this.applyGravity();
         this.throwInterval = setInterval(()=>{
             if(this.otherDirection){

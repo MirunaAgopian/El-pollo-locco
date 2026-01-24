@@ -164,7 +164,7 @@ class World {
     }
 
     handleBottleHitEndboss(bottle, endboss) {
-        endboss.hit();
+        endboss.hurt();
         this.isSplashing = true;
         bottle.speedY = 0;
         bottle.acceleration = 0;
@@ -237,7 +237,6 @@ class World {
         const type = item.type;
         if(type === 'coin'){
             this.coinBar.setPercentage(this.coinBar.percentage + 20);
-            console.log("CoinBar percentage:", this.coinBar.percentage);
         }
         if(type == 'bottle'){
             this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
