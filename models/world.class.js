@@ -155,8 +155,10 @@ class World {
     checkBottleHitsEnemies(){
         this.throwableObjects.forEach(bottle => {
             this.level.enemies.forEach(enemy => {
-                if(enemy instanceof Endboss && bottle.isColliding(enemy)){
+                if(enemy instanceof Endboss && !bottle.hasHit &&
+                    bottle.isColliding(enemy)){
                     this.handleBottleHitEndboss(bottle, enemy);
+                    this.updateEndbossHealthBar();
                 }
 
                 if((enemy instanceof Chicken || enemy instanceof SmallChicken) 
@@ -168,6 +170,7 @@ class World {
     }
 
     handleBottleHitEndboss(bottle, endboss) {
+        bottle.hasHit = true;
         endboss.hurt();
         this.isSplashing = true;
         bottle.speedY = 0;
@@ -199,6 +202,12 @@ class World {
 
     updateHealthBar(){
         this.statusBar.setPercentage(this.character.energy);
+    }
+
+    updateEndbossHealthBar(){
+        this.endbossBar.setPercentage(this.level.endboss.energy);
+        console.log('Endboss energy level:', this.level.endboss.energy);
+        
     }
 
     handleEnemyStomp(enemy) { 
