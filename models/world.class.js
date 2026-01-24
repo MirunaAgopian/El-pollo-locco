@@ -8,6 +8,7 @@ class World {
     statusBar = new StatusBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    endbossBar = new EndbossBar();
     throwableObjects= [];
     separators = [];
 
@@ -44,6 +45,7 @@ class World {
         this.addToMap(this.bottleBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.statusBar);
+        this.addToMap(this.endbossBar);
         //drawing loop
         requestAnimationFrame(() => this.draw());
     }
@@ -56,6 +58,7 @@ class World {
 
     
     addToMap(mo) {
+        if(mo.visible === false) return;
         this.context.save();
         if(mo.otherDirection && !mo.isSplashing){
             this.flipImageBackwards(mo);
@@ -88,6 +91,7 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkEndbossTrigger();
+            this.updateEndbossBarVisibility();
         }, 200);
     }
 
@@ -273,6 +277,16 @@ class World {
         if(!boss) return;
         if(this.character.x >= this.level.level_end_x && this.level.endboss.isIdle){
             this.level.endboss.triggerAlert();
+        }
+    }
+
+    updateEndbossBarVisibility(){
+        const endboss = this.level.endboss;
+        const character = this.character;
+        if(character.x >= 2100 && character.x < endboss.sectionEnd){
+            this.endbossBar.visible = true;
+        } else {
+            this.endbossBar.visible = false;
         }
     }
 }
