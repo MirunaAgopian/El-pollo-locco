@@ -87,6 +87,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkEndbossTrigger();
         }, 200);
     }
 
@@ -265,6 +266,14 @@ class World {
                 this.character.otherDirection
             );
             this.throwableObjects.push(bottle);
+        }
+    }
+
+    checkEndbossTrigger(){
+        const boss = this.level.endboss;
+        if(!boss) return;
+        if(this.character.x >= this.level.level_end_x && this.level.endboss.isIdle){
+            this.level.endboss.triggerAlert();
         }
     }
 }

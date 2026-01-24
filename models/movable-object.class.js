@@ -22,6 +22,17 @@ class MovableObject extends DrawableObject {
         this.currentImg++;
     }
 
+    playAnimationOnce(images){
+        let i = this.currentImg;
+        this.img = this.imageCache[images[i]];
+        this.currentImg++;
+        if(this.currentImg >= images.length){
+            this.currentImg = images.length - 1;
+            return true;
+        }
+        return false;
+    }
+
     moveLeft(){
         this.x -= this.speed;
     }
@@ -136,8 +147,7 @@ class MovableObject extends DrawableObject {
                 startTime = null;
             }
         };
-        
     }
-    
+
 }
 
