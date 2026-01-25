@@ -49,11 +49,63 @@ a:hover {
     transition: 125ms ease-in-out;
 }
 
+.game-content-wrapper {
+    position: relative;
+    width: fit-content;
+}
+
 canvas {
     border: 2px solid white;
     border-style: double;
     border-radius: 8px;
     display: block;
+}
+
+.upper-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: clamp(8px, 3vw, 20px);
+    position: absolute;
+    top: 6px;
+    right: 8px;
+}
+
+.upper-btn-container button img {
+    width: clamp(20px, 4vw, 20px);
+    height: auto;
+    max-width: 28px;
+}
+
+.upper-btn-container button {
+    padding: clamp(2px, 1vw, 6px);
+    height: auto;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #f2f7ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #c76758;
+}
+
+button:not(.fullscreen-btn):hover {
+    background-color: #fdeba8;
+}
+
+.btn-active {
+    background-color: #f6ba61;
+}
+
+.fullscreen-btn {
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    padding: 2px;
 }
 
 footer {

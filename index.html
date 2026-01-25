@@ -1,45 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./img/favicon.png">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="./img/favicon.png" />
     <!-- JS FILES -->
     <!-- Base classes -->
     <script src="./models/drawable-object.class.js" defer></script>
-    <script src="./models/movable-object.class.js" defer></script> 
-    <script src="./models/chicken.class.js" defer></script> 
+    <script src="./models/movable-object.class.js" defer></script>
+    <script src="./models/chicken.class.js" defer></script>
     <script src="./models/small-chicken.class.js" defer></script>
-    <script src="./models/character.class.js" defer></script> 
-    <script src="./models/cloud.class.js" defer></script> 
-    <script src="./models/background-object.class.js" defer></script> 
-    <script src="./models/keyboard.class.js" defer></script> 
+    <script src="./models/character.class.js" defer></script>
+    <script src="./models/cloud.class.js" defer></script>
+    <script src="./models/background-object.class.js" defer></script>
+    <script src="./models/keyboard.class.js" defer></script>
     <script src="./models/endboss.class.js" defer></script>
-    <script src="./models/status-bar.class.js" defer></script> 
-    <script src="./models/coin-bar.class.js" defer></script> 
+    <script src="./models/status-bar.class.js" defer></script>
+    <script src="./models/coin-bar.class.js" defer></script>
     <script src="./models/bottle-bar.class.js" defer></script>
     <script src="./models/endboss-bar.class.js" defer></script>
     <script src="./models/separator-object.class.js" defer></script>
     <script src="./models/collectible-object.class.js" defer></script>
     <script src="./models/coin.class.js" defer></script>
     <script src="./models/bottle.class.js" defer></script>
-    <script src="./models/throwable-object.class.js" defer></script> 
+    <script src="./models/throwable-object.class.js" defer></script>
     <!-- Level classes -->
-    <script src="./models/level.class.js" defer></script> 
-    <script src="./levels/level1.js" defer></script> 
+    <script src="./models/level.class.js" defer></script>
+    <script src="./levels/level1.js" defer></script>
     <!-- Game initialisation classes -->
-    <script src="./models/world.class.js" defer></script> 
+    <script src="./models/world.class.js" defer></script>
     <script src="./js/game.js" defer></script>
-</head>
-<body onload="init()">
+  </head>
+  <body onload="init()">
     <h1 class="outlined">El pollo loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div class="game-content-wrapper">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <div class="upper-btn-container">
+        <button>
+          <img src="./img/btn_sound.png" alt="mute, unmute button" />
+        </button>
+        <button>
+          <img src="./img/btn_restart.png" alt="restart button" />
+        </button>
+        <button>
+          <img src="./img/btn_close.png" alt="quit game button" />
+        </button>
+      </div>
+      <button class="fullscreen-btn">
+        <img
+          src="./img/btn_fullscreen.png"
+          alt=" button to open game in full screen mode"
+        />
+      </button>
+    </div>
     <footer>
-        <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
-        <div class="vertical-divider"></div>
-        <a class="outlined" href="./html/privacy-policy.html">Privacy policy</a>
+      <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
+      <div class="vertical-divider"></div>
+      <a class="outlined" href="./html/privacy-policy.html">Privacy policy</a>
     </footer>
-</body>
+  </body>
 </html>
