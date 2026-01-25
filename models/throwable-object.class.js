@@ -57,7 +57,6 @@ class ThrowableObject extends MovableObject {
  //generate enemies and bottles for final fight 
  //make bottle bar be full when 10 bottles are collected (pepe needs 20 to kill the endboss)
  //remove unnecasarry arrays from other status bars
- //fix character - enemy collision bug
  //add sound effects
  //add buttons for mobile gaming
  //finish responsiveness

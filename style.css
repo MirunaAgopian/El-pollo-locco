@@ -99,14 +99,6 @@ button:not(.fullscreen-btn):hover {
     background-color: #f6ba61;
 }
 
-.fullscreen-btn {
-    border: none;
-    background-color: transparent;
-    position: absolute;
-    bottom: 4px;
-    right: 8px;
-    padding: 2px;
-}
 
 footer {
     display: flex;
