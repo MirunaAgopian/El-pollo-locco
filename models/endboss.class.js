@@ -56,7 +56,7 @@ class Endboss extends MovableObject {
         this.x = x;
         this.sectionStart = sectionStart;
         this.sectionEnd = sectionEnd;
-        this.speed = 10;
+        this.speed = 20;
         this.isIdle = true;
         this.isAlert = false;
         this.isActive = false;

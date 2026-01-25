@@ -43,19 +43,12 @@ class MovableObject extends DrawableObject {
 
     applyGravity(){
         setInterval(() => {
+            //added now
+            this.previousY = this.y;
             if (this.isAboveGround() || this.speedY > 0 ) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;  
             }
-            //Florian's Vorschlag
-            //Reset this.y and this.speedY, so that the Character is not falling anymore
-            //but this creates anoter bug, at this.throw()
-            // if (this.y > 180){
-            //     this.y = 180;
-            // }
-            // if (!this.isAboveGround()){
-            //     this.speedY = 0;
-            // }
         }, 1000 / 25);
     }
 
@@ -82,16 +75,18 @@ class MovableObject extends DrawableObject {
         ); 
     }
 
-    isCollidingFromAbove(mo) { 
+    isCollidingFromAbove(mo){
         const a = this.getHitbox(); 
-        const b = mo.getHitbox(); 
-        const horizontallyOverlapping = a.right > b.left && a.left < b.right; 
-        const isFalling = this.speedY < 0; 
-        const prevBottom = this.previousY + this.height - this.offset.bottom; 
-        const wasAboveBefore = prevBottom <= b.top; 
-        const isNowOverlappingVertically = a.bottom > b.top; 
-        return horizontallyOverlapping && isFalling && wasAboveBefore && isNowOverlappingVertically; 
+        const b = mo.getHitbox()
+        const isFalling = this.speedY < 0;
+        const prevBottom = this.previousY + this.height - this.offset.bottom;
+        const wasAboveBefore = prevBottom <= b.top;
+        const isNowOverlappingVertically = a.bottom >= b.top;
+        const horizontallyOverlapping = a.right > b.left && a.left < b.right;
+        return ( isFalling && wasAboveBefore && isNowOverlappingVertically && horizontallyOverlapping );
     }
+
+  
 
     getHitbox(){ 
         return { 

@@ -1,15 +1,15 @@
 const LEVEL_1 = new Level (
     [
-        // new SmallChicken(300, 50, 1000),
-        // new Chicken(500, 50, 1000),
-        // new SmallChicken(800, 50, 1000),
-        // new Chicken(900, 50, 1000),
+        new SmallChicken(300, 50, 1000),
+        new Chicken(500, 50, 1000),
+        new SmallChicken(800, 50, 1000),
+        new Chicken(900, 50, 1000),
 
-        // new SmallChicken(1200, 1150,  2200),
-        // new SmallChicken(1300, 1150,  2200),
-        // new Chicken(1500, 1150, 2200),
-        // new SmallChicken(1800, 1150,  2200),
-        // new Chicken(1950, 1150, 2200), 
+        new SmallChicken(1200, 1150,  2200),
+        new SmallChicken(1300, 1150,  2200),
+        new Chicken(1500, 1150, 2200),
+        new SmallChicken(1800, 1150,  2200),
+        new Chicken(1950, 1150, 2200), 
 
         new Endboss(3280, 2600, 3200)
          

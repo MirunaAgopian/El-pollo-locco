@@ -26,10 +26,11 @@ class World {
     }
 
     draw(){
+        // 1. Clear canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //camera moves for world objects
+        //2. camera moves for world objects
         this.context.translate(this.camera_x, 0);
-        //world is being drawn
+        //3. world is being drawn
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
@@ -39,14 +40,14 @@ class World {
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.bottles);
 
-        //camera reset
+        //4.camera reset
         this.context.translate(-this.camera_x, 0)
-        //draw Heads‑Up Display
+        //5.draw Heads‑Up Display
         this.addToMap(this.bottleBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.statusBar);
         this.addToMap(this.endbossBar);
-        //drawing loop
+        //6.drawing loop
         requestAnimationFrame(() => this.draw());
     }
 
@@ -116,10 +117,10 @@ class World {
                 }, 500);
             } else {
                 //horizontal collision check
-                this.character.hit();
-                this.updateHealthBar();
-                console.log('HORIZONTAL collision with object, energy:', this.character.energy);
-            }                
+                    this.character.hit();
+                    this.updateHealthBar();
+                    console.log('HORIZONTAL collision with object, energy:', this.character.energy);
+             }                
         }
         });
     }
@@ -212,10 +213,9 @@ class World {
 
     handleEnemyStomp(enemy) { 
         enemy.energy = 0; 
-        this.character.speedY = 20; 
+        this.character.speedY = 25; 
         console.log('collision with object from ABOVE'); 
     }
-
     
     removeDeadEnemy(enemy) { 
         const index = this.level.enemies.indexOf(enemy); 
