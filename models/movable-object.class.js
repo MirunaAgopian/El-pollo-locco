@@ -43,7 +43,6 @@ class MovableObject extends DrawableObject {
 
     applyGravity(){
         setInterval(() => {
-            //added now
             this.previousY = this.y;
             if (this.isAboveGround() || this.speedY > 0 ) {
                 this.y -= this.speedY;
@@ -85,8 +84,7 @@ class MovableObject extends DrawableObject {
         const horizontallyOverlapping = a.right > b.left && a.left < b.right;
         return ( isFalling && wasAboveBefore && isNowOverlappingVertically && horizontallyOverlapping );
     }
-
-  
+ 
 
     getHitbox(){ 
         return { 
@@ -114,16 +112,7 @@ class MovableObject extends DrawableObject {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000; 
         return timePassed < 1;
-    } 
-
-    // throw(){
-    //     this.isThtrown = true;
-    //     this.speedY = 30;
-    //     this.applyGravity();
-    //     setInterval(()=>{
-    //         this.x += 10;
-    //     }, 25);
-    // }
+    }
 
     calculateIdleTimer(seconds){
         const threshold = seconds * 1000;

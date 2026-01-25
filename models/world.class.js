@@ -19,6 +19,7 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+        this.setVerticalCollisionInterval();
     }
 
     setWorld(){
@@ -97,7 +98,7 @@ class World {
     }
 
     checkCollisions(){
-        this.checkEnemyCollisions();
+        this.checkEenemyHorizontalCollision();
         this.checkSeparatorCollision();
         this.checkCoinCollisions();
         this.checkBottleCollect();
@@ -105,24 +106,40 @@ class World {
 
     }
 
-    //this one needs refractoring!
-    checkEnemyCollisions(){
-        this.level.enemies.forEach((enemy) => {
-            //vertical collision ckeck
-        if(this.character.isColliding(enemy)) {
-            if(this.character.isCollidingFromAbove(enemy)) {
-                this.handleEnemyStomp(enemy);
-                setTimeout(()=> {
-                    this.removeDeadEnemy(enemy);
-                }, 500);
-            } else {
-                //horizontal collision check
-                    this.character.hit();
-                    this.updateHealthBar();
-                    console.log('HORIZONTAL collision with object, energy:', this.character.energy);
-             }                
-        }
-        });
+    //Refractor:
+    //Works at 5FPS
+    checkEenemyHorizontalCollision(){ 
+        this.level.enemies.forEach(enemy => { 
+            if (enemy.energy <= 0) return; 
+            if (this.character.isColliding(enemy)) { 
+                if (!this.character.isCollidingFromAbove(enemy)) { 
+                    if (!this.character.isHurt()) { 
+                        this.character.hit(); 
+                        this.updateHealthBar(); 
+                        console.log('HORIZONTAL collision, energy:', this.character.energy); 
+                    } 
+                } 
+            } 
+        }); 
+    }
+
+    //Works at 60FPS
+    checkVerticalEnemyCollisions() { 
+        this.level.enemies.forEach(enemy => { 
+            if (enemy.energy <= 0) return; 
+            if (this.character.isColliding(enemy)) { 
+                if (this.character.isCollidingFromAbove(enemy)) { 
+                    this.handleEnemyStomp(enemy); 
+                    setTimeout(() => this.removeDeadEnemy(enemy), 500); 
+                } 
+            } 
+        }); 
+    }
+
+    setVerticalCollisionInterval(){
+        setInterval(() => {
+            this.checkVerticalEnemyCollisions();
+        }, 1000 / 60);
     }
 
     checkSeparatorCollision(){
