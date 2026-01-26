@@ -11,7 +11,7 @@ const LEVEL_1 = new Level (
         new SmallChicken(1800, 1150,  2200),
         new Chicken(1950, 1150, 2200), 
 
-        new Endboss(3280, 2600, 3200)
+        new Endboss(3280, 2500, 3200)
          
     ],
     [
@@ -81,7 +81,7 @@ const LEVEL_1 = new Level (
         new Coin(1520, 180),
 
         new Coin(2000, 160),
-        new Coin(2600, 200)
+        new Coin(2200, 200)
     ],
     [
         new Bottle(600, 370),

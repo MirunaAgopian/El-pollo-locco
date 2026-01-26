@@ -11,6 +11,8 @@ class World {
     endbossBar = new EndbossBar();
     throwableObjects= [];
     separators = [];
+    endFightChickens = [];
+    chickensPerWave = 4;
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -94,6 +96,7 @@ class World {
             this.checkThrowObjects();
             this.checkEndbossTrigger();
             this.updateEndbossBarVisibility();
+            this.checkChickenWaves();
         }, 200);
     }
 
@@ -115,8 +118,7 @@ class World {
                 if (!this.character.isCollidingFromAbove(enemy)) { 
                     if (!this.character.isHurt()) { 
                         this.character.hit(); 
-                        this.updateHealthBar(); 
-                        console.log('HORIZONTAL collision, energy:', this.character.energy); 
+                        this.updateHealthBar();  
                     } 
                 } 
             } 
@@ -130,6 +132,7 @@ class World {
             if (this.character.isColliding(enemy)) { 
                 if (this.character.isCollidingFromAbove(enemy)) { 
                     this.handleEnemyStomp(enemy); 
+                    console.log("Checking enemy:", enemy.constructor.name, enemy.x, enemy.y);
                     setTimeout(() => this.removeDeadEnemy(enemy), 500); 
                 } 
             } 
@@ -231,7 +234,9 @@ class World {
     handleEnemyStomp(enemy) { 
         enemy.energy = 0; 
         this.character.speedY = 25; 
-        console.log('collision with object from ABOVE'); 
+        if(this.isFinalSection() && enemy instanceof SmallChicken){
+            this.spawnBottle(enemy.x, enemy.y);
+        }
     }
     
     removeDeadEnemy(enemy) { 
@@ -270,9 +275,7 @@ class World {
         }
         if(type == 'bottle'){
             this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
-            console.log("BotteBar percentage:", this.bottleBar.percentage);
         }
-
         this.removeCollectibleItem(item);
     }
 
@@ -301,8 +304,9 @@ class World {
     checkEndbossTrigger(){
         const boss = this.level.endboss;
         if(!boss) return;
-        if(this.character.x >= this.level.level_end_x && this.level.endboss.isIdle){
+        if(this.character.x >= 2800 && this.level.endboss.isIdle){
             this.level.endboss.triggerAlert();
+            this.spawnEndFightChicken();
         }
     }
 
@@ -314,5 +318,32 @@ class World {
         } else {
             this.endbossBar.visible = false;
         }
+    }
+
+    spawnEndFightChicken(){
+        for(let index = 0; index < this.chickensPerWave; index++){
+            let chicken = new SmallChicken();
+            chicken.x = 3200 + Math.random() * 400;
+            chicken.y = 365; 
+            chicken.speed -= 0.5;
+            this.endFightChickens.push(chicken);
+            this.level.enemies.push(chicken);   
+        }
+    }
+
+    checkChickenWaves(){
+        const alive = this.endFightChickens.filter(c => c.energy > 0);
+        if(alive.length === 0){
+            this.spawnEndFightChicken();
+        }
+    }
+
+    spawnBottle(x, y){
+        let bottle = new Bottle(x, y);
+        this.level.bottles.push(bottle);
+    }
+
+    isFinalSection(){
+        return this.character.x >= 2200 && this.character.x <= 2800;
     }
 }
