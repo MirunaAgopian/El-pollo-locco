@@ -12,7 +12,7 @@ class World {
     throwableObjects= [];
     separators = [];
     endFightChickens = [];
-    chickensPerWave = 4;
+    chickensPerWave = 3;
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -322,15 +322,16 @@ class World {
 
     spawnEndFightChicken(){
         for(let index = 0; index < this.chickensPerWave; index++){
-            let chicken = new SmallChicken();
-            chicken.x = 3200 + Math.random() * 400;
+            let chicken = new SmallChicken(3200, 2400, 2800);
+            chicken.x = 2 + Math.random() * 400;
             chicken.y = 365; 
-            chicken.speed -= 0.5;
+            chicken.speed -= 0.3;
             this.endFightChickens.push(chicken);
             this.level.enemies.push(chicken);   
         }
     }
 
+    
     checkChickenWaves(){
         const alive = this.endFightChickens.filter(c => c.energy > 0);
         if(alive.length === 0){

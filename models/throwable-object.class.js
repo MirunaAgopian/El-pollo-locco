@@ -54,8 +54,7 @@ class ThrowableObject extends MovableObject {
         }, 25);
     }
 
- //generate enemies and bottles for final fight 
- //make bottle bar be full when 10 bottles are collected (pepe needs 20 to kill the endboss)
+//add min spacing 40px for the final fight!!
  //remove unnecasarry arrays from other status bars
  //add sound effects
  //add buttons for mobile gaming

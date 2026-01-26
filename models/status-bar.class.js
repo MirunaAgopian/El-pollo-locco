@@ -9,20 +9,10 @@ class StatusBar extends DrawableObject {
     'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
    ]; 
    
-   IMAGES_HEALTH_EMPTY = [
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png',
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png',
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/40.png',
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/60.png',
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/80.png',
-    'img/7_statusbars/1_statusbar/2_statusbar_health/orange/100.png'
-
-   ];
 
    constructor(){
     super();
     this.loadImages(this.IMAGES_HEALTH);
-    this.loadImages(this.IMAGES_HEALTH_EMPTY);
     this.setPercentage(100);
     this.x = 0;
     this.y = 80;
@@ -31,10 +21,9 @@ class StatusBar extends DrawableObject {
 
 }
 
-   //setPercentage(50);
    setPercentage(percentage){
     this.percentage = percentage;
-    let images = this.percentage > 0 ? this.IMAGES_HEALTH : this.IMAGES_HEALTH_EMPTY;
+    let images = this.IMAGES_HEALTH;
     let path = images[this.resolveImageIndex()];
     this.img = this.imageCache[path];
    }
