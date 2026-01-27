@@ -55,7 +55,6 @@ class ThrowableObject extends MovableObject {
     }
 
 //add min spacing 40px for the final fight!!
- //remove unnecasarry arrays from other status bars
  //add sound effects
  //add buttons for mobile gaming
  //finish responsiveness
