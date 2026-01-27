@@ -5,7 +5,7 @@ let keyboard = new Keyboard();
 function init(){
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    
+    initMobileControls();
 }
 
 document.addEventListener('keydown', (event) => {
@@ -48,5 +48,29 @@ document.addEventListener('keyup', (event) => {
         keyboard.THROW = false;
     }
 });
+
+function setUpTouchButtons(id, key) {
+    const btn = document.getElementById(id);
+
+    btn.addEventListener('touchstart', e => {
+        e.preventDefault();
+        keyboard[key] = true;
+        navigator.vibrate?.(30);
+    });
+    btn.addEventListener('touchend', e => {
+        e.preventDefault();
+        keyboard[key] = false;
+    });
+}
+
+function initMobileControls(){
+    setUpTouchButtons('btn_right', 'RIGHT');
+    setUpTouchButtons('btn_left', 'LEFT');
+    setUpTouchButtons('btn_jump', 'SPACE');
+    setUpTouchButtons('btn_throw', 'THROW');
+}
+
+
+
 
 

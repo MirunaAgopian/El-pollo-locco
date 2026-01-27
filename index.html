@@ -38,7 +38,7 @@
     <h1 class="outlined">El pollo loco</h1>
     <section class="game-content-wrapper">
       <canvas id="canvas" width="720" height="480"></canvas>
-      <div class="upper-btn-container">
+      <section class="upper-btn-container">
         <button>
           <img src="./img/btn_sound.png" alt="mute, unmute button" />
         </button>
@@ -48,16 +48,16 @@
         <button>
           <img src="./img/btn_close.png" alt="quit game button" />
         </button>
-      </div>
-      <div class="mobile-control-buttons">
+      </section>
+      <section class="mobile-control-buttons">
         <div class="left-btns">
-          <button>
+          <button id="btn_throw">
             <img
               src="./img/arrow_throw.png"
               alt="curved arrow pointing to the right, throw"
             />
           </button>
-          <button>
+          <button id="btn_jump">
             <img
               src="./img/arrow_upward.png"
               alt="arrow pointing to the top, jump"
@@ -65,20 +65,20 @@
           </button>
         </div>
         <div class="right-btns">
-          <button>
+          <button id="btn_left">
             <img
               src="./img/arrow_back.png"
               alt="arrow pointing to the left, go left"
             />
           </button>
-          <button>
+          <button id="btn_right">
             <img
               src="./img/arrow_forward.png"
               alt="arrow pointing to the right, go right"
             />
           </button>
         </div>
-      </div>
+      </section>
     </section>
     <footer>
       <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
