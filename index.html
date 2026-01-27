@@ -36,7 +36,7 @@
   </head>
   <body onload="init()">
     <h1 class="outlined">El pollo loco</h1>
-    <div class="game-content-wrapper">
+    <section class="game-content-wrapper">
       <canvas id="canvas" width="720" height="480"></canvas>
       <div class="upper-btn-container">
         <button>
@@ -49,7 +49,37 @@
           <img src="./img/btn_close.png" alt="quit game button" />
         </button>
       </div>
-    </div>
+      <div class="mobile-control-buttons">
+        <div class="left-btns">
+          <button>
+            <img
+              src="./img/arrow_throw.png"
+              alt="curved arrow pointing to the right, throw"
+            />
+          </button>
+          <button>
+            <img
+              src="./img/arrow_upward.png"
+              alt="arrow pointing to the top, jump"
+            />
+          </button>
+        </div>
+        <div class="right-btns">
+          <button>
+            <img
+              src="./img/arrow_back.png"
+              alt="arrow pointing to the left, go left"
+            />
+          </button>
+          <button>
+            <img
+              src="./img/arrow_forward.png"
+              alt="arrow pointing to the right, go right"
+            />
+          </button>
+        </div>
+      </div>
+    </section>
     <footer>
       <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
       <div class="vertical-divider"></div>
@@ -58,7 +88,11 @@
     <div id="orientation_warning" class="warning-container">
       <span>Enjoy the game in landscape mode only!</span>
       <span>Please rotate your device!</span>
-      <img class="salsa-bottle" src="./img/6_salsa_bottle/salsa_bottle.png" alt="a salsa bottle">
+      <img
+        class="salsa-bottle"
+        src="./img/6_salsa_bottle/salsa_bottle.png"
+        alt="a salsa bottle"
+      />
     </div>
   </body>
 </html>

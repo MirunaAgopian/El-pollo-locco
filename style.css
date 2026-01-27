@@ -1,3 +1,5 @@
+/* General styling rules */
+
 body {
     margin: 0 auto;
     height: 100vh;
@@ -49,6 +51,8 @@ a:hover {
     transition: 125ms ease-in-out;
 }
 
+/* Canvas styling */
+
 .game-content-wrapper {
     position: relative;
     width: fit-content;
@@ -99,6 +103,30 @@ button:not(.fullscreen-btn):hover {
     background-color: #f6ba61;
 }
 
+.mobile-control-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    bottom: 4px;
+}
+
+.mobile-control-buttons button {
+    background-color: #46b2d2;
+    border: 1px solid white;
+    padding: 6px;
+    border-radius: 30%;
+}
+
+.right-btns, 
+.left-btns {
+    display: flex;
+    justify-content: space-around;
+    width: 20%;
+}
+
+/* Footer styling */
 
 footer {
     display: flex;
