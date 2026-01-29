@@ -89,6 +89,7 @@ class Character extends MovableObject {
     this.physicsLoop();
     this.animate();
     this.applyGravity();
+    // this.playWalkSound();
   }
  
   //movement loop - physics
@@ -97,15 +98,20 @@ class Character extends MovableObject {
       if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
-        //this.walking_sound.play(); - following
+        if(!this.isAboveGround()){
+          this.playWalkSound();
+        }
       }
       if(this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
-         this.otherDirection = true;
-        //this.walking_sound.play(); - following
+        this.otherDirection = true;
+        if(!this.isAboveGround()){
+          this.playWalkSound();
+        }
       }     
       if(this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+         this.playJumpSound();
       }  
       this.world.camera_x = -this.x + 80;
     }, 1000 / 60);
@@ -134,6 +140,7 @@ class Character extends MovableObject {
           this.wasIdleLastFrame = false;
         }
         this.playAnimation(this.IMAGES_HURT);
+        // audio.effects.characterHurt.play(); - muted for now
         this.longIdleTimer.reset();
         return true;
       }
@@ -194,8 +201,13 @@ class Character extends MovableObject {
       this.isInIdleState = true;
       this.longIdleTimer.start();
       if(this.world.keyboard.THROW) {
+        if(this.isInIdleState) {
+          this.resetIdleState();
+          this.isInIdleState = false;
+          this.wasIdleLastFrame = false;
+        }
         this.smoothIdleAnimation();
-        this.longIdleTimer.reset();
+        this.longIdleTimer.reset(); 
       } else if (this.longIdleTimer.hasReached()) {
         this.smoothLongIdleAnimation();
       } else {
@@ -209,6 +221,7 @@ class Character extends MovableObject {
       this.idleIndex = 0;
       this.longIdleDelay = 0;
       this.longIdleIndex = 0;
+      this.stopSnoreSound();
     }
 
     smoothJumpAnimation() {
@@ -261,6 +274,7 @@ class Character extends MovableObject {
         } else {
           this.longIdleIndex = 0;
         }
+        this.playSnoreSound();
       }
 
       manageBottleCount(delta){
@@ -273,6 +287,35 @@ class Character extends MovableObject {
         }
         this.bottleCount = newCount;
         this.world.bottleBar.setPercentage((this.bottleCount / this.maxBottle) * 100);
+      }
+
+      playWalkSound(){
+        const walk = audio.effects.characterWalk;
+        if(walk.paused){
+          walk.currentTime = 0;
+          walk.play();
+        }
+      }
+
+      playJumpSound(){
+        const jump = audio.effects.characterJump;
+        jump.pause();
+        jump.currentTime = 0;
+        jump.play();
+      }
+
+      playSnoreSound(){
+        const snore = audio.effects.characterSnore;
+        if(snore.paused){
+          snore.currentTime = 0;
+          snore.play();
+        }
+      }
+
+      stopSnoreSound(){
+        const snore = audio.effects.characterSnore;
+        snore.pause();
+        snore.currentTime = 0;
       }
 
 }

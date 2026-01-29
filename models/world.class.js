@@ -298,6 +298,7 @@ class World {
                 this.character.otherDirection
             );
             this.throwableObjects.push(bottle);
+            audio.effects.bottleThrow.play();
         }
     }
 

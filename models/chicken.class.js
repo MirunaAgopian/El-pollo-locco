@@ -21,12 +21,15 @@ class Chicken extends MovableObject {
         this.sectionEnd = sectionEnd;
         this.speed = -(0.15 + Math.random() * 0.25);
         this.otherDirection = false;
+        this.walkSound = new Audio('audio/chicken_walk.mp3');
+        this.deadSound = new Audio('audio/chicken_dead.mp3');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD); 
         this.animate();
     }
 
     animate(){
+        // this.playChickenWalkSound(); - maybe I do not need it
         setInterval( () => {
             //Left boundary
             if(this.x <= this.sectionStart) {
@@ -41,6 +44,7 @@ class Chicken extends MovableObject {
             }
             if(this.isDead()) {
                 this.speed = 0;
+                // this.playChickenDeadSound(); - I need further refractoring
              }
             this.x += this.speed;
         }, 1000 / 60);
@@ -55,6 +59,18 @@ class Chicken extends MovableObject {
             }
         }, 100);
     }
+
+    // playChickenWalkSound(){
+    //     this.walkSound.pause();
+    //     this.walkSound.currentTime = 0;
+    //     this.walkSound.play();
+    // }
+
+    // playChickenDeadSound(){
+    //     this.deadSound.pause();
+    //     this.deadSound.currentTime = 0;
+    //     this.deadSound.play();
+    // }
 } 
 
 
