@@ -1,4 +1,7 @@
 /* General styling rules */
+*{
+    box-sizing: border-box;
+}
 
 body {
     margin: 0 auto;
@@ -8,7 +11,7 @@ body {
     justify-content: center;
     gap: 80px;
     align-items: center;
-    padding: 0 40px;
+    /* padding: 0 40px; */
     background-image: url('./img/5_background/background_img_main.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -115,8 +118,9 @@ button:not(.fullscreen-btn):hover {
 .mobile-control-buttons button {
     background-color: transparent;
     border: 2px solid white;
-    padding: 4px 10px;
-    border-radius: 30%;
+    padding: 4px 16px;
+    border-radius: 20%;
+    background-color: rgba(220, 220, 220, 0.7);
 }
 
 .right-btns, 
@@ -148,6 +152,7 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 16px;
     position: fixed;
     background-color: #fbc862;
     top: 0;
@@ -155,6 +160,13 @@ footer {
     height: 100vh;
     width: 100%;
     z-index: 10;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+.warning-container span {
+    word-break: break-word;
+    text-align: center;
 }
 
 .salsa-bottle {
