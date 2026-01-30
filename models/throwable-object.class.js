@@ -54,7 +54,10 @@ class ThrowableObject extends MovableObject {
         }, 25);
     }
 
-//add min spacing 40px for the final fight!!
+//add min spacing 40px for the final fight!! + create endmoss dead animation & sound effects
  //add sound effects
  //finish responsiveness
+ //add start overlay and start button + finish overlay and restart/quit button
+ //add background music and alert background music for final fight
+ //enmute pepe hurt sound
 }

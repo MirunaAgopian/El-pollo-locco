@@ -140,7 +140,8 @@ class Character extends MovableObject {
           this.wasIdleLastFrame = false;
         }
         this.playAnimation(this.IMAGES_HURT);
-        // audio.effects.characterHurt.play(); - muted for now
+        // audio.effects.characterHurt.play();
+        // audio.effects.characterHurt.volume = 0.1;
         this.longIdleTimer.reset();
         return true;
       }
@@ -294,6 +295,7 @@ class Character extends MovableObject {
         if(walk.paused){
           walk.currentTime = 0;
           walk.play();
+          walk.volume = 0.3;
         }
       }
 

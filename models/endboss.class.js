@@ -84,6 +84,8 @@ class Endboss extends MovableObject {
                     this.isHurt = false;
                     this.startAttack();
                 }
+                audio.effects.endbossHurt.play();
+                audio.effects.endbossHurt.volume = 1;
                 return;
             }
             if(this.isAttacking) {
@@ -98,6 +100,8 @@ class Endboss extends MovableObject {
                     this.isActive = true;
                     this.currentImg = 0;
                 }
+                audio.effects.endbossAlert.play();
+                audio.effects.endbossAlert.volume = 1;
                 return;
             }
             if(this.isActive) {

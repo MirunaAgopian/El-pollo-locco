@@ -132,7 +132,6 @@ class World {
             if (this.character.isColliding(enemy)) { 
                 if (this.character.isCollidingFromAbove(enemy)) { 
                     this.handleEnemyStomp(enemy); 
-                    console.log("Checking enemy:", enemy.constructor.name, enemy.x, enemy.y);
                     setTimeout(() => this.removeDeadEnemy(enemy), 500); 
                 } 
             } 
@@ -180,11 +179,13 @@ class World {
                     bottle.isColliding(enemy)){
                     this.handleBottleHitEndboss(bottle, enemy);
                     this.updateEndbossHealthBar();
+                    this.playSoundEffect(audio.effects.bottleHit, 0.2);
                 }
 
-                if((enemy instanceof Chicken || enemy instanceof SmallChicken) 
+                if((enemy instanceof Chicken || enemy instanceof SmallChicken) && !bottle.hasHit
                     && bottle.isColliding(enemy)) {
                     this.handleBottleHitRegularEnemy(bottle, enemy);
+                    this.playSoundEffect(audio.effects.bottleHit, 0.2);
                 }
             });
         });
@@ -208,6 +209,8 @@ class World {
     }
 
     handleBottleHitRegularEnemy(bottle, enemy){
+        bottle.hasHit = true;
+        bottle.markForRemoval = true;
         enemy.energy = 0;
         this.isSplashing = true;
         bottle.speedY = 0;
@@ -272,9 +275,11 @@ class World {
         const type = item.type;
         if(type === 'coin'){
             this.coinBar.setPercentage(this.coinBar.percentage + 20);
+            this.playSoundEffect(audio.effects.collectCoin, 0.3);
         }
         if(type == 'bottle'){
             this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
+            this.playSoundEffect(audio.effects.collectBottle, 0.2);
         }
         this.removeCollectibleItem(item);
     }
@@ -347,5 +352,11 @@ class World {
 
     isFinalSection(){
         return this.character.x >= 2200 && this.character.x <= 2800;
+    }
+
+    playSoundEffect(sound, volume = 1) { 
+        const s = sound.cloneNode();
+        s.volume = volume;
+        s.play(); 
     }
 }

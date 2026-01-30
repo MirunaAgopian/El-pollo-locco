@@ -21,6 +21,7 @@ class SmallChicken extends MovableObject {
         this.sectionEnd = sectionEnd;
         this.speed = -(0.25 + Math.random() * 0.25);
         this.otherDirection = false;
+        this.deadSound = new Audio('audio/chicken_dead2.mp3');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD); 
         this.animate();
@@ -48,10 +49,19 @@ class SmallChicken extends MovableObject {
         setInterval(() => {
             if(this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                this.playChickenDeadSound();
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100);
+    }
+
+    playChickenDeadSound(){
+        if(this.deadSoundPlayed) return;
+        this.deadSoundPlayed = true;
+        this.deadSound.currentTime = 0;
+        this.deadSound.play();
+        this.deadSound.volume = 0.1;
     }
     
 }   
