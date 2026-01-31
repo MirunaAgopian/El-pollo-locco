@@ -1,0 +1,55 @@
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor backups
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# Build outputs
+/build/
+/dist/
+/bin/
+/obj/
+/out/
+
+# Logs
+*.log
+
+# Cache files
+.cache/
+*.cache
+*.temp
+
+# Compiled assets
+*.png.import
+*.ogg.import
+*.wav.import
+*.mp3.import
+*.shadercache
+*.compiled
+*.pdb
+*.dll
+*.so
+*.dylib
+
+# User-specific settings
+*.user
+*.userprefs
+*.suo
+*.vs/
+.vscode/
+
+# Environment / local config
+.env
+.env.local
+
+# Generated metadata
+*.meta
+*.manifest
+
+# Temporary engine files
+*.tmp
+*.lock
