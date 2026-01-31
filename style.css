@@ -177,17 +177,41 @@ button:not(.fullscreen-btn):hover {
     font-size: 20px;
 }
 
-.game-story { 
+.info-pannel { 
     border: 2px solid brown; 
     border-radius: 20px; 
     background-color: #c76758; 
-    padding: 20px; 
+    padding: 20px;
+    width: clamp(280px, 60vw, 600px); 
 }
+
 .game-story p, 
 .game-story h3 { 
     color: white; 
     text-align: center; 
     line-height: 2.5; 
+}
+
+.game-controls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+}
+
+.game-controls-container h3 {
+    color: white;
+}
+
+.game-controls-img {
+    width: clamp(200px, 50vw, 600px);
+    height: clamp(150px, 40vh, 400px);
+    flex-shrink: 1;
+    flex-grow: 1;
+    object-fit: contain;
 }
 
 
