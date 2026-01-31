@@ -12,9 +12,11 @@ main {
 main h1 {
     color: white;
     text-align: center;
+    font-size: clamp(1.8rem, 4vw + 1rem, 3rem);
 }
 main h2 {
     color: white;
+    font-size: clamp(1.8rem, 4vw + 1rem, 3rem);
 }
 main a {
     color: blue;

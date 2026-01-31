@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="./img/favicon.png" />
     <!-- JS FILES -->
-     <script src="./js/audio.js" defer></script>
+    <script src="./js/audio.js" defer></script>
     <!-- Base classes -->
     <script src="./models/drawable-object.class.js" defer></script>
     <script src="./models/movable-object.class.js" defer></script>
@@ -36,57 +36,85 @@
     <script src="./script.js" defer></script>
   </head>
   <body onload="init()">
-    <h1 class="outlined">El pollo loco</h1>
-    <section class="game-content-wrapper">
-      <canvas id="canvas" width="720" height="480"></canvas>
-      <section class="upper-btn-container">
-        <button>
-          <img src="./img/btn_sound.png" alt="mute, unmute button" />
-        </button>
-        <button>
-          <img src="./img/btn_restart.png" alt="restart button" />
-        </button>
-        <button>
-          <img src="./img/btn_close.png" alt="quit game button" />
-        </button>
+    <main class="main-game-wrapper">
+      <h1 class="outlined">El pollo loco</h1>
+      <section class="game-content-wrapper">
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <section class="upper-btn-container">
+          <button>
+            <img src="./img/btn_sound.png" alt="mute, unmute button" />
+          </button>
+          <button>
+            <img src="./img/btn_restart.png" alt="restart button" />
+          </button>
+          <button>
+            <img src="./img/btn_close.png" alt="quit game button" />
+          </button>
+        </section>
+        <section class="mobile-control-buttons">
+          <div class="left-btns">
+            <button id="btn_throw">
+              <img
+                src="./img/arrow_throw.png"
+                alt="curved arrow pointing to the right, throw"
+              />
+            </button>
+            <button id="btn_jump">
+              <img
+                src="./img/arrow_upward.png"
+                alt="arrow pointing to the top, jump"
+              />
+            </button>
+          </div>
+          <div class="right-btns">
+            <button id="btn_left">
+              <img
+                src="./img/arrow_back.png"
+                alt="arrow pointing to the left, go left"
+              />
+            </button>
+            <button id="btn_right">
+              <img
+                src="./img/arrow_forward.png"
+                alt="arrow pointing to the right, go right"
+              />
+            </button>
+          </div>
+        </section>
       </section>
-      <section class="mobile-control-buttons">
-        <div class="left-btns">
-          <button id="btn_throw">
-            <img
-              src="./img/arrow_throw.png"
-              alt="curved arrow pointing to the right, throw"
-            />
-          </button>
-          <button id="btn_jump">
-            <img
-              src="./img/arrow_upward.png"
-              alt="arrow pointing to the top, jump"
-            />
-          </button>
+    </main>
+    <!-- Start game overlay -->
+     <section class="start-screen">
+      <div class="start-screen-img"></div>
+      <div class="start-screen-content">
+        <h2 class="outlined">El pollo loco</h2>
+        <div class="start-screen-btns">
+          <button>Game controls</button>
+          <button>Start game</button>
         </div>
-        <div class="right-btns">
-          <button id="btn_left">
-            <img
-              src="./img/arrow_back.png"
-              alt="arrow pointing to the left, go left"
-            />
-          </button>
-          <button id="btn_right">
-            <img
-              src="./img/arrow_forward.png"
-              alt="arrow pointing to the right, go right"
-            />
-          </button>
+        <div class="game-story">
+          <h3 class="outlined">Game story</h3>
+          <p class="outlined">
+            Assist Pepe, the main character in his journey, navigating though
+            the Mexican desert. <br />
+            Beware of the chickens and chicks, jump on them boefore they catch
+            you. <br />
+            Gather coins, collect salsa bottles and prepare for the final fight
+            with the endboss. He does not like salsa!
+          </p>
         </div>
-      </section>
+        <footer>
+          <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
+          <div class="vertical-divider"></div>
+          <a class="outlined" href="./html/privacy-policy.html"
+            >Privacy policy</a
+          >
+        </footer>
+      </div>
     </section>
-    <footer>
-      <a class="outlined" href="./html/legal-notice.html">Legal notice</a>
-      <div class="vertical-divider"></div>
-      <a class="outlined" href="./html/privacy-policy.html">Privacy policy</a>
-    </footer>
-    <div id="orientation_warning" class="warning-container">
+
+    <!-- Orientation warning overlay -->
+    <section id="orientation_warning" class="warning-container">
       <span>Enjoy the game in landscape mode only!</span>
       <span>Please rotate your device!</span>
       <img
@@ -94,6 +122,6 @@
         src="./img/6_salsa_bottle/salsa_bottle.png"
         alt="a salsa bottle"
       />
-    </div>
+    </section>
   </body>
 </html>

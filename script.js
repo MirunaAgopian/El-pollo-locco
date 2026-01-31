@@ -19,6 +19,6 @@ function showOrientationWarning(isPortrait) {
     if(isPortrait){
         container.style.display = 'flex';
     } else {
-        container.style.display = 'none';
+        container.style.display = 'none';    
     }
 }
