@@ -30,9 +30,27 @@ function toggleInfoPannel(){
     gameControls.classList.toggle('d-none');
 }
 
-function toggleStartScreen(){
+function showStartScreen(){
     const overlay = document.getElementById('start_screen');
     const game = document.getElementById('game_wrapper');
-    overlay.classList.toggle('d-none');
-    game.classList.toggle('d-none');
+    overlay.classList.remove('d-none');
+    game.classList.add('d-none');
+}
+
+function startGameFlow(){
+    const overlay = document.getElementById('start_screen');
+    const game = document.getElementById('game_wrapper');
+    overlay.classList.add('d-none');
+    game.classList.remove('d-none');
+    initLevel();
+    startGame();
+    controlBackgroundMusic(true);
+}
+
+function stopGameFlow(){
+    if(world){
+        world.stopGame();
+    }
+    controlBackgroundMusic(false);
+    showStartScreen();
 }

@@ -51,7 +51,11 @@ class World {
         this.addToMap(this.statusBar);
         this.addToMap(this.endbossBar);
         //6.drawing loop
-        requestAnimationFrame(() => this.draw());
+        this.animationFrameId =  requestAnimationFrame(() => this.draw());
+    }
+
+    stopGame(){
+        cancelAnimationFrame(this.animationFrameId);
     }
 
     addObjectsToMap(objects){

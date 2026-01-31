@@ -36,7 +36,7 @@
     <script src="./script.js" defer></script>
   </head>
   <body onload="init()">
-    <main id="game_wrapper" class="main-game-wrapper d-none">
+    <main id="game_wrapper" class="main-game-wrapper">
       <h1 class="outlined">El pollo loco</h1>
       <section class="game-content-wrapper">
         <canvas id="canvas" width="720" height="480"></canvas>
@@ -47,7 +47,7 @@
           <button>
             <img src="./img/btn_restart.png" alt="restart button" />
           </button>
-          <button onclick="toggleStartScreen()">
+          <button onclick="stopGameFlow()">
             <img src="./img/btn_close.png" alt="quit game button" />
           </button>
         </section>
@@ -84,7 +84,7 @@
       </section>
     </main>
     <!-- Start game overlay -->
-    <section id="start_screen" class="start-screen">
+    <section id="start_screen" class="start-screen d-none">
       <div class="start-screen-img"></div>
       <div class="start-screen-content">
         <h2 class="outlined">El pollo loco</h2>
@@ -92,7 +92,7 @@
           <button onclick="toggleInfoPannel()" id="btn_game_controls">
             Game controls
           </button>
-          <button onclick="toggleStartScreen()">Start game</button>
+          <button onclick="startGameFlow()" >Start game</button>
         </div>
         <div class="info-pannel">
           <div id="game_story_container" class="game-story">
@@ -127,7 +127,6 @@
         </footer>
       </div>
     </section>
-
     <!-- Orientation warning overlay -->
     <section id="orientation_warning" class="warning-container">
       <span>Enjoy the game in landscape mode only!</span>

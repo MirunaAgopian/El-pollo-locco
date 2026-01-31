@@ -1,4 +1,7 @@
-const LEVEL_1 = new Level (
+let LEVEL_1;
+
+function initLevel() {
+    LEVEL_1 =  new Level (
     [
         new SmallChicken(300, 50, 1000),
         new Chicken(500, 50, 1000),
@@ -93,3 +96,5 @@ const LEVEL_1 = new Level (
         new Bottle(2800, 370),
     ]
 );
+}
+

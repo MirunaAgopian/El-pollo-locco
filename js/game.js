@@ -4,8 +4,39 @@ let keyboard = new Keyboard();
 
 function init(){
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
     initMobileControls();
+    showStartScreen();
+}
+
+function startGame(){
+    world = new World(canvas, keyboard);
+}
+
+function controlBackgroundMusic(isOn){
+    if(isOn){
+        audio.music.backgroundMusic.play();
+        audio.music.backgroundMusic.volume = 0.1;
+        audio.music.backgroundMusic.currentTime = 0;
+        audio.music.backgroundMusic.loop = true;
+    } else {
+        audio.music.backgroundMusic.pause();
+    }
+}
+
+function muteMusicAndSound(isOn){
+    let musicElement = audio.music.backgroundMusic;
+    
+    if(isOn){
+        musicElement.muted = false;
+        Object.values(audio.effects).forEach(element => {
+        element.muted = false;
+    });
+    } else {
+        musicElement.muted = true;
+        Object.values(audio.effects).forEach(element => {
+        element.muted = true;
+    });
+    }
 }
 
 document.addEventListener('keydown', (event) => {
