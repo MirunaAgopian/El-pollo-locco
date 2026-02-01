@@ -150,9 +150,12 @@ class World {
 
     checkSeparatorCollision(){
         this.level.separators.forEach((separator) => {
-            if(this.character.isCollidingFromAbove(separator) || this.character.isColliding(separator)) {
-                this.character.hit();
-                this.updateHealthBar();
+            if(this.character.isCollidingFromAbove(separator) || 
+                this.character.isColliding(separator)) {
+                    if(!this.character.isHurt()) {
+                        this.character.hit();
+                        this.updateHealthBar();
+                    }
             }
         });
     }
@@ -183,13 +186,13 @@ class World {
                     bottle.isColliding(enemy)){
                     this.handleBottleHitEndboss(bottle, enemy);
                     this.updateEndbossHealthBar();
-                    audioManager.playOneShot(audioManager.bottleCollisionSound);
+                    audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
                 }
 
                 if((enemy instanceof Chicken || enemy instanceof SmallChicken) && !bottle.hasHit
                     && bottle.isColliding(enemy)) {
                     this.handleBottleHitRegularEnemy(bottle, enemy);
-                    audioManager.playOneShot(audioManager.bottleCollisionSound);
+                    audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
                 }
             });
         });
@@ -279,11 +282,11 @@ class World {
         const type = item.type;
         if(type === 'coin'){
             this.coinBar.setPercentage(this.coinBar.percentage + 20);
-            audioManager.playOneShot(audioManager.collectCoinSound);
+            audioManager.playOneShot(audioManager.collectCoinSound, 0.2);
         }
         if(type == 'bottle'){
             this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
-            audioManager.playOneShot(audioManager.collectBottleSound);
+            audioManager.playOneShot(audioManager.collectBottleSound, 0.2);
         }
         this.removeCollectibleItem(item);
     }
@@ -307,7 +310,7 @@ class World {
                 this.character.otherDirection
             );
             this.throwableObjects.push(bottle);
-            audioManager.playOneShot(audioManager.throwBottleSound);
+            audioManager.playOneShot(audioManager.throwBottleSound, 0.3);
         }
     }
 

@@ -101,7 +101,9 @@ class MovableObject extends DrawableObject {
             this.energy = 0;
         } else {
             this.lastHit = new Date().getTime();
-            audioManager.playCharacterHurt();
+            if(this instanceof Character){
+                audioManager.playCharacterHurt();
+            }
         }
     }
 
@@ -111,7 +113,7 @@ class MovableObject extends DrawableObject {
 
     isHurt(){
         let timePassed = new Date().getTime() - this.lastHit;
-        timePassed = timePassed / 1000; 
+        timePassed = timePassed / 1000;
         return timePassed < 1;
     }
 
