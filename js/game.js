@@ -1,7 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let soundIsOn = true;
+let audioManager = new AudioManager();
 
 function init(){
     canvas = document.getElementById('canvas');
@@ -11,45 +11,6 @@ function init(){
 
 function startGame(){
     world = new World(canvas, keyboard);
-}
-
-function controlBackgroundMusic(isOn){
-    if(isOn){
-        audio.music.backgroundMusic.play();
-        audio.music.backgroundMusic.volume = 0.1;
-        audio.music.backgroundMusic.currentTime = 0;
-        audio.music.backgroundMusic.loop = true;
-    } else {
-        audio.music.backgroundMusic.pause();
-    }
-}
-//Sound effects manager
-
-//this function controls sound effects fired by keyboard and collision
-//like in world.js (collectibles, jump, throw)
-function playSoundEffect(sound, volume = 1) { 
-    if(!soundIsOn) return;
-    const s = sound.cloneNode();
-    s.volume = volume;
-    s.play(); 
-}
-
-
-function stopLoopingSound(sound) { 
-    sound.pause(); 
-    sound.currentTime = 0; 
-}
-
-function muteMusicAndSound(isOn){
-    soundIsOn = isOn;
-    audio.music.backgroundMusic.muted = !isOn;
-    Object.values(audio.effects).forEach(effect => {
-        effect.muted = !isOn;
-    })
-}
-
-function toggleSound(){
-    muteMusicAndSound(!soundIsOn);
 }
 
 //Keyboard manager
@@ -72,6 +33,9 @@ document.addEventListener('keydown', (event) => {
         event.preventDefault();
     } 
     if(event.code === "Space") {
+        if(!keyboard.SPACE) {
+            keyboard.SPACE_PRESSED = true;
+        }
         keyboard.SPACE = true;
         event.preventDefault();
     }

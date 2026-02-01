@@ -44,13 +44,13 @@ function startGameFlow(){
     game.classList.remove('d-none');
     initLevel();
     startGame();
-    controlBackgroundMusic(true);
+    audioManager.toggleBackgroundMusic(true);
 }
 
 function stopGameFlow(){
     if(world){
         world.stopGame();
     }
-    controlBackgroundMusic(false);
+    audioManager.resetAllAudio();
     showStartScreen();
 }

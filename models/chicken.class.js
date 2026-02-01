@@ -21,7 +21,7 @@ class Chicken extends MovableObject {
         this.sectionEnd = sectionEnd;
         this.speed = -(0.15 + Math.random() * 0.25);
         this.otherDirection = false;
-        this.deadSound = new Audio('audio/chicken_dead.mp3');
+        this.deadSoundPlayed = false;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD); 
         this.animate();
@@ -40,9 +40,9 @@ class Chicken extends MovableObject {
                 this.speed = -Math.abs(this.speed);
                 this.otherDirection = false;
             }
-            if(this.isDead()) {
+            if(this.isDead() && !this.deadSoundPlayed) {
                 this.speed = 0;
-                this.playChickenDeadSound(); 
+                audioManager.playOneTimeForObject(this, audioManager.bigChickenDeadSound, 'deadSoundPlayed', 0.3);
              }
             this.x += this.speed;
         }, 1000 / 60);
@@ -56,14 +56,6 @@ class Chicken extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100);
-    }
-
-    playChickenDeadSound(){
-        if(this.deadSoundPlayed || !soundIsOn) return;
-        this.deadSoundPlayed = true;
-        this.deadSound.currentTime = 0;
-        this.deadSound.play();
-        this.deadSound.volume = 0.1;
     }
 } 
 

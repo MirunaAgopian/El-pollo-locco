@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="./img/favicon.png" />
     <!-- JS FILES -->
-    <script src="./js/audio.js" defer></script>
+    <script src="./models/audio-manager.class.js" defer></script>
     <!-- Base classes -->
     <script src="./models/drawable-object.class.js" defer></script>
     <script src="./models/movable-object.class.js" defer></script>
@@ -41,7 +41,7 @@
       <section class="game-content-wrapper">
         <canvas id="canvas" width="720" height="480"></canvas>
         <section class="upper-btn-container">
-          <button onclick="toggleSound()">
+          <button onclick="audioManager.toggleSound()">
             <img src="./img/btn_sound.png" alt="mute, unmute button" />
           </button>
           <button>
