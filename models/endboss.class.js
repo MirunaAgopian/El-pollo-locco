@@ -63,6 +63,9 @@ class Endboss extends MovableObject {
         this.isAttacking = false;
         this.isHurt = false;
         this.dead = false;
+        this.alertSound = new Audio('audio/endboss_alert2.mp3');
+        this.hurtSound = new Audio('audio/endboss_hurt.mp3');
+        this.deadSound = new Audio('audio/endboss_dead.mp3');
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
@@ -76,6 +79,7 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if(this.dead){
                 this.playAnimationOnce(this.IMAGES_DEAD);
+                //this.playEndbossDeadSound();
                 return;
             }
             if(this.isHurt){
@@ -84,8 +88,7 @@ class Endboss extends MovableObject {
                     this.isHurt = false;
                     this.startAttack();
                 }
-                audio.effects.endbossHurt.play();
-                audio.effects.endbossHurt.volume = 1;
+                // this.playEndbossHurtSound(); - needs replacement
                 return;
             }
             if(this.isAttacking) {
@@ -100,8 +103,7 @@ class Endboss extends MovableObject {
                     this.isActive = true;
                     this.currentImg = 0;
                 }
-                audio.effects.endbossAlert.play();
-                audio.effects.endbossAlert.volume = 1;
+                this.playEndbossAlertSound();
                 return;
             }
             if(this.isActive) {
@@ -155,5 +157,31 @@ class Endboss extends MovableObject {
         this.isAttacking = true;
         this.isActive = true;
         this.currentImg = 0;
+    }
+
+    playEndbossAlertSound(){
+        if(this.alertSoundPlayed || !soundIsOn) return;
+        this.alertSoundPlayed = true;
+        this.alertSound.currentTime = 0;
+        this.alertSound.volume = 1;
+        this.alertSound.play();
+    }
+
+    //this one does not loop - needs refractoring
+    // playEndbossHurtSound(){
+    //     if(!soundIsOn) return;
+    //     this.hurtSound.pause();
+    //     this.hurtSound.currentTime = 0;
+    //     this.hurtSound.volume = 1;
+    //     this.hurtSound.play();
+    // }
+
+    //to be used later
+    playEndbossDeadSound(){
+        if(this.deadSoundPlayed || !soundIsOn) return;
+        this.deadSoundPlayed = true;
+        this.deadSound.currentTime = 0;
+        this.deadSound.volume = 1;
+        this.deadSound.play();
     }
 }

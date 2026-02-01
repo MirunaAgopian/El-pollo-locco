@@ -113,6 +113,7 @@ button:not(.fullscreen-btn):hover {
 
 .btn-active {
     background-color: #f6ba61;
+    border: 1px solid #a0220a;
 }
 
 .mobile-control-buttons {

@@ -183,13 +183,13 @@ class World {
                     bottle.isColliding(enemy)){
                     this.handleBottleHitEndboss(bottle, enemy);
                     this.updateEndbossHealthBar();
-                    this.playSoundEffect(audio.effects.bottleHit, 0.2);
+                    playSoundEffect(audio.effects.bottleHit, 0.2);
                 }
 
                 if((enemy instanceof Chicken || enemy instanceof SmallChicken) && !bottle.hasHit
                     && bottle.isColliding(enemy)) {
                     this.handleBottleHitRegularEnemy(bottle, enemy);
-                    this.playSoundEffect(audio.effects.bottleHit, 0.2);
+                    playSoundEffect(audio.effects.bottleHit, 0.2);
                 }
             });
         });
@@ -279,11 +279,11 @@ class World {
         const type = item.type;
         if(type === 'coin'){
             this.coinBar.setPercentage(this.coinBar.percentage + 20);
-            this.playSoundEffect(audio.effects.collectCoin, 0.3);
+            playSoundEffect(audio.effects.collectCoin, 0.3);
         }
         if(type == 'bottle'){
             this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
-            this.playSoundEffect(audio.effects.collectBottle, 0.2);
+            playSoundEffect(audio.effects.collectBottle, 0.2);
         }
         this.removeCollectibleItem(item);
     }
@@ -307,7 +307,7 @@ class World {
                 this.character.otherDirection
             );
             this.throwableObjects.push(bottle);
-            audio.effects.bottleThrow.play();
+            playSoundEffect(audio.effects.bottleThrow, 0.2)
         }
     }
 
@@ -358,9 +358,4 @@ class World {
         return this.character.x >= 2200 && this.character.x <= 2800;
     }
 
-    playSoundEffect(sound, volume = 1) { 
-        const s = sound.cloneNode();
-        s.volume = volume;
-        s.play(); 
-    }
 }

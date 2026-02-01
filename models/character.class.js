@@ -89,7 +89,6 @@ class Character extends MovableObject {
     this.physicsLoop();
     this.animate();
     this.applyGravity();
-    // this.playWalkSound();
   }
  
   //movement loop - physics
@@ -140,8 +139,8 @@ class Character extends MovableObject {
           this.wasIdleLastFrame = false;
         }
         this.playAnimation(this.IMAGES_HURT);
-        // audio.effects.characterHurt.play();
-        // audio.effects.characterHurt.volume = 0.1;
+        //this one may need refractring
+        // playSoundEffect(audio.effects.characterHurt, 0.1);
         this.longIdleTimer.reset();
         return true;
       }

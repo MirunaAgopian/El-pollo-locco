@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let soundIsOn = true;
 
 function init(){
     canvas = document.getElementById('canvas');
@@ -22,61 +23,87 @@ function controlBackgroundMusic(isOn){
         audio.music.backgroundMusic.pause();
     }
 }
+//Sound effects manager
+
+//this function controls sound effects fired by keyboard and collision
+//like in world.js (collectibles, jump, throw)
+function playSoundEffect(sound, volume = 1) { 
+    if(!soundIsOn) return;
+    const s = sound.cloneNode();
+    s.volume = volume;
+    s.play(); 
+}
+
+
+function stopLoopingSound(sound) { 
+    sound.pause(); 
+    sound.currentTime = 0; 
+}
 
 function muteMusicAndSound(isOn){
-    let musicElement = audio.music.backgroundMusic;
-    
-    if(isOn){
-        musicElement.muted = false;
-        Object.values(audio.effects).forEach(element => {
-        element.muted = false;
-    });
-    } else {
-        musicElement.muted = true;
-        Object.values(audio.effects).forEach(element => {
-        element.muted = true;
-    });
-    }
+    soundIsOn = isOn;
+    audio.music.backgroundMusic.muted = !isOn;
+    Object.values(audio.effects).forEach(effect => {
+        effect.muted = !isOn;
+    })
 }
+
+function toggleSound(){
+    muteMusicAndSound(!soundIsOn);
+}
+
+//Keyboard manager
 
 document.addEventListener('keydown', (event) => {
     if(event.code === "ArrowUp") {
-        keyboard.UP = true;    
+        keyboard.UP = true;
+        event.preventDefault();    
     } 
      if(event.code === "ArrowDown") {
         keyboard.DOWN = true;
+        event.preventDefault();
     } 
     if (event.code === "ArrowLeft") {
         keyboard.LEFT = true;
+        event.preventDefault();
     }
     if(event.code === "ArrowRight") {
         keyboard.RIGHT = true;
+        event.preventDefault();
     } 
     if(event.code === "Space") {
         keyboard.SPACE = true;
+        event.preventDefault();
     }
     if(event.code === "KeyD") {
         keyboard.THROW = true;
+        event.preventDefault();
     }
 });
 
 document.addEventListener('keyup', (event) => {
     if(event.code === "ArrowUp") {
-        keyboard.UP = false;   
+        keyboard.UP = false;  
+        event.preventDefault(); 
     } 
      if(event.code === "ArrowDown") {
         keyboard.DOWN = false;
+        event.preventDefault();
     } 
     if (event.code === "ArrowLeft") {
         keyboard.LEFT = false;
+        event.preventDefault();
     }
     if(event.code === "ArrowRight") {
         keyboard.RIGHT = false;
+        event.preventDefault();
     } 
     if(event.code === "Space") {
         keyboard.SPACE = false;
+        event.preventDefault();
     } if(event.code === "KeyD") {
         keyboard.THROW = false;
+        event.preventDefault();
     }
 });
 

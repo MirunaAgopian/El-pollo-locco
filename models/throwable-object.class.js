@@ -54,10 +54,17 @@ class ThrowableObject extends MovableObject {
         }, 25);
     }
 
+//1. AUDIO 
+// 1.1create global audio handler for 3rd subcategory of sound effects (pepe walk, pepe hurt, endboss hurt) + 
+//1.2 + check&refractor sound effects in characher.class.js
+//1.3 refractor stopGame() function to really stop the whole game, not only the background music and show the start screen
+//1.4 add alert background music for final fight
+
+//2. GAME Logic
 //add min spacing 40px for the final fight!! + create endmoss dead animation & sound effects
- //add sound effects
- //finish responsiveness , also for privacy policy and legal notice
- //add start overlay and start button + finish overlay and restart/quit button
- //add background music and alert background music for final fight
- //enmute pepe hurt sound
+//finish responsiveness (body is scrollable when start-screen overlay is open)
+ //add finish overlay and restart/quit button
+
+ //3. Refractor functions for clean coding and write JSDoc
+ 
 }

@@ -56,8 +56,9 @@ class SmallChicken extends MovableObject {
         }, 100);
     }
 
+    //this function fires once in an amination interval
     playChickenDeadSound(){
-        if(this.deadSoundPlayed) return;
+        if(this.deadSoundPlayed || !soundIsOn) return;
         this.deadSoundPlayed = true;
         this.deadSound.currentTime = 0;
         this.deadSound.play();
