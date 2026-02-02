@@ -86,6 +86,9 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
+  }
+
+  start() {
     this.physicsLoop();
     this.animate();
     this.applyGravity();
@@ -93,7 +96,25 @@ class Character extends MovableObject {
  
   //movement loop - physics
   physicsLoop() {
-    setInterval(() => {
+    this.world.registerInterval(
+      setInterval(() => {
+      this.handleMovement();
+      this.handleJump();
+      this.updateCamera();
+    }, 1000 / 60)
+    );
+  }
+
+  //animation loop
+    animate() {
+      this.world.registerInterval(
+        setInterval(() => { 
+        this.handleAnimationState();
+      }, 50)
+      );
+    }
+
+    handleMovement(){
       if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
@@ -106,27 +127,18 @@ class Character extends MovableObject {
         if(!this.isAboveGround()){
         }
       }     
-      if(this.world.keyboard.SPACE && !this.isAboveGround()) {
+    }
+
+    handleJump(){
+       if(this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
         audioManager.playRestartable(audioManager.characterJumpSound, 0.2);
         
       }  
+    }
+
+    updateCamera(){
       this.world.camera_x = -this.x + 80;
-      this.world.keyboard.SPACE_PRESSED = false;
-    }, 1000 / 60);
-  }
-
-  //animation loop
-    animate() {
-      // this.world.registerInterval(
-      //   setInterval(() => { 
-      //   this.handleAnimationState();
-      // }, 50)
-      // );
-
-      setInterval(() => { 
-        this.handleAnimationState();
-      }, 50)
     }
 
     handleAnimationState(){

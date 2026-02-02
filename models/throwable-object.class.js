@@ -1,60 +1,78 @@
 class ThrowableObject extends MovableObject {
-    currentImg = 0;
-    THROWABLE_BOTTLE_IMG = [
-        'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
-        'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
-    ];
+  currentImg = 0;
+  THROWABLE_BOTTLE_IMG = [
+    "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
+  ];
 
-    THROWABLE_BOTTLE_SPLASH_IMG = [
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
-        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
-    ];
+  THROWABLE_BOTTLE_SPLASH_IMG = [
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
+    "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
+  ];
 
-    constructor(x, y, direction){
-        super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
-        this.x = x;
-        this.y = y;
-        this.height = 80;
-        this.width = 60;
-        this.isThrown = false;
-        this.isSplashing = false;
-        this.otherDirection = direction;
-        this.loadImages(this.THROWABLE_BOTTLE_IMG);
-        this.loadImages(this.THROWABLE_BOTTLE_SPLASH_IMG);
-        this.throw();
-        this.animate();
-    }
+  constructor(x, y, direction) {
+    super().loadImage(
+      "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
+    );
+    this.x = x;
+    this.y = y;
+    this.height = 80;
+    this.width = 60;
+    this.isThrown = false;
+    this.isSplashing = false;
+    this.otherDirection = direction;
+    this.loadImages(this.THROWABLE_BOTTLE_IMG);
+    this.loadImages(this.THROWABLE_BOTTLE_SPLASH_IMG);
+  }
 
+  start() {
+    this.throw();
+    this.animate();
+  }
 
-    animate(){
-        setInterval(()=> {
-            if(this.isThrown) {
-                this.playAnimation(this.THROWABLE_BOTTLE_IMG);
-            }
-        }, 1000 / 60);
-    }
+  animate() {
+    this.world.registerInterval(
+      setInterval(() => {
+        if (this.isThrown) {
+          this.playAnimation(this.THROWABLE_BOTTLE_IMG);
+        }
+      }, 1000 / 60),
+    );
+  }
 
-    throw(){
-        this.isThrown = true;
-        this.hasHit = false;
-        this.speedY = 10;
-        this.applyGravity();
-        this.throwInterval = setInterval(()=>{
-            if(this.otherDirection){
-                this.x -= 10;
-            } else if(!this.otherDirection) {
-                this.x += 10;
-            }
-        }, 25);
-    }
+  throw() {
+    this.isThrown = true;
+    this.hasHit = false;
+    this.speedY = 10;
+    this.applyGravity();
+    this.throwInterval = setInterval(() => {
+      if (this.otherDirection) {
+        this.x -= 10;
+      } else if (!this.otherDirection) {
+        this.x += 10;
+      }
+    }, 25);
+    this.world.registerInterval(this.throwInterval);
+  }
 
-//1. AUDIO 
+  playSplashAnimation() {
+    this.world.registerInterval(
+      setInterval(() => {
+        if (this.isSplashing) {
+          this.playAnimation(this.THROWABLE_BOTTLE_SPLASH_IMG);
+        }
+      }, 100),
+    );
+  }
+}
+
+//1. AUDIO
 //1.1 refractor the playJumpSound() beuace SPACE_PRESSED stops the character from properly jumping
 //1.3 refractor stopGame() function to really stop the whole game, not only the background music and show the start screen
 //1.4 add alert background music for final fight*
@@ -62,8 +80,6 @@ class ThrowableObject extends MovableObject {
 //2. GAME Logic
 //add min spacing 40px for the final fight!! + create endmoss dead animation & sound effects
 //finish responsiveness (body is scrollable when start-screen overlay is open)
- //add finish overlay and restart/quit button
+//add finish overlay and restart/quit button
 
- //3. Refractor functions for clean coding and write JSDoc
- 
-}
+//3. Refractor functions for clean coding and write JSDoc

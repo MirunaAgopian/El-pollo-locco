@@ -11,6 +11,9 @@ function init(){
 
 function startGame(){
     world = new World(canvas, keyboard);
+    world.draw();
+    world.run();
+    world.setVerticalCollisionInterval();
 }
 
 
