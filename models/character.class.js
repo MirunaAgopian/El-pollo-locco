@@ -106,9 +106,9 @@ class Character extends MovableObject {
         if(!this.isAboveGround()){
         }
       }     
-      if(this.world.keyboard.SPACE_PRESSED && !this.isAboveGround()) {
+      if(this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-        audioManager.playOneShot(audioManager.characterJumpSound, 0.2);
+        audioManager.playRestartable(audioManager.characterJumpSound, 0.2);
         
       }  
       this.world.camera_x = -this.x + 80;
@@ -118,9 +118,15 @@ class Character extends MovableObject {
 
   //animation loop
     animate() {
+      // this.world.registerInterval(
+      //   setInterval(() => { 
+      //   this.handleAnimationState();
+      // }, 50)
+      // );
+
       setInterval(() => { 
         this.handleAnimationState();
-      }, 50);
+      }, 50)
     }
 
     handleAnimationState(){
@@ -286,14 +292,5 @@ class Character extends MovableObject {
         this.bottleCount = newCount;
         this.world.bottleBar.setPercentage((this.bottleCount / this.maxBottle) * 100);
       }
-
-
-      // playJumpSound(){
-      //   const jump = audio.effects.characterJump;
-      //   jump.pause();
-      //   jump.currentTime = 0;
-      //   jump.play();
-      // }
-
 
 }

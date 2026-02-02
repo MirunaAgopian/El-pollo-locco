@@ -6,27 +6,29 @@ class AudioManager {
         this.backgroundMusic = new Audio('audio/background_music2.mp3');
         this.backgroundMusic.loop = true;
 
-        //2.One-shot sound effects SFX (cloneNode)
+        //2. Restartable sound
         this.characterJumpSound = new Audio('audio/pepe_jump.mp3');
+
+        //3.One-shot sound effects SFX (cloneNode)
         this.collectCoinSound = new Audio('audio/collect_coin.mp3');
         this.collectBottleSound = new Audio('audio/collect_bottle.mp3');
         this.throwBottleSound = new Audio('audio/throw_object.mp3');
         this.bottleCollisionSound = new Audio('audio/bottle_hit.mp3');
 
-        //3.One-time SFX per instance and time flag with boolean
+        //4.One-time SFX per instance and time flag with boolean
         this.bigChickenDeadSound = new Audio('audio/chicken_dead.mp3');
         this.smallChickenDeadSound = new Audio('audio/chicken_dead2.mp3');
         this.endbossDeadSound = new Audio('audio/endboss_dead.mp3');
         this.endbossAlertSound = new Audio('audio/endboss_alert2.mp3');
         //maybe I sould add here also the you won/you lost SFX
 
-        //4.Repeated SFX (sound pool) - to be played inside intervals
+        //6.Repeated SFX (sound pool) - to be played inside intervals
         this.endbossHurtSound = new Audio('audio/endboss_hurt.mp3');
         this.playEndbossHurt = this.createSoundPool(this.endbossHurtSound, 5);
         this.characterHurtSound = new Audio('audio/pepe_hurt2.mp3');
         this.playCharacterHurt = this.createSoundPool(this.characterHurtSound, 5);
         
-        //5. looped ambient SFX category.
+        //6. looped ambient SFX category.
         this.characterSnoreSound = new Audio('audio/pepe_snore.mp3');
 
     }
@@ -78,6 +80,14 @@ class AudioManager {
         sound.currentTime = 0; 
         sound.volume = volume; 
         sound.play(); 
+    }
+
+    playRestartable(sound, volume = 1) {
+        if(!this.soundIsOn) return;
+        sound.pause();
+        sound.currentTime = 0;
+        sound.volume = volume;
+        sound.play();
     }
 
     playLoopedSound(sound, volume = 1){

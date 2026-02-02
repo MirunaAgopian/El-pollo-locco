@@ -13,6 +13,7 @@ class World {
     separators = [];
     endFightChickens = [];
     chickensPerWave = 3;
+    intervals = [];
 
     constructor(canvas, keyboard){
         this.context = canvas.getContext('2d');
@@ -56,6 +57,12 @@ class World {
 
     stopGame(){
         cancelAnimationFrame(this.animationFrameId);
+        // this.intervals.forEach(id => clearInterval(id));
+        // this.intervals = [];
+    }
+
+    registerInterval(id){
+        this.intervals.push(id);
     }
 
     addObjectsToMap(objects){

@@ -13,6 +13,13 @@ function startGame(){
     world = new World(canvas, keyboard);
 }
 
+
+//To be used later - it should not refresh the browser
+// function restartGame(){
+//     this.stopGame();
+//     world = new World(canvas, keyboard);
+// }
+
 //Keyboard manager
 
 document.addEventListener('keydown', (event) => {
@@ -33,9 +40,6 @@ document.addEventListener('keydown', (event) => {
         event.preventDefault();
     } 
     if(event.code === "Space") {
-        if(!keyboard.SPACE) {
-            keyboard.SPACE_PRESSED = true;
-        }
         keyboard.SPACE = true;
         event.preventDefault();
     }
