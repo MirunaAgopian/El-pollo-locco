@@ -72,12 +72,11 @@ class ThrowableObject extends MovableObject {
   }
 }
 
-//1. AUDIO
-
-//1.4 add alert background music for final fight*
+//Audio
+//add you Won/You lost sound and overlay
 
 //2. GAME Logic
-//add min spacing 40px for the final fight!! + create endmoss dead animation & sound effects
+
 //finish responsiveness (body is scrollable when start-screen overlay is open)
 //add finish overlay and restart/quit button
 

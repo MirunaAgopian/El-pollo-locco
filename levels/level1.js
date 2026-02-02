@@ -14,8 +14,7 @@ function initLevel() {
         new SmallChicken(1800, 1150,  2200),
         new Chicken(1950, 1150, 2200), 
 
-        new Endboss(3280, 2600, 3200)
-         
+        new Endboss(3280, 2600, 3200) 
     ],
     [
         new Cloud(3200),

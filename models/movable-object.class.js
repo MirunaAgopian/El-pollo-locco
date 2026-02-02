@@ -107,7 +107,7 @@ class MovableObject extends DrawableObject {
     } else {
       this.lastHit = new Date().getTime();
       if (this instanceof Character) {
-        audioManager.playCharacterHurt();
+        audioManager.playCharacterHurt(0.3);
       }
     }
   }

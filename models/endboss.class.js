@@ -56,6 +56,7 @@ class Endboss extends MovableObject {
     this.x = x;
     this.sectionStart = sectionStart;
     this.sectionEnd = sectionEnd;
+    this.otherDirection = false;
     this.speed = 20;
     this.isIdle = true;
     this.isAlert = false;
@@ -63,6 +64,7 @@ class Endboss extends MovableObject {
     this.isAttacking = false;
     this.isHurt = false;
     this.dead = false;
+    this.hasEnteredArena = false;
     this.deadSoundPlayed = false;
     this.alertSoundPlayed = false;
     this.loadImages(this.IMAGES_IDLE);
@@ -79,9 +81,9 @@ class Endboss extends MovableObject {
 
   animate() {
     this.world.registerInterval(
-        setInterval(() => {
-            this.updateState();
-        }, 150)
+      setInterval(() => {
+        this.updateState();
+      }, 150),
     );
   }
 
@@ -146,7 +148,8 @@ class Endboss extends MovableObject {
     );
   }
 
-  handleActiveState(){
+  handleActiveState() {
+    this.handleMovementBoundaries();
     this.playWalkAnimation();
   }
 
@@ -154,11 +157,31 @@ class Endboss extends MovableObject {
     this.playAnimation(this.IMAGES_IDLE);
   }
 
-
   playWalkAnimation() {
     this.playAnimation(this.IMAGES_WALKING);
-    if (this.x > this.sectionStart) {
+    if (!this.otherDirection) {
       this.moveLeft();
+    } else {
+      this.moveRight();
+    }
+  }
+
+  handleMovementBoundaries() {
+    if (!this.isActive) return;
+    if (!this.hasEnteredArena) {
+      if (this.x <= this.sectionEnd - this.width) {
+        this.hasEnteredArena = true;
+      }
+      return;
+    }
+
+    if (this.x <= this.sectionStart) {
+      this.x = this.sectionStart;
+      this.otherDirection = true;
+    }
+    if (this.x + this.width >= this.sectionEnd) {
+      this.x = this.sectionEnd - this.width;
+      this.otherDirection = false;
     }
   }
 
