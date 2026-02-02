@@ -16,12 +16,33 @@ function startGame(){
     world.setVerticalCollisionInterval();
 }
 
+function startGameFlow(){
+    const overlay = document.getElementById('start_screen');
+    const game = document.getElementById('game_wrapper');
+    overlay.classList.add('d-none');
+    game.classList.remove('d-none');
+    initLevel();
+    startGame();
+    audioManager.toggleBackgroundMusic(true);
+}
 
-//To be used later - it should not refresh the browser
-// function restartGame(){
-//     this.stopGame();
-//     world = new World(canvas, keyboard);
-// }
+function stopGameFlow(){
+    if(world){
+        world.stopGame();
+    }
+    audioManager.resetAllAudio();
+    showStartScreen();
+}
+
+function restartGame(){
+    if(world){
+        world.stopGame();
+    }
+    audioManager.resetAllAudio();
+    initLevel();
+    startGame();
+    audioManager.toggleBackgroundMusic(true);
+}
 
 //Keyboard manager
 

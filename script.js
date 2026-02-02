@@ -37,20 +37,4 @@ function showStartScreen(){
     game.classList.add('d-none');
 }
 
-function startGameFlow(){
-    const overlay = document.getElementById('start_screen');
-    const game = document.getElementById('game_wrapper');
-    overlay.classList.add('d-none');
-    game.classList.remove('d-none');
-    initLevel();
-    startGame();
-    audioManager.toggleBackgroundMusic(true);
-}
 
-function stopGameFlow(){
-    if(world){
-        world.stopGame();
-    }
-    audioManager.resetAllAudio();
-    showStartScreen();
-}
