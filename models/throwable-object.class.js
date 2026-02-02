@@ -73,8 +73,7 @@ class ThrowableObject extends MovableObject {
 }
 
 //1. AUDIO
-//1.1 refractor the playJumpSound() beuace SPACE_PRESSED stops the character from properly jumping
-//1.3 refractor stopGame() function to really stop the whole game, not only the background music and show the start screen
+
 //1.4 add alert background music for final fight*
 
 //2. GAME Logic

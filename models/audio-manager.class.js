@@ -124,7 +124,6 @@ class AudioManager {
     unmuteAll() { 
         this.soundIsOn = true; 
         this.backgroundMusic.play(); 
-        this.backgroundMusic.volume = 0.3; 
     }
 
     toggleSound() { 

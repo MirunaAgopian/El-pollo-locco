@@ -22,8 +22,6 @@ class World {
     this.setWorld();
   }
 
-
-
   draw() {
     // 1. Clear canvas
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -50,7 +48,7 @@ class World {
     this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
-   setWorld() {
+  setWorld() {
     this.character.world = this;
     this.character.start();
     this.level.enemies.forEach((enemy) => {
@@ -74,8 +72,8 @@ class World {
     this.intervals.push(id);
   }
 
-  stopIntervals(){
-    this.intervals.forEach(id => clearInterval(id));
+  stopIntervals() {
+    this.intervals.forEach((id) => clearInterval(id));
     this.intervals = [];
   }
 
@@ -389,19 +387,36 @@ class World {
     }
   }
 
-  spawnEndFightChicken() {
-    for (let index = 0; index < this.chickensPerWave; index++) {
-      let chicken = new SmallChicken(3200, 2400, 2800);
-      chicken.x = 2 + Math.random() * 400;
-      chicken.y = 365;
-      chicken.speed -= 0.3;
+  spawnEndFightChicken() { 
+    const positions = this.createSpacingBetweenChickens(); 
+    for (let x of positions) { 
+      let chicken = new SmallChicken(x, 2400, 2800);
+      chicken.y = 365; 
+      chicken.world = this; 
+      chicken.start(); 
+      this.endFightChickens.push(chicken); 
+      this.level.enemies.push(chicken); 
+    } 
+  }
 
-      chicken.world = this;
-      chicken.start();
-
-      this.endFightChickens.push(chicken);
-      this.level.enemies.push(chicken);
+  createSpacingBetweenChickens() {
+    const minDistance = 40;
+    const usedPositions = [];  
+    const spawnStart = 2400;
+    const spawnWidth = 400;
+    for (let i = 0; i < this.chickensPerWave; i++) {
+      let x;
+      let attempts = 0;
+      do {
+        x = spawnStart + Math.random() * spawnWidth;
+        attempts++;
+      } while (
+        usedPositions.some((prevX) => Math.abs(prevX - x) < minDistance) &&
+        attempts < 50
+      );
+      usedPositions.push(x);
     }
+    return usedPositions;
   }
 
   checkChickenWaves() {
