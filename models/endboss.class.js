@@ -67,6 +67,7 @@ class Endboss extends MovableObject {
     this.hasEnteredArena = false;
     this.deadSoundPlayed = false;
     this.alertSoundPlayed = false;
+    this.overlayTriggered = false;
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
@@ -114,8 +115,17 @@ class Endboss extends MovableObject {
   }
 
   handleDeadState() {
-    this.playAnimationOnce(this.IMAGES_DEAD);
-    //audioManager.playOneTimeForObject(this, audioManager.endbossDeadSound, 'deadSoundPlayed', 0.4);
+    const finished = this.playAnimationOnce(this.IMAGES_DEAD);
+    audioManager.playOneTimeForObject(
+      this,
+      audioManager.endbossDeadSound,
+      "deadSoundPlayed",
+      0.4,
+    );
+    if (finished && !this.overlayTriggered) {
+      this.overlayTriggered = true;
+      setTimeout(() => toggleYouWonOverlay(true), 3000);
+    }
   }
 
   handleHurtState() {
@@ -195,7 +205,7 @@ class Endboss extends MovableObject {
 
   hurt() {
     super.hit();
-    if (this.dead) {
+    if (this.energy <= 0) {
       this.die();
       return;
     }

@@ -128,10 +128,10 @@
       </div>
     </section>
     <!-- You lost overlay -->
-    <section class="you-lost d-none">
+    <section id="overlay_you_lost" class="you-lost d-none">
       <div class="you-lost-btns">
-        <button>Restart game</button>
-        <button>Exit game</button>
+        <button onclick="restartGame()">Restart game</button>
+        <button onclick="stopGameFlow()">Exit game</button>
       </div>
       <img
         class="you-lost-img"
@@ -140,10 +140,10 @@
       />
     </section>
     <!-- You won, overlay -->
-     <section class="you-won d-none">
+     <section id="overlay_you_won" class="you-won d-none">
       <div class="you-won-btns">
-        <button>Restart game</button>
-        <button>Exit game</button>
+        <button onclick="restartGame()">Restart game</button>
+        <button onclick="stopGameFlow()">Exit game</button>
       </div>
       <img
         class="you-won-img"

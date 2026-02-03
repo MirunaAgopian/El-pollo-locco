@@ -27,6 +27,8 @@ function startGameFlow(){
 }
 
 function stopGameFlow(){
+    toggleYouLostOverlay(false);
+    toggleYouWonOverlay(false);
     if(world){
         world.stopGame();
     }
@@ -35,6 +37,8 @@ function stopGameFlow(){
 }
 
 function restartGame(){
+    toggleYouLostOverlay(false);
+    toggleYouWonOverlay(false);
     if(world){
         world.stopGame();
     }
