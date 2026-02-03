@@ -1,5 +1,10 @@
 let LEVEL_1;
 
+/**
+ * Initializes the first game level.
+ * Creates all level-specific entities including enemies, background layers,
+ * obstacles, collectibles, and environmental objects.
+ */
 function initLevel() {
     LEVEL_1 =  new Level (
     [
