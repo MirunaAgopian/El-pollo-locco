@@ -91,36 +91,7 @@ class World {
     } else {
       this.flipImageForwards(mo);
     }
-    //test for collision
-    this.drawFrame(mo);
-
     this.context.restore();
-  }
-
-  //test for collision - rectangle
-  drawFrame(mo) {
-    if (
-      mo instanceof Character ||
-      mo instanceof Chicken ||
-      mo instanceof SeparatorObject ||
-      mo instanceof SmallChicken ||
-      mo instanceof Coin ||
-      mo instanceof Bottle ||
-      mo instanceof Endboss ||
-      mo instanceof ThrowableObject
-    ) {
-      const hb = mo.getHitbox();
-      this.context.beginPath();
-      this.context.lineWidth = 2;
-      this.context.strokeStyle = "red";
-      this.context.rect(
-        hb.left,
-        hb.top,
-        hb.right - hb.left,
-        hb.bottom - hb.top,
-      );
-      this.context.stroke();
-    }
   }
 
   run() {
