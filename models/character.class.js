@@ -215,6 +215,8 @@ class Character extends MovableObject {
     return false;
   }
 
+  //here I MUST mention that I use a time-driven animation
+  //as compared to the state-driven animation of the Endboss
   handleIdleAnimations() {
     if (!this.wasIdleLastFrame) {
       this.img = this.imageCache[this.IMAGES_IDLE[0]];
