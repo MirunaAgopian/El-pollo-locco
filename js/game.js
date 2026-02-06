@@ -3,7 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let audioManager = new AudioManager();
 /**
- * Initializes the game, is called at onload in <body>
+ * Initializes the game, is called at onload in <body>.
  */
 function init() {
   canvas = document.getElementById("canvas");
