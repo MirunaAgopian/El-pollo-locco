@@ -1,17 +1,42 @@
+/**
+ * Represents the main charachter in the game.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
+  /**
+   * Defines the character's height and width, the vertical
+   * positioning and speed.
+   */
   height = 250;
   width = 110;
   y = 180;
   speed = 10;
+
+  /**
+   * Reference to the current game world instance.
+   * Assigned externally after character creation.
+   * @type {World}
+   */
   world;
+
+  /**
+   * Animation frame counters and indices used for various animation states.
+   * These values are incremented and reset to control frame progression.
+   * @type {number}
+   */
   currentImg = 0;
   jumpingIndex = 0;
   longIdleIndex = 0;
-  longIdleDelay = 0;
   idleIndex = 0;
+  longIdleDelay = 0;
   idleDelay = 0;
   bottleCount = 0;
   maxBottle = 6;
+
+  /**
+   * Image paths for the character's long idle animation.
+   *  @type {string[]}
+   */
   IMAGES_LONG_IDLE = [
     "img/2_character_pepe/1_idle/long_idle/I-11.png",
     "img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -25,6 +50,10 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/long_idle/I-12.png",
   ];
 
+  /**
+   * Image paths for the character's idle animation.
+   *  @type {string[]}
+   */
   IMAGES_IDLE = [
     "img/2_character_pepe/1_idle/idle/I-1.png",
     "img/2_character_pepe/1_idle/idle/I-2.png",
@@ -38,6 +67,10 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/idle/I-10.png",
   ];
 
+  /**
+   * Image paths for the character's walking animation.
+   *  @type {string[]}
+   */
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -46,6 +79,11 @@ class Character extends MovableObject {
     "img/2_character_pepe/2_walk/W-25.png",
     "img/2_character_pepe/2_walk/W-26.png",
   ];
+
+  /**
+   * Image paths for the character's jump animation.
+   *  @type {string[]}
+   */
   IMAGES_JUMPING = [
     "img/2_character_pepe/3_jump/J-31.png",
     "img/2_character_pepe/3_jump/J-32.png",
@@ -58,12 +96,20 @@ class Character extends MovableObject {
     "img/2_character_pepe/3_jump/J-39.png",
   ];
 
+  /**
+   * Image paths for the character's hurt animation.
+   *  @type {string[]}
+   */
   IMAGES_HURT = [
     "img/2_character_pepe/4_hurt/H-41.png",
     "img/2_character_pepe/4_hurt/H-42.png",
     "img/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  /**
+   * Image paths for the character's dead animation.
+   *  @type {string[]}
+   */
   IMAGES_DEAD = [
     "img/2_character_pepe/5_dead/D-51.png",
     "img/2_character_pepe/5_dead/D-52.png",
@@ -74,6 +120,10 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-57.png",
   ];
 
+  /**
+   * Creates a new character instance, initializes animation states,
+   * loads all required sprite images, and prepares collision offsets.
+   */
   constructor() {
     super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
     this.offset = { top: 100, bottom: 10, left: 10, right: 30 };
@@ -90,13 +140,21 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
   }
 
+  /**
+   * Initializes the character's behavior loops.
+   * Called by the world when the level starts to activate movement
+   * and animation updates for the character.
+   */
   start() {
     this.physicsLoop();
     this.animate();
     this.applyGravity();
   }
 
-  //movement loop - physics
+  /**
+   * Starts the physics update loop for the character.
+   * Runs at 60 FPS and updates movement, jump handling, and camera position.
+   */
   physicsLoop() {
     this.world.registerInterval(
       setInterval(() => {
@@ -107,7 +165,10 @@ class Character extends MovableObject {
     );
   }
 
-  //animation loop
+  /**
+   * Starts the animation update loop for the character.
+   * Runs at 50 FPS and updates the aniamtion states (hurt, dead, jump, walking and idle).
+   */
   animate() {
     this.world.registerInterval(
       setInterval(() => {
@@ -116,6 +177,11 @@ class Character extends MovableObject {
     );
   }
 
+  /**
+   * Handles horizontal character movement based on keyboard input.
+   * Moves the character left or right if the corresponding key is pressed
+   * and the character remains within the level boundaries.
+   */
   handleMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
@@ -131,6 +197,10 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Initiates a jump when the SPACE key is pressed and the character is on the ground,
+   * and plays the jump sound effect.
+   */
   handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
@@ -138,10 +208,18 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Moves the camera position horizonally according to the character's x-coordinate.
+   * Keeps the character centered on the screen by applying a fixed offset
+   */
   updateCamera() {
     this.world.camera_x = -this.x + 80;
   }
 
+  /**
+   * Determines and executes the appropriate animation state for the character.
+   * Prioritizes hurt, dead, jump and walking animation before going into the idle animation.
+   */
   handleAnimationState() {
     if (this.handleHurtAnimation()) return;
     if (this.handleDeadAnimation()) return;
@@ -150,88 +228,105 @@ class Character extends MovableObject {
     this.handleIdleAnimations();
   }
 
+  /**
+   * Handles the hurt animation state.
+   * Plays the hurt animation if the character is damaged and resets idle-related timers.
+   * @returns {boolean} True if the hurt animation was triggered, otherwise false.
+   */
   handleHurtAnimation() {
-    if (this.isHurt()) {
-      if (this.isInIdleState) {
-        this.resetIdleState();
-        this.isInIdleState = false;
-        this.wasIdleLastFrame = false;
-      }
-      this.playAnimation(this.IMAGES_HURT);
-      this.longIdleTimer.reset();
-      return true;
-    }
-    return false;
+    if (!this.isHurt()) return false;
+    this.exitIdleStateIfNeeded();
+    this.playHurtAnimation();
+    this.longIdleTimer.reset();
+    return true;
   }
 
+  /**
+   * Plays the hurt animation sequence.
+   */
+  playHurtAnimation() {
+    this.playAnimation(this.IMAGES_HURT);
+  }
+
+  /**
+   * Handles the death animation state.
+   * Plays the death animation and triggers the end screen once the animation finishes.
+   * @returns {boolean} True if the death animation was triggered, otherwise false.
+   */
   handleDeadAnimation() {
-    if (this.isDead()) {
-      if (!this.deathAnimationStarted) {
-        this.currentImg = 0;
-        this.deathAnimationStarted = true;
-      }
-      this.playAnimation(this.IMAGES_DEAD);
-      this.speed = 0;
-      this.speedY = 0;
-      if (
-        this.currentImg === this.IMAGES_DEAD.length - 1 &&
-        !this.deathAnimationPlayed
-      ) {
-        this.deathAnimationPlayed = true;
-        setTimeout(() => toggleYouLostOverlay(true), 3000);
-      }
-      return true;
-    }
-    return false;
+    if (!this.isDead()) return false;
+    this.playDeadAnimation();
+    this.triggerEndScreenIfFinished();
+    return true;
   }
 
+  /**
+   * Plays the death animation sequence.
+   * Initializes the animation on the first frame and freezes character movement.
+   */
+  playDeadAnimation() {
+    if (!this.deathAnimationStarted) {
+      this.currentImg = 0;
+      this.deathAnimationStarted = true;
+    }
+    this.playAnimation(this.IMAGES_DEAD);
+    this.speed = 0;
+    this.speedY = 0;
+  }
+
+  /**
+   * Triggers the "You Lost" overlay once the death animation reaches its final frame.
+   */
+  triggerEndScreenIfFinished() {
+    const lastFrame = this.IMAGES_DEAD.length - 1;
+    if (this.currentImg === lastFrame && !this.deathAnimationPlayed) {
+      this.deathAnimationPlayed = true;
+      setTimeout(() => toggleYouLostOverlay(true), 3000);
+    }
+  }
+
+  /**
+   * Handles the jump animation state.
+   * Plays the appropriate jump animation frames.
+   * @returns {boolean} True if the jump animation was triggered, otherwise false.
+   */
   handleJumpAnimation() {
-    if (this.isAboveGround()) {
-      if (this.isInIdleState) {
-        this.resetIdleState();
-        this.isInIdleState = false;
-        this.wasIdleLastFrame = false;
-      }
-      this.smoothJumpAnimation();
-      this.longIdleTimer.reset();
-      return true;
-    } else {
+    if (!this.isAboveGround()) {
       this.jumpingIndex = 0;
       return false;
     }
+    this.exitIdleStateIfNeeded();
+    this.smoothJumpAnimation();
+    this.longIdleTimer.reset();
+    return true;
   }
 
+  /**
+   * Handles the walking animation state.
+   * Plays the walking animation when the character moves left or right.
+   * @returns {boolean} True if the walking animation was triggered, otherwise false.
+   */
   handleWalkAnimation() {
-    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-      if (this.isInIdleState) {
-        this.resetIdleState();
-        this.isInIdleState = false;
-        this.wasIdleLastFrame = false;
-      }
-      this.playAnimation(this.IMAGES_WALKING);
-      this.longIdleTimer.reset();
-      return true;
+    if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+      return false;
     }
-    return false;
+    this.exitIdleStateIfNeeded();
+    this.playAnimation(this.IMAGES_WALKING);
+    this.longIdleTimer.reset();
+    return true;
   }
 
-  //here I MUST mention that I use a time-driven animation
-  //as compared to the state-driven animation of the Endboss
+  /**
+   * Handles all idle-related animations, including normal idle, long idle, and throw-idle transitions.
+   * Uses a time-driven animation system to determine which idle animation sequence to play.
+   * @returns {boolean} Always returns true once idle handling is executed.
+   */
   handleIdleAnimations() {
-    if (!this.wasIdleLastFrame) {
-      this.img = this.imageCache[this.IMAGES_IDLE[0]];
-    }
-    this.wasIdleLastFrame = true;
-    this.isInIdleState = true;
+    this.prepareIdleFrame();
+    this.enterIdleState();
     this.longIdleTimer.start();
-    if (this.world.keyboard.THROW) {
-      if (this.isInIdleState) {
-        this.resetIdleState();
-        this.isInIdleState = false;
-        this.wasIdleLastFrame = false;
-      }
-      this.smoothIdleAnimation();
-      this.longIdleTimer.reset();
+    if (this.isThrowing()) {
+      this.handleThrowDuringIdle();
     } else if (this.longIdleTimer.hasReached()) {
       this.smoothLongIdleAnimation();
     } else {
@@ -240,6 +335,54 @@ class Character extends MovableObject {
     return true;
   }
 
+  /**
+   * Sets the first idle frame if the character was not idle last frame.
+   */
+  prepareIdleFrame() {
+    if (!this.wasIdleLastFrame) {
+      this.img = this.imageCache[this.IMAGES_IDLE[0]];
+    }
+  }
+
+  /**
+   * Marks the character as being in an idle state.
+   */
+  enterIdleState() {
+    this.wasIdleLastFrame = true;
+    this.isInIdleState = true;
+  }
+
+  /**
+   * Exits idle state and resets idle-related counters if currently idle.
+   */
+  exitIdleStateIfNeeded() {
+    if (this.isInIdleState) {
+      this.resetIdleState();
+      this.isInIdleState = false;
+      this.wasIdleLastFrame = false;
+    }
+  }
+
+  /**
+   * Checks whether the player is pressing the throw key.
+   * @returns {boolean}
+   */
+  isThrowing() {
+    return this.world.keyboard.THROW;
+  }
+
+  /**
+   * Handles idle-to-throw transition and resets idle timers.
+   */
+  handleThrowDuringIdle() {
+    this.exitIdleStateIfNeeded();
+    this.smoothIdleAnimation();
+    this.longIdleTimer.reset();
+  }
+
+  /**
+   * Resets all idle animation counters and stops snoring audio.
+   */
   resetIdleState() {
     this.idleDelay = 0;
     this.idleIndex = 0;
@@ -248,6 +391,9 @@ class Character extends MovableObject {
     audioManager.stopCharacterSnoreSound();
   }
 
+  /**
+   * Plays the correct jump animation frame based on vertical speed.
+   */
   smoothJumpAnimation() {
     if (this.speedY > 0) {
       this.manageIndexInterval(0, 3);
@@ -260,6 +406,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Advances the jump animation index within a given frame range.
+   */
   manageIndexInterval(start, end) {
     if (this.jumpingIndex < start) {
       this.jumpingIndex = start;
@@ -272,6 +421,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays the standard idle animation using a timed frame delay.
+   */
   smoothIdleAnimation() {
     this.idleDelay++;
     if (this.idleDelay < 8) {
@@ -286,6 +438,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays the long idle animation and triggers snoring audio.
+   */
   smoothLongIdleAnimation() {
     this.longIdleDelay++;
     if (this.longIdleDelay < 10) {
@@ -301,6 +456,9 @@ class Character extends MovableObject {
     audioManager.playCharacterSnoreSound();
   }
 
+  /**
+   * Adjusts the bottle count within allowed limits and updates the UI bar.
+   */
   manageBottleCount(delta) {
     let newCount = this.bottleCount + delta;
     if (newCount > this.maxBottle) {

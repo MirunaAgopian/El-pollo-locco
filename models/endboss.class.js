@@ -4,7 +4,7 @@
  */
 class Endboss extends MovableObject {
   /**
-   * Defines the cendbosse's height and width and the vertical positioning.
+   * Defines the endboss's height and width and the vertical positioning.
    */
   height = 250;
   width = 160;
@@ -22,7 +22,7 @@ class Endboss extends MovableObject {
   offset = { top: 60, left: 30, right: 10, bottom: 5 };
 
   /**
-   * * Image paths for the endbosse's idle animation.
+   * Image paths for the endbosse's idle animation.
    *  @type {string[]}
    */
   IMAGES_IDLE = [
