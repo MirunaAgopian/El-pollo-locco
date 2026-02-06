@@ -5,16 +5,17 @@
  */
 
 class AudioManager {
-  /** * Creates a new AudioManager instance and initializes all audio categories: 
-   * - background music 
-   * - restartable character sounds 
-   * - one‑shot sound effects (coin, bottle, collisions, win/lose) 
-   * - enemy death and alert sounds 
-   * - sound‑pool‑based repeated SFX (hurt sounds) 
-   * - ambient looped sounds 
+  /** * Creates a new AudioManager instance and initializes all audio categories:
+   * - background music
+   * - restartable character sounds
+   * - one‑shot sound effects (coin, bottle, collisions, win/lose)
+   * - enemy death and alert sounds
+   * - sound‑pool‑based repeated SFX (hurt sounds)
+   * - ambient looped sounds
    * */
   constructor() {
-    this.soundIsOn = true;
+    const savedState = localStorage.getItem("soundIsOn"); //now
+    this.soundIsOn = savedState !== null ? JSON.parse(savedState) : true;
 
     //1.Background music
     this.backgroundMusic = new Audio("audio/background_music2.mp3");
@@ -45,32 +46,38 @@ class AudioManager {
 
     //6. looped ambient SFX category.
     this.characterSnoreSound = new Audio("audio/pepe_snore.mp3");
+
+    // Apply saved mute state
+    if (this.soundIsOn) {
+      this.unmuteAll();
+    } else {
+      this.muteAll();
+    }
   }
 
   /**
-   * Plays and pauses the background music and sets its volume.
+   * Enables or disables background music only. Does not affect other sound effects.
    * @param {boolean} isOn - if true, the background music can be heard.
    */
   toggleBackgroundMusic(isOn) {
     this.soundIsOn = isOn;
     if (isOn) {
       this.backgroundMusic.play();
-      this.backgroundMusic.volume = 0.1;
     } else {
       this.backgroundMusic.pause();
     }
   }
 
   /**
- * Creates a sound pool for rapidly repeated sound effects.
- * Generates multiple cloned Audio nodes and returns a function that
- * plays them in a rotating sequence, allowing overlapping playback.
- *
- * @param {HTMLAudioElement} sound - The base audio element to clone.
- * @param {number} [size=5] - Number of audio clones to include in the pool.
- * @returns {function(number=1): void} A function that plays the next sound
- * in the pool at the given volume.
- */
+   * Creates a sound pool for rapidly repeated sound effects.
+   * Generates multiple cloned Audio nodes and returns a function that
+   * plays them in a rotating sequence, allowing overlapping playback.
+   *
+   * @param {HTMLAudioElement} sound - The base audio element to clone.
+   * @param {number} [size=5] - Number of audio clones to include in the pool.
+   * @returns {function(number=1): void} A function that plays the next sound
+   * in the pool at the given volume.
+   */
   createSoundPool(sound, size = 5) {
     const pool = [];
     for (let i = 0; i < size; i++) {
@@ -88,13 +95,13 @@ class AudioManager {
   }
 
   /**
- * Plays a one‑shot sound effect.
- * Clones the provided audio node so the sound can overlap with itself
- * and plays it at the given volume.
- *
- * @param {HTMLAudioElement} sound - The base audio element to clone and play.
- * @param {number} [volume=1] - Playback volume for this instance.
- */
+   * Plays a one‑shot sound effect.
+   * Clones the provided audio node so the sound can overlap with itself
+   * and plays it at the given volume.
+   *
+   * @param {HTMLAudioElement} sound - The base audio element to clone and play.
+   * @param {number} [volume=1] - Playback volume for this instance.
+   */
   playOneShot(sound, volume = 1) {
     if (!this.soundIsOn) return;
     const s = sound.cloneNode();
@@ -103,14 +110,14 @@ class AudioManager {
   }
 
   /**
- * Plays a sound effect only once per game event or entity.
- * Uses a boolean flag to prevent repeated playback and ensures
- * the sound always starts from the beginning.
- *
- * @param {HTMLAudioElement} sound - The audio element to play.
- * @param {string} flagName - The name of the boolean flag controlling playback.
- * @param {number} [volume=1] - Playback volume for this instance.
- */
+   * Plays a sound effect only once per game event or entity.
+   * Uses a boolean flag to prevent repeated playback and ensures
+   * the sound always starts from the beginning.
+   *
+   * @param {HTMLAudioElement} sound - The audio element to play.
+   * @param {string} flagName - The name of the boolean flag controlling playback.
+   * @param {number} [volume=1] - Playback volume for this instance.
+   */
   playOneTime(sound, flagName, volume = 1) {
     if (this[flagName] || !this.soundIsOn) return;
     this[flagName] = true;
@@ -120,15 +127,15 @@ class AudioManager {
   }
 
   /**
- * Plays a sound effect only once for a specific object.
- * Uses a flag stored on the object to prevent repeated playback,
- * ensuring the sound triggers a single time per entity or event.
- *
- * @param {Object} obj - The object that holds the playback flag.
- * @param {HTMLAudioElement} sound - The audio element to play.
- * @param {string} flagName - The name of the boolean flag on the object.
- * @param {number} [volume=1] - Playback volume for this instance.
- */
+   * Plays a sound effect only once for a specific object.
+   * Uses a flag stored on the object to prevent repeated playback,
+   * ensuring the sound triggers a single time per entity or event.
+   *
+   * @param {Object} obj - The object that holds the playback flag.
+   * @param {HTMLAudioElement} sound - The audio element to play.
+   * @param {string} flagName - The name of the boolean flag on the object.
+   * @param {number} [volume=1] - Playback volume for this instance.
+   */
   playOneTimeForObject(obj, sound, flagName, volume = 1) {
     if (obj[flagName] || !this.soundIsOn) return;
     obj[flagName] = true;
@@ -138,13 +145,13 @@ class AudioManager {
   }
 
   /**
- * Plays a restartable sound effect.
- * Always resets the audio to the beginning before playback,
- * ensuring the sound restarts cleanly even if triggered rapidly.
- *
- * @param {HTMLAudioElement} sound - The audio element to restart and play.
- * @param {number} [volume=1] - Playback volume for this instance.
- */
+   * Plays a restartable sound effect.
+   * Always resets the audio to the beginning before playback,
+   * ensuring the sound restarts cleanly even if triggered rapidly.
+   *
+   * @param {HTMLAudioElement} sound - The audio element to restart and play.
+   * @param {number} [volume=1] - Playback volume for this instance.
+   */
   playRestartable(sound, volume = 1) {
     if (!this.soundIsOn) return;
     sound.pause();
@@ -154,13 +161,13 @@ class AudioManager {
   }
 
   /**
- * Plays a looping ambient sound.
- * Ensures the audio is set to loop and starts playback if it is not
- * already playing, allowing continuous background ambience.
- *
- * @param {HTMLAudioElement} sound - The audio element to loop.
- * @param {number} [volume=1] - Playback volume for this instance.
- */
+   * Plays a looping ambient sound.
+   * Ensures the audio is set to loop and starts playback if it is not
+   * already playing, allowing continuous background ambience.
+   *
+   * @param {HTMLAudioElement} sound - The audio element to loop.
+   * @param {number} [volume=1] - Playback volume for this instance.
+   */
   playLoopedSound(sound, volume = 1) {
     if (!this.soundIsOn) return;
     sound.loop = true;
@@ -199,10 +206,10 @@ class AudioManager {
   }
 
   /**
- * Mutes all game audio.
- * Disables sound playback globally, pauses active ambient loops,
- * and rewinds them so they restart cleanly when unmuted.
- */
+   * Mutes all game audio.
+   * Disables sound playback globally, pauses active ambient loops,
+   * and rewinds them so they restart cleanly when unmuted.
+   */
   muteAll() {
     this.soundIsOn = false;
     this.backgroundMusic.pause();
@@ -211,32 +218,39 @@ class AudioManager {
   }
 
   /**
- * Unmutes all game audio.
- * Re-enables sound playback and resumes the background music.
- */
+   * Unmutes all game audio.
+   * Re-enables sound playback and resumes the background music.
+   * Restores the background music volume and plays it only if the user
+   * has interacted with the page (to comply with autoplay restrictions).
+   */
   unmuteAll() {
     this.soundIsOn = true;
-    this.backgroundMusic.play();
+    this.backgroundMusic.volume = 0.1;
+    if (this.userHasInteracted) {
+      this.backgroundMusic.play();
+    }
   }
 
   /**
- * Toggles the global sound state.
- * Switches between muted and unmuted modes by delegating to
- * the corresponding audio control methods.
- */
+   * Toggles the global sound state.
+   * Switches between muted and unmuted modes by delegating to
+   * the corresponding audio control methods.
+   */
   toggleSound() {
     if (this.soundIsOn) {
       this.muteAll();
     } else {
       this.unmuteAll();
     }
+    localStorage.setItem("soundIsOn", JSON.stringify(this.soundIsOn));
   }
 
   /**
- * Resets all audio states in the game.
- * Stops and rewinds background and ambient sounds, clears sound‑pool playback,
- * resets one‑time sound flags, and re‑enables global audio.
- */
+   * Resets all audio states in the game.
+   * Stops and rewinds background and ambient sounds, clears sound‑pool playback,
+   * resets one‑time sound flags, and re‑enables global audio.
+   * Used when restarting or stopping the game.
+   */
   resetAllAudio() {
     this.backgroundMusic.pause();
     this.backgroundMusic.currentTime = 0;
@@ -250,6 +264,5 @@ class AudioManager {
     }
     this.endbossAlertSoundPlayed = false;
     this.endbossDeadSoundPlayed = false;
-    this.soundIsOn = true;
   }
 }

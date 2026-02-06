@@ -26,7 +26,8 @@ function startGame() {
 /**
  * Removes the start overlay and shows the main game overlay.
  * Initializes the level containing the character, enemies, collectibles and bacground objects.
- * Starts the game and plays the background music.
+ * Marks that the user has interacted with the page (allowing audio playback),
+ * and starts background music only if global sound is enabled.
  */
 function startGameFlow() {
   const overlay = document.getElementById("start_screen");
@@ -35,12 +36,15 @@ function startGameFlow() {
   game.classList.remove("d-none");
   initLevel();
   startGame();
-  audioManager.toggleBackgroundMusic(true);
+  audioManager.userHasInteracted = true;
+  if (audioManager.soundIsOn) {
+    audioManager.toggleBackgroundMusic(true);
+  }
 }
 
 /**
  * Hides the end-of-game overlays showing the start overlay.
- * Resets all audio effects and background music.
+ * Resets all audio effects and background music, without altering the global mute state.
  * Stops all game loops from within the world object.
  */
 function stopGameFlow() {
@@ -54,7 +58,8 @@ function stopGameFlow() {
 }
 
 /**
- * Restarts the game after it has ended (hides all overlays and resets audio)
+ * Restarts the game after it has ended (hides all overlays and resets audio only if global sound
+ * is enabled).
  * Reinitializes the level and starts a fresh game session.
  */
 function restartGame() {
@@ -66,7 +71,9 @@ function restartGame() {
   audioManager.resetAllAudio();
   initLevel();
   startGame();
-  audioManager.toggleBackgroundMusic(true);
+  if (audioManager.soundIsOn) {
+    audioManager.toggleBackgroundMusic(true);
+  }
 }
 
 /**
