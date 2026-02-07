@@ -11,8 +11,6 @@ class World {
   endbossBar = new EndbossBar();
   throwableObjects = [];
   separators = [];
-  endFightChickens = [];
-  chickensPerWave = 3;
   intervals = [];
 
   constructor(canvas, keyboard) {
@@ -23,6 +21,7 @@ class World {
     this.bottleSystem = new BottleSystem(this);
     this.collectibleSystem = new CollectibleSystem(this);
     this.collisionSystem = new CollisionSystem(this);
+    this.enemySpawner = new EnemySpawnerSystem(this);
     this.collisionSystem.setVerticalCollisionInterval();
     
     this.setWorld();
@@ -124,13 +123,12 @@ class World {
         this.bottleSystem.checkThrowObjects();
         this.checkEndbossTrigger();
         this.updateEndbossBarVisibility();
-        this.checkChickenWaves();
+        this.enemySpawner.checkChickenWaves();
       }, 200),
     );
   }
 
   //II. Collision logic
-  //2.1. Character collision logic
   checkCollisions() {
     this.collisionSystem.checkEnemyHorizontalCollision();
     this.collisionSystem.checkSeparatorCollision();
@@ -177,7 +175,7 @@ class World {
     if (!boss) return;
     if (this.character.x >= 2800 && this.level.endboss.isIdle) {
       this.level.endboss.triggerAlert();
-      this.spawnEndFightChicken();
+      this.enemySpawner.spawnEndFightChicken();
     }
   }
 
@@ -188,55 +186,6 @@ class World {
       this.endbossBar.visible = true;
     } else {
       this.endbossBar.visible = false;
-    }
-  }
-
-  spawnEndFightChicken() {
-    const positions = this.createSpacingBetweenChickens();
-    positions.forEach((x) => {
-      const chicken = this.createEndFightChicken(x);
-      this.registerEndFightChicken(chicken);
-    });
-  }
-
-  createEndFightChicken(x) {
-    const chicken = new SmallChicken(x, 2400, 2800);
-    chicken.y = 365;
-    chicken.world = this;
-    chicken.start();
-    return chicken;
-  }
-
-  registerEndFightChicken(chicken) {
-    this.endFightChickens.push(chicken);
-    this.level.enemies.push(chicken);
-  }
-
-  // this function generates a list of X positions spaced at least minDistance apart
-  createSpacingBetweenChickens() {
-    const minDistance = 40;
-    const usedPositions = [];
-    const spawnStart = 2400;
-    const spawnWidth = 400;
-    for (let i = 0; i < this.chickensPerWave; i++) {
-      let x;
-      let attempts = 0;
-      do {
-        x = spawnStart + Math.random() * spawnWidth;
-        attempts++;
-      } while (
-        usedPositions.some((prevX) => Math.abs(prevX - x) < minDistance) &&
-        attempts < 50
-      );
-      usedPositions.push(x);
-    }
-    return usedPositions;
-  }
-
-  checkChickenWaves() {
-    const alive = this.endFightChickens.filter((c) => c.energy > 0);
-    if (alive.length === 0) {
-      this.spawnEndFightChicken();
     }
   }
 
