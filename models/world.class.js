@@ -21,13 +21,33 @@ class World {
     this.keyboard = keyboard;
     this.setWorld();
   }
-
+  //I. DRAW World, start + stop game
   draw() {
-    // 1. Clear canvas
+    this.clearCanvas();
+    this.moveCamera();
+    this.drawWorldObjects();
+    this.resetCamera();
+    this.drawHUD();
+    this.createDrawingLoop();
+  }
+
+  clearCanvas() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //2. camera moves for world objects
+  }
+
+  moveCamera() {
     this.context.translate(this.camera_x, 0);
-    //3. world is being drawn
+  }
+
+  resetCamera() {
+    this.context.translate(-this.camera_x, 0);
+  }
+
+  createDrawingLoop() {
+    this.animationFrameId = requestAnimationFrame(() => this.draw());
+  }
+
+  drawWorldObjects() {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
@@ -36,16 +56,13 @@ class World {
     this.addObjectsToMap(this.level.separators);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles);
+  }
 
-    //4.camera reset
-    this.context.translate(-this.camera_x, 0);
-    //5.draw Heads‑Up Display
+  drawHUD() {
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
     this.addToMap(this.statusBar);
     this.addToMap(this.endbossBar);
-    //6.drawing loop
-    this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
   setWorld() {
@@ -106,6 +123,8 @@ class World {
     );
   }
 
+  //II. Collision logic
+  //2.1. Character collision logic
   checkCollisions() {
     this.checkEenemyHorizontalCollision();
     this.checkSeparatorCollision();
@@ -118,14 +137,14 @@ class World {
   //Works at 5FPS
   checkEenemyHorizontalCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (enemy.energy <= 0) return;
-      if (this.character.isColliding(enemy)) {
-        if (!this.character.isCollidingFromAbove(enemy)) {
-          if (!this.character.isHurt()) {
-            this.character.hit();
-            this.updateHealthBar();
-          }
-        }
+      if (
+        enemy.energy > 0 &&
+        this.character.isColliding(enemy) &&
+        !this.character.isCollidingFromAbove(enemy) &&
+        !this.character.isHurt()
+      ) {
+        this.character.hit();
+        this.updateHealthBar();
       }
     });
   }
@@ -133,12 +152,13 @@ class World {
   //Works at 60FPS
   checkVerticalEnemyCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (enemy.energy <= 0) return;
-      if (this.character.isColliding(enemy)) {
-        if (this.character.isCollidingFromAbove(enemy)) {
-          this.handleEnemyStomp(enemy);
-          setTimeout(() => this.removeDeadEnemy(enemy), 500);
-        }
+      if (
+        enemy.energy > 0 &&
+        this.character.isColliding(enemy) &&
+        this.character.isCollidingFromAbove(enemy)
+      ) {
+        this.handleEnemyStomp(enemy);
+        setTimeout(() => this.removeDeadEnemy(enemy), 500);
       }
     });
   }
@@ -154,13 +174,12 @@ class World {
   checkSeparatorCollision() {
     this.level.separators.forEach((separator) => {
       if (
-        this.character.isCollidingFromAbove(separator) ||
-        this.character.isColliding(separator)
+        (this.character.isColliding(separator) ||
+          this.character.isCollidingFromAbove(separator)) &&
+        !this.character.isHurt()
       ) {
-        if (!this.character.isHurt()) {
-          this.character.hit();
-          this.updateHealthBar();
-        }
+        this.character.hit();
+        this.updateHealthBar();
       }
     });
   }
@@ -184,29 +203,29 @@ class World {
     });
   }
 
+  //2.2 Bottle colision logic
   checkBottleHitsEnemies() {
     this.throwableObjects.forEach((bottle) => {
-      this.level.enemies.forEach((enemy) => {
-        if (
-          enemy instanceof Endboss &&
-          !bottle.hasHit &&
-          bottle.isColliding(enemy)
-        ) {
-          this.handleBottleHitEndboss(bottle, enemy);
-          this.updateEndbossHealthBar();
-          audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
-        }
+      if (bottle.hasHit) return;
 
-        if (
-          (enemy instanceof Chicken || enemy instanceof SmallChicken) &&
-          !bottle.hasHit &&
-          bottle.isColliding(enemy)
-        ) {
-          this.handleBottleHitRegularEnemy(bottle, enemy);
-          audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
-        }
+      this.level.enemies.forEach((enemy) => {
+        if (bottle.hasHit) return;
+        if (!bottle.isColliding(enemy)) return;
+
+        this.handleBottleEnemyCollision(bottle, enemy);
       });
     });
+  }
+
+  handleBottleEnemyCollision(bottle, enemy) {
+    if (enemy instanceof Endboss) {
+      this.handleBottleHitEndboss(bottle, enemy);
+      this.updateEndbossHealthBar();
+    }
+    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+      this.handleBottleHitRegularEnemy(bottle, enemy);
+    }
+    audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
   }
 
   handleBottleHitEndboss(bottle, endboss) {
@@ -262,7 +281,6 @@ class World {
 
   updateEndbossHealthBar() {
     this.endbossBar.setPercentage(this.level.endboss.energy);
-    console.log("Endboss energy level:", this.level.endboss.energy);
   }
 
   handleEnemyStomp(enemy) {
@@ -327,16 +345,20 @@ class World {
   checkThrowObjects() {
     if (this.keyboard.THROW && this.character.bottleCount > 0) {
       this.character.manageBottleCount(-1);
-      let bottle = new ThrowableObject(
-        this.character.x + 40,
-        this.character.y + 10,
-        this.character.otherDirection,
-      );
+      const bottle = this.createThrowBottle();
       bottle.world = this;
       bottle.start();
       this.throwableObjects.push(bottle);
       audioManager.playOneShot(audioManager.throwBottleSound, 0.3);
     }
+  }
+
+  createThrowBottle() {
+    return new ThrowableObject(
+      this.character.x + 40,
+      this.character.y + 10,
+      this.character.otherDirection,
+    );
   }
 
   checkEndbossTrigger() {
@@ -358,21 +380,31 @@ class World {
     }
   }
 
-  spawnEndFightChicken() { 
-    const positions = this.createSpacingBetweenChickens(); 
-    for (let x of positions) { 
-      let chicken = new SmallChicken(x, 2400, 2800);
-      chicken.y = 365; 
-      chicken.world = this; 
-      chicken.start(); 
-      this.endFightChickens.push(chicken); 
-      this.level.enemies.push(chicken); 
-    } 
+  spawnEndFightChicken() {
+    const positions = this.createSpacingBetweenChickens();
+    positions.forEach((x) => {
+      const chicken = this.createEndFightChicken(x);
+      this.registerEndFightChicken(chicken);
+    });
   }
 
+  createEndFightChicken(x) {
+    const chicken = new SmallChicken(x, 2400, 2800);
+    chicken.y = 365;
+    chicken.world = this;
+    chicken.start();
+    return chicken;
+  }
+
+  registerEndFightChicken(chicken) {
+    this.endFightChickens.push(chicken);
+    this.level.enemies.push(chicken);
+  }
+
+  // this function generates a list of X positions spaced at least minDistance apart
   createSpacingBetweenChickens() {
     const minDistance = 40;
-    const usedPositions = [];  
+    const usedPositions = [];
     const spawnStart = 2400;
     const spawnWidth = 400;
     for (let i = 0; i < this.chickensPerWave; i++) {
