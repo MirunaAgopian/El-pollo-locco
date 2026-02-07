@@ -21,6 +21,9 @@ class World {
     this.keyboard = keyboard;
     //added now
     this.bottleSystem = new BottleSystem(this);
+    this.collectibleSystem = new CollectibleSystem(this);
+    this.collisionSystem = new CollisionSystem(this);
+    this.collisionSystem.setVerticalCollisionInterval();
     
     this.setWorld();
   }
@@ -129,82 +132,13 @@ class World {
   //II. Collision logic
   //2.1. Character collision logic
   checkCollisions() {
-    this.checkEenemyHorizontalCollision();
-    this.checkSeparatorCollision();
-    this.checkCoinCollisions();
-    this.checkBottleCollect();
+    this.collisionSystem.checkEnemyHorizontalCollision();
+    this.collisionSystem.checkSeparatorCollision();
+    this.collectibleSystem.checkCoinCollect();
+    this.collectibleSystem.checkBottleCollect();
     this.bottleSystem.checkBottleHitsEnemies();
   }
 
-  //Refractor:
-  //Works at 5FPS
-  checkEenemyHorizontalCollision() {
-    this.level.enemies.forEach((enemy) => {
-      if (
-        enemy.energy > 0 &&
-        this.character.isColliding(enemy) &&
-        !this.character.isCollidingFromAbove(enemy) &&
-        !this.character.isHurt()
-      ) {
-        this.character.hit();
-        this.updateHealthBar();
-      }
-    });
-  }
-
-  //Works at 60FPS
-  checkVerticalEnemyCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (
-        enemy.energy > 0 &&
-        this.character.isColliding(enemy) &&
-        this.character.isCollidingFromAbove(enemy)
-      ) {
-        this.handleEnemyStomp(enemy);
-        setTimeout(() => this.removeDeadEnemy(enemy), 500);
-      }
-    });
-  }
-
-  setVerticalCollisionInterval() {
-    this.registerInterval(
-      setInterval(() => {
-        this.checkVerticalEnemyCollisions();
-      }, 1000 / 60),
-    );
-  }
-
-  checkSeparatorCollision() {
-    this.level.separators.forEach((separator) => {
-      if (
-        (this.character.isColliding(separator) ||
-          this.character.isCollidingFromAbove(separator)) &&
-        !this.character.isHurt()
-      ) {
-        this.character.hit();
-        this.updateHealthBar();
-      }
-    });
-  }
-
-  checkCoinCollisions() {
-    this.level.coins.forEach((coin) => {
-      if (this.character.isColliding(coin)) {
-        this.collectItem(coin);
-      }
-    });
-  }
-
-  checkBottleCollect() {
-    this.level.bottles.forEach((bottle) => {
-      if (this.character.isColliding(bottle)) {
-        if (this.character.bottleCount < this.character.maxBottle) {
-          this.collectItem(bottle);
-          this.character.manageBottleCount(+1);
-        }
-      }
-    });
-  }
 
   updateHealthBar() {
     this.statusBar.setPercentage(this.character.energy);
@@ -212,14 +146,6 @@ class World {
 
   updateEndbossHealthBar() {
     this.endbossBar.setPercentage(this.level.endboss.energy);
-  }
-
-  handleEnemyStomp(enemy) {
-    enemy.energy = 0;
-    this.character.speedY = 25;
-    if (this.isFinalSection() && enemy instanceof SmallChicken) {
-      this.spawnBottle(enemy.x, enemy.y);
-    }
   }
 
   removeDeadEnemy(enemy) {
@@ -234,29 +160,6 @@ class World {
     if (index > -1) {
       this.throwableObjects.splice(index, 1);
     }
-  }
-
-  removeCollectibleItem(item) {
-    const type = item.type;
-    if (type === "coin") {
-      this.level.coins = this.level.coins.filter((c) => c !== item);
-    }
-    if (type === "bottle") {
-      this.level.bottles = this.level.bottles.filter((b) => b !== item);
-    }
-  }
-
-  collectItem(item) {
-    const type = item.type;
-    if (type === "coin") {
-      this.coinBar.setPercentage(this.coinBar.percentage + 20);
-      audioManager.playOneShot(audioManager.collectCoinSound, 0.2);
-    }
-    if (type == "bottle") {
-      this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
-      audioManager.playOneShot(audioManager.collectBottleSound, 0.2);
-    }
-    this.removeCollectibleItem(item);
   }
 
   flipImageForwards(mo) {

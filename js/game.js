@@ -14,13 +14,11 @@ function init() {
 /**
  * Starts the game by created a new World instance.
  * The world is being drawn and the adjacent functions are beind run.
- * The interval for vertical collisions, different from horizontal ones is being set.
  */
 function startGame() {
   world = new World(canvas, keyboard);
   world.draw();
   world.run();
-  world.setVerticalCollisionInterval();
 }
 
 /**
