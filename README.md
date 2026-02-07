@@ -31,6 +31,7 @@ git clone https://github.com/MirunaAgopian/el-pollo-loco.git
  ├── style.css
  ├── script.js
  ├── js/
+ │   ├── debug.js
  │   ├── game.js
  ├── levels/
  │   ├── level1.js
