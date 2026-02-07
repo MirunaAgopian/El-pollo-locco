@@ -3,7 +3,7 @@ class CollisionSystem {
         this.world = world;
     }
 
-    //Works at 5 FPS
+    //Works at 5 FPS - called in checkCollisions
     checkEnemyHorizontalCollision() {
     this.world.level.enemies.forEach((enemy) => {
       if (
@@ -18,7 +18,7 @@ class CollisionSystem {
     });
   }
 
-  //Works at 60FPS
+  //Works at 60FPS - called in world's constructor
   checkVerticalEnemyCollisions() {
     this.world.level.enemies.forEach((enemy) => {
       if (
