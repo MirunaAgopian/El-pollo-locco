@@ -35,6 +35,7 @@ git clone https://github.com/MirunaAgopian/el-pollo-loco.git
  ├── levels/
  │   ├── level1.js
  ├── models/
+ │   ├── audio-manager.class.js
  │   ├── background-object.class.js
  │   ├── bottle-bar.class.js
  │   ├── bottle.class.js
