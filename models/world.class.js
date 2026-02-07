@@ -19,6 +19,9 @@ class World {
     this.context = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    //added now
+    this.bottleSystem = new BottleSystem(this);
+    
     this.setWorld();
   }
   //I. DRAW World, start + stop game
@@ -115,7 +118,7 @@ class World {
     this.registerInterval(
       setInterval(() => {
         this.checkCollisions();
-        this.checkThrowObjects();
+        this.bottleSystem.checkThrowObjects();
         this.checkEndbossTrigger();
         this.updateEndbossBarVisibility();
         this.checkChickenWaves();
@@ -130,7 +133,7 @@ class World {
     this.checkSeparatorCollision();
     this.checkCoinCollisions();
     this.checkBottleCollect();
-    this.checkBottleHitsEnemies();
+    this.bottleSystem.checkBottleHitsEnemies();
   }
 
   //Refractor:
@@ -203,78 +206,6 @@ class World {
     });
   }
 
-  //2.2 Bottle colision logic
-  checkBottleHitsEnemies() {
-    this.throwableObjects.forEach((bottle) => {
-      if (bottle.hasHit) return;
-
-      this.level.enemies.forEach((enemy) => {
-        if (bottle.hasHit) return;
-        if (!bottle.isColliding(enemy)) return;
-
-        this.handleBottleEnemyCollision(bottle, enemy);
-      });
-    });
-  }
-
-  handleBottleEnemyCollision(bottle, enemy) {
-    if (enemy instanceof Endboss) {
-      this.handleBottleHitEndboss(bottle, enemy);
-      this.updateEndbossHealthBar();
-    }
-    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-      this.handleBottleHitRegularEnemy(bottle, enemy);
-    }
-    audioManager.playOneShot(audioManager.bottleCollisionSound, 0.3);
-  }
-
-  handleBottleHitEndboss(bottle, endboss) {
-    bottle.hasHit = true;
-    this.applyEndbossDamage(endboss);
-    this.stopBottleMovement(bottle);
-    this.startBottleSplash(bottle);
-    this.scheduleBottleRemoval(bottle);
-  }
-
-  applyEndbossDamage(endboss) {
-    endboss.hurt();
-    if (endboss.isDead()) {
-      this.handleEndbossDeath();
-    }
-  }
-
-  stopBottleMovement(bottle) {
-    bottle.speedY = 0;
-    bottle.acceleration = 0;
-    clearInterval(bottle.throwInterval);
-  }
-
-  startBottleSplash(bottle) {
-    bottle.isSplashing = true;
-    bottle.isThrown = false;
-    bottle.img = bottle.imageCache[bottle.THROWABLE_BOTTLE_SPLASH_IMG[0]];
-    bottle.playSplashAnimation();
-  }
-
-  scheduleBottleRemoval(bottle) {
-    setTimeout(() => {
-      this.removeBottleSplashAnimation(bottle);
-    }, 200);
-  }
-
-  handleBottleHitRegularEnemy(bottle, enemy) {
-    bottle.hasHit = true;
-    this.killRegularEnemy(enemy);
-    this.stopBottleMovement(bottle);
-    this.startBottleSplash(bottle);
-    this.scheduleBottleRemoval(bottle);
-  }
-
-  killRegularEnemy(enemy) {
-    enemy.energy = 0;
-    this.removeDeadEnemy(enemy);
-  }
-
   updateHealthBar() {
     this.statusBar.setPercentage(this.character.energy);
   }
@@ -296,10 +227,6 @@ class World {
     if (index > -1) {
       this.level.enemies.splice(index, 1);
     }
-  }
-
-  handleEndbossDeath(endboss) {
-    this.removeDeadEnemy(endboss);
   }
 
   removeBottleSplashAnimation(bottle) {
@@ -340,25 +267,6 @@ class World {
     this.context.translate(mo.x + mo.width, 0);
     this.context.scale(-1, 1);
     this.context.drawImage(mo.img, 0, mo.y, mo.width, mo.height);
-  }
-
-  checkThrowObjects() {
-    if (this.keyboard.THROW && this.character.bottleCount > 0) {
-      this.character.manageBottleCount(-1);
-      const bottle = this.createThrowBottle();
-      bottle.world = this;
-      bottle.start();
-      this.throwableObjects.push(bottle);
-      audioManager.playOneShot(audioManager.throwBottleSound, 0.3);
-    }
-  }
-
-  createThrowBottle() {
-    return new ThrowableObject(
-      this.character.x + 40,
-      this.character.y + 10,
-      this.character.otherDirection,
-    );
   }
 
   checkEndbossTrigger() {
