@@ -75,6 +75,22 @@ function restartGame() {
 }
 
 /**
+ * Ends the current game session by displaying the appropriate
+ * end screen (win or lose), stopping all world activity
+ * (animation frame + intervals), and resetting all audio.
+ *
+ * @param {"win" | "lose"} result - The outcome of the game.
+ */
+function endGame(result) {
+  if (result === "win") toggleYouWonOverlay(true);
+  if (result === "lose") toggleYouLostOverlay(true);
+  if (world) {
+    world.stopGame();
+  }
+  audioManager.resetAllAudio();
+}
+
+/**
  * Attaches event listeners to the keyboard on keypress.
  * Prevents default behaviour of keys outside the game loop.
  */

@@ -281,7 +281,7 @@ class Character extends MovableObject {
     const lastFrame = this.IMAGES_DEAD.length - 1;
     if (this.currentImg === lastFrame && !this.deathAnimationPlayed) {
       this.deathAnimationPlayed = true;
-      setTimeout(() => toggleYouLostOverlay(true), 3000);
+      setTimeout(() => endGame('lose'), 3000);
     }
   }
 

@@ -30,7 +30,7 @@ class CollisionSystem {
   /**
    * Checks if the character lands on top of an enemy.
    * Runs at 60 FPS for smooth and responsive stomp detection.
-   * If the character hits an enemy from above, the enemy is defeated.
+   * If the character hits an enemy (except the Endboss) from above, the enemy is defeated.
    */
   checkVerticalEnemyCollisions() {
     this.world.level.enemies.forEach((enemy) => {

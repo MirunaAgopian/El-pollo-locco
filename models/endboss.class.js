@@ -210,7 +210,7 @@ class Endboss extends MovableObject {
     );
     if (finished && !this.overlayTriggered) {
       this.overlayTriggered = true;
-      setTimeout(() => toggleYouWonOverlay(true), 3000);
+      setTimeout(() => endGame('win'), 3000);
     }
   }
 
