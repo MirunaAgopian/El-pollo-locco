@@ -90,7 +90,7 @@ class AudioManager {
       index = (index + 1) % size;
       s.currentTime = 0;
       s.volume = volume;
-      s.play();
+      this.safePlay(s);
     };
   }
 
@@ -106,24 +106,7 @@ class AudioManager {
     if (!this.soundIsOn) return;
     const s = sound.cloneNode();
     s.volume = volume;
-    s.play();
-  }
-
-  /**
-   * Plays a sound effect only once per game event or entity.
-   * Uses a boolean flag to prevent repeated playback and ensures
-   * the sound always starts from the beginning.
-   *
-   * @param {HTMLAudioElement} sound - The audio element to play.
-   * @param {string} flagName - The name of the boolean flag controlling playback.
-   * @param {number} [volume=1] - Playback volume for this instance.
-   */
-  playOneTime(sound, flagName, volume = 1) {
-    if (this[flagName] || !this.soundIsOn) return;
-    this[flagName] = true;
-    sound.currentTime = 0;
-    sound.volume = volume;
-    sound.play();
+    this.safePlay(s);
   }
 
   /**
@@ -136,12 +119,17 @@ class AudioManager {
    * @param {string} flagName - The name of the boolean flag on the object.
    * @param {number} [volume=1] - Playback volume for this instance.
    */
+
   playOneTimeForObject(obj, sound, flagName, volume = 1) {
-    if (obj[flagName] || !this.soundIsOn) return;
+    if (!this.soundIsOn) {
+      obj[flagName] = true;
+      return;
+    }
+    if (obj[flagName]) return;
     obj[flagName] = true;
     sound.currentTime = 0;
     sound.volume = volume;
-    sound.play();
+    this.safePlay(sound);
   }
 
   /**
@@ -157,7 +145,7 @@ class AudioManager {
     sound.pause();
     sound.currentTime = 0;
     sound.volume = volume;
-    sound.play();
+    this.safePlay(sound);
   }
 
   /**
@@ -174,7 +162,7 @@ class AudioManager {
     sound.volume = volume;
     if (sound.paused) {
       sound.currentTime = 0;
-      sound.play();
+      this.safePlay(sound);
     }
   }
 
@@ -264,5 +252,18 @@ class AudioManager {
     }
     this.endbossAlertSoundPlayed = false;
     this.endbossDeadSoundPlayed = false;
+  }
+
+  /**
+   * Safely plays an audio element by catching browser play() interruptions.
+   * Prevents AbortError when play() and pause() happen in the same frame.
+   *
+   * @param {HTMLAudioElement} sound - The audio element to play safely.
+   */
+  safePlay(sound) {
+    const playPromise = sound.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {});
+    }
   }
 }
