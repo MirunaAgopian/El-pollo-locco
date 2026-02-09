@@ -74,24 +74,54 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Applies gravity to the object by updating its vertical position
-   * at a fixed interval. As long as the object is above the ground
-   * or still moving upward, its y‑position is adjusted based on its
-   * current vertical speed, which decreases over time due to gravity.
+   * Applies gravity to the object on each frame.
+   * Determines whether the object should fall or snap to the ground.
    */
   applyGravity() {
     this.world.registerInterval(
       setInterval(() => {
         this.previousY = this.y;
-        if (this.isAboveGround() || this.speedY > 0) {
-          this.y -= this.speedY;
-          this.speedY -= this.acceleration;
+        if (this.shouldFall()) {
+          this.applyFallPhysics();
         } else {
-          this.y = 180;
-          this.speedY = 0;
+          this.snapCharacterToGround();
         }
       }, 1000 / 25),
     );
+  }
+
+  /**
+   * Returns whether the object should continue falling.
+   * ThrowableObjects always fall; characters fall until reaching ground level.
+   */
+  shouldFall() {
+    if (this instanceof ThrowableObject) {
+      return true;
+    }
+    return this.isAboveGround() || this.speedY > 0;
+  }
+
+  /**
+   * Applies vertical movement and gravity acceleration.
+   * Caps falling speed for ThrowableObjects to ensure reliable collisions.
+   */
+  applyFallPhysics() {
+    if (this instanceof ThrowableObject && this.speedY < -20) {
+      this.speedY = -20;
+    }
+    this.y -= this.speedY;
+    this.speedY -= this.acceleration;
+  }
+
+  /**
+   * Snaps the character to the ground when falling is no longer needed.
+   * Prevents drifting and ensures consistent landing height.
+   */
+  snapCharacterToGround() {
+    if (this instanceof Character) {
+      this.y = 180;
+      this.speedY = 0;
+    }
   }
 
   /**

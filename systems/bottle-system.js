@@ -50,6 +50,7 @@ class BottleSystem {
     });
   }
 
+
   /**
    * Handles what happens when a bottle hits an enemy.
    * Applies different logic for the endboss and regular enemies.

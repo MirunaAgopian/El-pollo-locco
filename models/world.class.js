@@ -208,6 +208,7 @@ class World {
     } else {
       this.flipImageForwards(mo);
     }
+
     this.context.restore();
   }
 
