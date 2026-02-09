@@ -69,6 +69,7 @@ class World {
     this.collisionSystem = new CollisionSystem(this);
     this.enemySpawner = new EnemySpawnerSystem(this);
     this.collisionSystem.setVerticalCollisionInterval();
+    this.startCollectibleLoop();
     this.setWorld();
   }
 
@@ -237,11 +238,22 @@ class World {
   checkCollisions() {
     this.collisionSystem.checkEnemyHorizontalCollision();
     this.collisionSystem.checkSeparatorCollision();
-    this.collectibleSystem.checkCoinCollect();
-    this.collectibleSystem.checkBottleCollect();
     this.bottleSystem.checkBottleHitsEnemies();
   }
 
+  /**
+   * Starts a fast interval dedicated to collectible pickup checks.
+   * Runs coin and bottle collision detection at a higher frequency
+   * to ensure smooth collection even when the character moves quickly.
+   */
+  startCollectibleLoop() {
+    this.registerInterval(
+      setInterval(() => {
+        this.collectibleSystem.checkCoinCollect();
+        this.collectibleSystem.checkBottleCollect();
+      }, 40),
+    );
+  }
   /**
    * Updates the character's health bar to match the character's current energy.
    */
