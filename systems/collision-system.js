@@ -34,6 +34,7 @@ class CollisionSystem {
    */
   checkVerticalEnemyCollisions() {
     this.world.level.enemies.forEach((enemy) => {
+      if(enemy instanceof Endboss) return;
       if (
         enemy.energy > 0 &&
         this.world.character.isColliding(enemy) &&
