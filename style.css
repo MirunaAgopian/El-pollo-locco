@@ -5,7 +5,7 @@
 
 body {
     margin: 0;
-    background-image: url('./img/5_background/background_img_main.png');
+    background-image: url('./img/5_background/background_img_main_compressed.png');
     background-size: cover;
     background-repeat: no-repeat;
     font-family: 'Bungee';
@@ -155,7 +155,7 @@ button:not(.fullscreen-btn):hover {
 } 
 .start-screen-img { 
     grid-area: 1 / 1; 
-    background-image: url('img/9_intro_outro_screens/start/startscreen_1.png'); 
+    background-image: url('img/9_intro_outro_screens/start/startscreen_1_compressed.png'); 
     background-size: cover; 
     background-position: center; 
 } 
