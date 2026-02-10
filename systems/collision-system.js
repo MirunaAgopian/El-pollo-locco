@@ -34,7 +34,7 @@ class CollisionSystem {
    */
   checkVerticalEnemyCollisions() {
     this.world.level.enemies.forEach((enemy) => {
-      if(enemy instanceof Endboss) return;
+      if (enemy instanceof Endboss) return;
       if (
         enemy.energy > 0 &&
         this.world.character.isColliding(enemy) &&
@@ -85,6 +85,25 @@ class CollisionSystem {
       ) {
         this.world.character.hit();
         this.world.updateHealthBar();
+      }
+    });
+  }
+
+  /**
+   * Checks collisions between the character and thrown eggs.
+   * If the character is hit, they take damage and the egg is removed.
+   */
+  checkEggCollisions() {
+    this.world.throwableObjects.forEach((egg) => {
+      if (
+        egg instanceof Egg &&
+        egg.isThrown &&
+        this.world.character.isColliding(egg) &&
+        !this.world.character.isHurt()
+      ) {
+        this.world.character.hit();
+        this.world.updateHealthBar();
+        this.world.removeEgg(egg);
       }
     });
   }

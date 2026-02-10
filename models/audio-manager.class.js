@@ -29,6 +29,7 @@ class AudioManager {
     this.collectBottleSound = new Audio("audio/collect_bottle.mp3");
     this.throwBottleSound = new Audio("audio/throw_object.mp3");
     this.bottleCollisionSound = new Audio("audio/bottle_hit.mp3");
+    this.throwEggSound = new Audio("audio/egg_throw.mp3");
     this.youLost = new Audio("audio/you_lost.mp3");
     this.youWon = new Audio("audio/you_won.mp3");
 

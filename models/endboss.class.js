@@ -210,7 +210,7 @@ class Endboss extends MovableObject {
     );
     if (finished && !this.overlayTriggered) {
       this.overlayTriggered = true;
-      setTimeout(() => endGame('win'), 3000);
+      setTimeout(() => endGame("win"), 3000);
     }
   }
 
@@ -228,11 +228,21 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Plays the Endboss's attack animation. Once the attack animation
-   * is finished, he enters the active state.
+   * Handles the Endboss's attack behavior. Plays the attack animation
+   * and triggers three egg throws at specific animation frames.
+   * Once all eggs are thrown and the animation finishes, the boss
+   * exits the attack state.
    */
   handleAttackState() {
     let finished = this.playAnimationOnce(this.IMAGES_ATTACK);
+    if (!this.hasThrownEggs) {
+      if (this.currentImg === 1) this.throwEgg();
+      if (this.currentImg === 3) this.throwEgg();
+      if (this.currentImg === 5) {
+        this.throwEgg();
+        this.hasThrownEggs = true;
+      }
+    }
     if (finished) {
       this.isAttacking = false;
     }
@@ -367,5 +377,21 @@ class Endboss extends MovableObject {
     this.isAttacking = true;
     this.isActive = true;
     this.currentImg = 0;
+    this.hasThrownEggs = false;
+  }
+
+  /**
+   * Spawns a new egg and throws it toward the character and plays a sound effect.
+   * The egg is positioned based on the boss's side and added to the world's throwable objects.
+   */
+  throwEgg() {
+    const direction = this.x > this.world.character.x;
+    const eggX = direction ? this.x - 20 : this.x + this.width + 20;
+    const eggY = this.y + 50;
+    const egg = new Egg(eggX, eggY, direction);
+    egg.world = this.world;
+    this.world.throwableObjects.push(egg);
+    egg.start();
+    audioManager.playOneShot(audioManager.throwEggSound, 0.6);
   }
 }

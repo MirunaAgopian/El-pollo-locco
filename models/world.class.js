@@ -238,6 +238,7 @@ class World {
   checkCollisions() {
     this.collisionSystem.checkEnemyHorizontalCollision();
     this.collisionSystem.checkSeparatorCollision();
+    this.collisionSystem.checkEggCollisions();
     this.bottleSystem.checkBottleHitsEnemies();
   }
 
@@ -285,6 +286,17 @@ class World {
    */
   removeBottleSplashAnimation(bottle) {
     const index = this.throwableObjects.indexOf(bottle);
+    if (index > -1) {
+      this.throwableObjects.splice(index, 1);
+    }
+  }
+
+  /**
+   * Removes the specified egg from the world's throwableObjects array.
+   * @param {Egg} egg - The egg instance to remove.
+   */
+  removeEgg(egg) {
+    const index = this.throwableObjects.indexOf(egg);
     if (index > -1) {
       this.throwableObjects.splice(index, 1);
     }
