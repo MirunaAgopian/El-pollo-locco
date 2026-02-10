@@ -47,6 +47,7 @@ git clone https://github.com/MirunaAgopian/el-pollo-loco.git
  │   ├── coin.class.js
  │   ├── collectible-object.class.js
  │   ├── drawable-object.class.js
+ │   ├── egg.class.js
  │   ├── endboss-bar.class.js
  │   ├── endboss.class.js
  │   ├── keyboard.class.js
