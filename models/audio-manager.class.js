@@ -5,6 +5,11 @@
  */
 
 class AudioManager {
+  /**
+   * Sets a flag for the icon image on the mute/unmute button
+   */
+  onToggle = null;
+  
   /** * Creates a new AudioManager instance and initializes all audio categories:
    * - background music
    * - restartable character sounds
@@ -224,12 +229,16 @@ class AudioManager {
    * Toggles the global sound state.
    * Switches between muted and unmuted modes by delegating to
    * the corresponding audio control methods.
+   * Also updates the button icon accordingly.
    */
   toggleSound() {
     if (this.soundIsOn) {
       this.muteAll();
     } else {
       this.unmuteAll();
+    }
+    if (this.onToggle) {
+      this.onToggle(this.soundIsOn);
     }
     localStorage.setItem("soundIsOn", JSON.stringify(this.soundIsOn));
   }

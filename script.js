@@ -85,7 +85,7 @@ function toggleYouLostOverlay(show) {
 function toggleYouWonOverlay(show) {
   const overlay = document.getElementById("overlay_you_won");
   if (show) {
-    if(world) world.stopGame();
+    if (world) world.stopGame();
     overlay.classList.remove("d-none");
     audioManager.backgroundMusic.pause();
     audioManager.backgroundMusic.currentTime = 0;
@@ -97,3 +97,23 @@ function toggleYouWonOverlay(show) {
     overlay.classList.add("d-none");
   }
 }
+
+/**
+ * Sets the icon of the mute/unmute button to reflect the current state.
+ * @param {boolean} isOn - whether the cound is currently enabled.
+ */
+function updateSoundIcon(isOn) {
+  const icon = document.getElementById("sound_icon");
+  icon.src = isOn ? "./img/btn_sound.png" : "./img/btn_sound_off.png";
+}
+
+/**
+ * Registers the UI callback that updates the mute/unmute icon
+ * whenever the sound state changes.
+ */
+audioManager.onToggle = updateSoundIcon;
+
+/**
+ * Sets the correct icon on page load based on the saved sound state.
+ */
+updateSoundIcon(audioManager.soundIsOn);
