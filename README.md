@@ -60,6 +60,7 @@ git clone https://github.com/MirunaAgopian/el-pollo-loco.git
  │   ├── world.class.js
  ├── systems/
  │   ├── bottle-system.js
+ │   ├── character-animation-system.js
  │   ├── collectibles-system.js
  │   ├── collision-system.js
  │   ├── enemy-spawner.js
