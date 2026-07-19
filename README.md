@@ -1,6 +1,10 @@
 # El-pollo-locco
 _A 2D jump&run game created with JavaScript Object Oriented Programming, mimicking traditional platformers like "Mario"._
 
+<div align="center">
+  <img src="assets/img/epl_project__img.png" width="600" />
+</div>
+
 **1. Gameplay**
 
 Assist Pepe, the main character in his journey, navigating though the Mexican desert, in a lively world filled with chickens, chicks, and one very angry giant pollo.
