@@ -2,7 +2,7 @@
 _A 2D jump&run game created with JavaScript Object Oriented Programming, mimicking traditional platformers like "Mario"._
 
 <div align="center">
-  <img src="assets/img/epl_project__img.png" width="600" />
+  <img src="img/epl_project_img.png" width="600" />
 </div>
 
 **1. Gameplay**
