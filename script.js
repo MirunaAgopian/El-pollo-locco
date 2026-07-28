@@ -1,6 +1,8 @@
 /**
  * Reacts to orientation changes and window resizing
  */
+window.addEventListener("DOMContentLoaded", checkOrientation);
+window.addEventListener("resize", checkOrientation);
 window
   .matchMedia("(orientation: portrait)")
   .addEventListener("change", checkOrientation);
